@@ -74,13 +74,12 @@ class Prestamo extends ModelBase
     public function diasRetraso()
     {
         $fecha_actual = new DateTime();
-        $fecha_devolucion = $this->getFechaHasta();
+        $fecha_dev = $this->getFechaHasta();
 
-        if ($fecha_devolucion === null || $fecha_actual <= $fecha_devolucion) {
+        if ($fecha_dev === null || $fecha_actual <= $fecha_dev) {
             return 0;
         }
-
-        $diferencia = $fecha_actual->diff($fecha_devolucion);
+        $diferencia = $fecha_actual->diff($fecha_dev);
         return $diferencia->days;
     }
 }

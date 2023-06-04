@@ -6,7 +6,6 @@ use PDO;
 
 final class ConectarBD
 {
-
     private static ?PDO $cxn = null;
 
     public static function conectar(): PDO
@@ -19,7 +18,6 @@ final class ConectarBD
         $host = "pgsql:host=192.168.20.1; port=5433; dbname=$db";
         $user = $_ENV['DB_USER'];
         $pass = $_ENV['DB_PASSWORD'];
-
 
         static::$cxn = new PDO(
             $host,

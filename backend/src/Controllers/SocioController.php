@@ -22,8 +22,6 @@ class SocioController implements InterfaceController{
             $socios[] = $Socio->serializar();
         }
         return $socios;
-
-        
     }
     
     public static function encontrarUno(string $id): ?array
@@ -34,9 +32,6 @@ class SocioController implements InterfaceController{
         }else{
             return $socio->serializar();
         }
-        
-        
-        
     }
 
     public static function crear(array $parametros): array
@@ -58,8 +53,4 @@ class SocioController implements InterfaceController{
         SocioDAO::borrar($id);
         
     }
-    
-    
-
-
 }
