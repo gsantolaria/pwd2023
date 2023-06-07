@@ -23,7 +23,7 @@ class AutorController implements InterfaceController {
     }
     
     public static function crear(array $parametros): array {
-        $autor = Autor::deserializar($parametros);
+        $autor = new Autor();
         AutorDAO::crear($autor);
         return $autor->serializar();
     }
