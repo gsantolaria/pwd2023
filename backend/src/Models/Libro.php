@@ -7,9 +7,10 @@ class Libro extends ModelBase
 {
     private $titulo;
     private $editorial;
-    private $autor;
+    private array $autor;
     private $genero;
     private $cant_paginas;
+    private $categoria;
     private $anio_publicacion;
     private $estado;
 
@@ -17,10 +18,11 @@ class Libro extends ModelBase
     const INACTIVO = "Inactivo";
     const PRESTADO = "Prestado";
 
-    public function __construct($id, $titulo, $editorial, $autor, $genero, $cant_paginas, $anio_publicacion, $estado) {
-        $this->id = $id;
+    public function __construct(int $id, string $titulo, Editorial $editorial, Categoria $categoria, array $autor, Genero $genero, int $cant_paginas, int $anio_publicacion, string $estado = self::ACTIVO) {
+        parent::__construct($id);
         $this->titulo = $titulo;
         $this->editorial = $editorial;
+        $this->categoria = $categoria;
         $this->autor = $autor;
         $this->genero = $genero;
         $this->cant_paginas = $cant_paginas;
@@ -50,12 +52,18 @@ class Libro extends ModelBase
 
     public function getAutor()
     {
-        return $this->autor;
+        $listaAutores =[];
+        foreach($this->autor as $autores){
+            $listaAutores = $autores->serializar();
+        }
+        return $listaAutores;;
     }
 
-    public function setAutor(array $autor)
+    public function setAutor(array $autorList)
     {
-        $this->autor = $autor;
+        foreach ($autorList as $autor) {
+            $this->autor[] = $autor;
+        }
     }
 
     public function getGenero()
@@ -93,8 +101,46 @@ class Libro extends ModelBase
         return $this->estado;
     }
 
-    public function setEstado($estado)
+    public function setEstado($nuevoEstado)
     {
-        $this->estado = $estado;
+        switch ($nuevoEstado) {
+            case $nuevoEstado === static::ACTIVO:
+                $this->estado = static::ACTIVO;
+                break;
+            case $nuevoEstado === static::INACTIVO:
+                $this->estado = static::INACTIVO;
+                break;
+            case $nuevoEstado === static::PRESTADO:
+                $this->estado = static::PRESTADO;
+        }
+    }
+
+    public function serializar(): array
+    {
+        return [
+            'id' => $this->getId(),
+            'titulo' => $this->titulo,
+            'autor' => $this->getAutor(),
+            'editorial' => $this->editorial->serializar(),
+            'cant_paginas' => $this->cant_paginas,
+            'genero' => $this->genero->serializar(),
+            'categoria' => $this->categoria->serializar(),
+            'estado' => $this->estado,
+            'anio'=>$this->anio_publicacion
+        ];
+    }
+    static function deserializar(array $datos): ModelBase
+    {
+        return new Self(
+            id: $datos['id'] === null ? 0 : $datos['id'],
+            titulo: $datos['titulo'],
+            autor: $datos['autor'],
+            editorial: $datos['editorial'],
+            cant_paginas: $datos['cant_paginas'],
+            anio_publicacion: $datos['anio'],
+            genero: $datos['genero'],
+            categoria: $datos['categoria'],
+            estado: $datos['estado']
+        );
     }
 }

@@ -8,7 +8,7 @@ class Autor extends ModelBase
     private $nombre_apellido;
     private $activo;
 
-    public function __construct($id, $nombre_apellido)
+    public function __construct(int $id, string $nombre_apellido)
     {
         parent::__construct($id);
         $this->nombre_apellido = $nombre_apellido;
@@ -19,7 +19,7 @@ class Autor extends ModelBase
         return $this->nombre_apellido;
     }
 
-    public function setNombreApellido($nombre_apellido)
+    public function setNombreApellido(string $nombre_apellido)
     {
         $this->nombre_apellido = $nombre_apellido;
     }
@@ -29,8 +29,22 @@ class Autor extends ModelBase
         return $this->activo;
     }
 
-    public function setActivo($activo)
+    public function setActivo(int $activo)
     {
         $this->activo = $activo;
+    }
+
+    public static function deserializar(array $datos): self
+    {
+        return new autor(
+            id: $datos['id'] === null ? 0 : intVal($datos['id']),
+            nombre_apellido: $datos["nombre_apellido"]
+        );
+    }
+    /** @Return mixed[] */
+    public function serializar(): array
+    {
+        $serializar = array("nombre_apellido" => $this->getNombreApellido());
+        return $serializar;
     }
 }

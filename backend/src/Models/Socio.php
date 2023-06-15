@@ -11,7 +11,7 @@ class Socio extends ModelBase{
     private $telefono;
     private $direccion;
 
-    public function __construct($id, string $nombre_apellido, string $fecha_alta, int $telefono, string $direccion, int $activo = 1)
+    public function __construct(int $id, string $nombre_apellido, string $fecha_alta, int $telefono, string $direccion, int $activo = 1)
     {
 
         Parent::__construct($id);
@@ -72,28 +72,26 @@ class Socio extends ModelBase{
         $this->direccion = $direccion;
     }
     public function serializar(): array
-    {
-
+    {   
         return [
-            'id' => $this->getId(),
-            'nombre_apellido' => $this->nombre_apellido,
-            'direccion' => $this->direccion,
-            'telefono' => $this->telefono,
-            'activo' => $this->activo,
-            'fecha_alta' => $this->fecha_alta,
+            'id'=>$this->getId(),
+            "nombre_apellido" => $this->getNombreApellido(), 
+            "activo" => $this->getActivo(), 
+            "fecha_alta" => $this->getFechaAlta(), 
+            "telefono" => $this->getTelefono(), 
+            "direccion" => $this->getDireccion()
         ];
     }
     static function deserializar(array $datos): ModelBase
     {
 
         return new self(
-            id: $datos['id'] === null ? 0 : $datos['id'],
+            id: $datos['id'] === null ? 0 : intVal($datos['id']),
             nombre_apellido: $datos['nombre_apellido'],
             fecha_alta: $datos['fecha_alta'],
             telefono: intval($datos['telefono']),
             direccion: $datos['direccion'],
-            activo: intval($datos['activo']),
+            activo: intval($datos['activo'])
         );
     }
- 
 }

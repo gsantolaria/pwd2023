@@ -7,6 +7,7 @@ use Raiz\Bd\InterfaceDAO;
 use Raiz\Models\Genero;
 
 class GeneroDAO implements InterfaceDAO {
+    
     public static function listar(): array {
         $sql = 'SELECT * FROM generos';
         $listaGeneros = ConectarBD::leer(sql: $sql);
@@ -30,12 +31,12 @@ class GeneroDAO implements InterfaceDAO {
 
     public static function crear(Serializador $instancia): void {
         $params = $instancia->serializar();
-        $sql = 'INSERT INTO generos (id, nombre) VALUES (:id, :nombre)';
+        $sql = 'INSERT INTO generos (descripcion, activo) VALUES (:descripcion, :activo)';
         ConectarBD::escribir(
             sql: $sql,
             params: [
-                ':id' => $params['id'],
-                ':nombre' => $params['nombre'],
+                ':descripcion' => $params['descripcion'],
+                ':activo' => $params['activo']
             ]
         );
     }

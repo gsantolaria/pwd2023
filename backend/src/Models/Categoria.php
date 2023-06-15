@@ -8,7 +8,7 @@ class Categoria extends ModelBase
     private $descripcion;
     private $activo;
 
-    public function __construct($id, $descripcion)
+    public function __construct(int $id, string $descripcion)
     {
         parent::__construct($id);
         $this->descripcion = $descripcion;
@@ -19,7 +19,7 @@ class Categoria extends ModelBase
         return $this->descripcion;
     }
 
-    public function setDescripcion($descripcion)
+    public function setDescripcion(string $descripcion)
     {
         $this->descripcion = $descripcion;
     }
@@ -29,8 +29,22 @@ class Categoria extends ModelBase
         return $this->activo;
     }
 
-    public function setActivo($activo)
+    public function setActivo(int $activo)
     {
         $this->activo = $activo;
+    }
+
+    public static function deserializar(array $datos): self
+    {
+        return new categoria(
+            id: $datos['id'] === null ? 0 : intVal($datos['id']),
+            descripcion: $datos["descripcion"]
+        );
+    }
+    /** @Return mixed[] */
+    public function serializar(): array
+    {
+        $serializar = array("descripcion" => $this->getDescripcion());
+        return $serializar;
     }
 }

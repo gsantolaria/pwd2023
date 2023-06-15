@@ -8,7 +8,7 @@ require __DIR__.'/../vendor/autoload.php';
 /// *** ---- CREAMOS LA INSTANCIA DE SLIM ---- *** ///
 
 $app = AppFactory::create();
-$app->addErrorMiddleware(true, true, true);
+$app->addErrorMiddleware(displayErrorDetails: true, logErrors: true, logErrorDetails: true);
 
 // ----- Agregar las Rutas de cada Controlador ------ //
 require_once('../rutas/socioRoutes.php');

@@ -8,7 +8,7 @@ class Editorial extends ModelBase
     private $nombre;
     private $activo;
 
-    public function __construct($id, $nombre)
+    public function __construct(int $id, string $nombre)
     {
         parent::__construct($id);
         $this->nombre = $nombre;
@@ -19,7 +19,7 @@ class Editorial extends ModelBase
         return $this->nombre;
     }
 
-    public function setNombre($nombre)
+    public function setNombre(string $nombre)
     {
         $this->nombre = $nombre;
     }
@@ -29,8 +29,21 @@ class Editorial extends ModelBase
         return $this->activo;
     }
 
-    public function setActivo($activo)
+    public function setActivo(int $activo)
     {
         $this->activo = $activo;
+    }
+    public static function deserializar(array $datos): self
+    {
+        return new Editorial(
+            id: $datos['id'] === null ? 0 : intVal($datos['id']),
+            nombre: $datos["nombre"]
+        );
+    }
+    /** @Return mixed[] */
+    public function serializar(): array
+    {
+        $serializar = array("nombre_apellido" => $this->getNombre());
+        return $serializar;
     }
 }
