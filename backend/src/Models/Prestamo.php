@@ -12,7 +12,7 @@ class Prestamo extends ModelBase
     private $fecha_hasta;
     private $fecha_dev;
 
-    public function __construct($id, $socio, $libro, $fecha_desde, $fecha_hasta, $fecha_dev) {
+    public function __construct(int $id,  Socio $socio,  Libro $libro, $fecha_desde, $fecha_hasta, $fecha_dev) {
         $this->id = $id;
         $this->socio = $socio;
         $this->libro = $libro;
@@ -21,7 +21,7 @@ class Prestamo extends ModelBase
         $this->fecha_dev = $fecha_dev;
     }
 
-    public function getSocio()
+    public function getSocio():Socio
     {
         return $this->socio;
     }
@@ -30,8 +30,8 @@ class Prestamo extends ModelBase
     {
         $this->socio = $socio;
     }
-
-    public function getLibro()
+    
+    public function getLibro():Libro
     {
         return $this->libro;
     }

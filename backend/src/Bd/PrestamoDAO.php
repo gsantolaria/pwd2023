@@ -15,7 +15,7 @@ class PrestamoDAO implements InterfaceDAO {
         foreach ($listaPrestamos as $prestamo) {
             $prestamos[] = Prestamo::deserializar($prestamo);
         }
-        return $prestamo;
+        return $prestamos;
     }
     
     public static function encontrarUno(string $id): ?Prestamo {
