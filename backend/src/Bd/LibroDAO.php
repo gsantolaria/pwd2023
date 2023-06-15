@@ -39,7 +39,7 @@ class LibroDAO implements InterfaceDAO {
                 ':autor_id' => $params['autor_id'],
                 ':editorial_id' => $params['editorial_id'],
                 ':categoria_id' => $params['categoria_id'],
-                ':genero_id' => $params['genero_id'],
+                ':genero_id' => $params['genero_id']
             ]
         );
     }
@@ -55,7 +55,7 @@ class LibroDAO implements InterfaceDAO {
                 ':autor_id' => $params['autor_id'],
                 ':editorial_id' => $params['editorial_id'],
                 ':categoria_id' => $params['categoria_id'],
-                ':genero_id' => $params['genero_id'],
+                ':genero_id' => $params['genero_id']
             ]
         );
     }

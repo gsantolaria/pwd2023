@@ -35,7 +35,7 @@ class EditorialDAO implements InterfaceDAO {
             sql: $sql,
             params: [
                 ':id' => $params['id'],
-                ':nombre' => $params['nombre'],
+                ':nombre' => $params['nombre']
             ]
         );
     }
@@ -47,7 +47,7 @@ class EditorialDAO implements InterfaceDAO {
             sql: $sql,
             params: [
                 ':id' => $params['id'],
-                ':nombre' => $params['nombre'],
+                ':nombre' => $params['nombre']
             ]
         );
     }

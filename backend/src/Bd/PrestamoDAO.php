@@ -22,7 +22,7 @@ class PrestamoDAO implements InterfaceDAO {
         $sql = 'SELECT * FROM prestamos WHERE id =:id;';
         $prestamo = ConectarBD::leer(sql: $sql, params: [':id' => $id]);
         if (count($prestamo) === 0) {
-           return null;
+            return null;
         } else {
             $prestamo = Prestamo::deserializar($prestamo[0]);
             return $prestamo;
@@ -56,7 +56,7 @@ class PrestamoDAO implements InterfaceDAO {
                 ':libro' => $params['libro'],
                 ':fecha_desde' => $params['fecha_desde'],
                 ':fecha_hasta' => $params['fecha_hasta'],
-                ':fecha_dev' => $params['fecha_dev'],
+                ':fecha_dev' => $params['fecha_dev']
             ]
         );
     }

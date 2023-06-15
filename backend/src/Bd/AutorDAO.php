@@ -36,7 +36,7 @@ class AutorDAO implements InterfaceDAO {
             sql: $sql,
             params: [
                 ':id' => $params['id'],
-                ':nombre' => $params['nombre'],
+                ':nombre' => $params['nombre']
             ]
         );
     }
@@ -48,7 +48,7 @@ class AutorDAO implements InterfaceDAO {
             sql: $sql,
             params: [
                 ':id' => $params['id'],
-                ':nombre' => $params['nombre'],
+                ':nombre' => $params['nombre']
             ]
         );
     }

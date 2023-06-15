@@ -48,7 +48,7 @@ class GeneroDAO implements InterfaceDAO {
             sql: $sql,
             params: [
                 ':id' => $params['id'],
-                ':nombre' => $params['nombre'],
+                ':nombre' => $params['nombre']
             ]
         );
     }
