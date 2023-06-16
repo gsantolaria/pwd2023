@@ -11,7 +11,7 @@ class Socio extends ModelBase{
     private $telefono;
     private $direccion;
 
-    public function __construct(int $id, string $nombre_apellido, string $fecha_alta, int $telefono, string $direccion, int $activo = 1)
+    public function __construct(int $id, string $nombre_apellido, string $fecha_alta, float $telefono, string $direccion, int $activo = 1)
     {
 
         Parent::__construct($id);
