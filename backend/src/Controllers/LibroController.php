@@ -5,6 +5,7 @@ use Raiz\Models\Libro;
 
 
 class LibroController implements InterfaceController {
+    
     public static function listar(): array {
         $libros = [];
         $listadoLibro = LibroDAO::listar();

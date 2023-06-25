@@ -17,11 +17,7 @@ services:
         environment:
             XDEBUG: remote_host=192.168.80.1 remote:port=9003
             PHP_USER_ID: 1000
-        networks:
-            red_web:
-                ipv4_address: 192.168.10.10
-            red_interna:
-                ipv4_address: 192.168.20.10
+        
     
     php:
         container_name: php
@@ -37,16 +33,14 @@ services:
             - .env
         environment:
             XDEBUG: remote_host=192.168.32.1 remote:port=9003
-        networks:
-            red_interna:
-                ipv4_address: 192.168.20.22
+        
     # Contenedor de Composer para PHP 
     composer:
         container_name: composer
         image: composer:2.5.5
         volumes:
             - ./backend:/app
-        command: install
+        command: update
     # creamos la base de datos POSTGRES
     # las variables de entorno son definidas en un archivo a parte
     
@@ -65,30 +59,15 @@ services:
         volumes:
             - ./conf/postgres/:/docker-entrypoint-initdb.d/
             - ./data/postgres:/var/lib/postgresql/data:delegated
-        networks:
-            red_interna:
-                ipv4_address: 192.168.20.20
+
     frontend:
         container_name: my_frontend
         image: node:lts
         working_dir: /app
         entrypoint: /bin/bash
         ports:
-            - 8080:80
+            - 8080:8080
         volumes:
         - ./frontend/:/app
         tty: true
-        command: -c "npm run dev"
-        networks:
-            red_interna:
-                ipv4_address: 192.168.20.25
-
-networks:
-    red_web:
-        ipam:
-            config:
-                - subnet: 192.168.10.0/24
-    red_interna:
-        ipam:
-            config:
-                - subnet: 192.168.20.0/24
+        command: -c "npm run dev -- --host 0.0.0.0"

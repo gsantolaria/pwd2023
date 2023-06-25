@@ -26,5 +26,4 @@
         "vlucas/phpdotenv": "^5.5",
         "slim/psr7": "^1.6"
     }
-  
 }

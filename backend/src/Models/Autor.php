@@ -38,13 +38,15 @@ class Autor extends ModelBase
     {
         return new autor(
             id: $datos['id'] === null ? 0 : intVal($datos['id']),
-            nombre_apellido: $datos["nombre_apellido"]
+            nombre_apellido: $datos['nombre_apellido']
         );
     }
     /** @Return mixed[] */
     public function serializar(): array
     {
-        $serializar = array("nombre_apellido" => $this->getNombreApellido());
-        return $serializar;
+        return [
+            'id' => $this->getId(),
+            'nombre_apellido'=> $this->getNombreApellido()
+        ];
     }
 }

@@ -1,104 +1,118 @@
 <?php
 
-declare(strict_types=1);
 namespace Raiz\Models;
+
+//use Error;
 
 class Libro extends ModelBase
 {
     private $titulo;
+    /** @var Editorial */
     private $editorial;
+    /** @var array Autor */
     private array $autor;
+    /** @var Genero */
     private $genero;
-    private $cant_paginas;
+    /** @var Categoria */
     private $categoria;
-    private $anio_publicacion;
+    private $cant_paginas;
+    private $anio;
     private $estado;
 
-    const ACTIVO = "Activo";
-    const INACTIVO = "Inactivo";
-    const PRESTADO = "Prestado";
+    const ACTIVO = 'Activo';
+    const INACTIVO = 'Inactivo';
+    const PRESTADO = 'Prestado';
 
-    public function __construct(int $id, string $titulo, Editorial $editorial, Categoria $categoria, array $autor, Genero $genero, int $cant_paginas, int $anio_publicacion, string $estado = self::ACTIVO) {
+    public function __construct(
+        $id,
+        string $titulo,
+        array $autorList,
+        Editorial $editorial,
+        int $cant_paginas,
+        int $anio,
+        Genero $genero,
+        Categoria $categoria,
+        string $estado = self::ACTIVO
+
+    ) {
         parent::__construct($id);
         $this->titulo = $titulo;
         $this->editorial = $editorial;
-        $this->categoria = $categoria;
-        $this->autor = $autor;
+        $this->autor=$autorList;
         $this->genero = $genero;
         $this->cant_paginas = $cant_paginas;
-        $this->anio_publicacion = $anio_publicacion;
+        $this->anio = $anio;
+        $this->categoria = $categoria;
         $this->estado = $estado;
     }
 
-    public function getTitulo()
+    public function getTitulo(): string
     {
         return $this->titulo;
     }
-
-    public function setTitulo($titulo)
+    public function getGenero(): Genero
     {
-        $this->titulo = $titulo;
+        return $this->genero;
     }
-
-    public function getEditorial()
+    public function getEditorial(): Editorial
     {
         return $this->editorial;
     }
-
-    public function setEditorial(Editorial $editorial)
+    public function getCategoria(): Categoria
     {
-        $this->editorial = $editorial;
+        return $this->categoria;
     }
-
-    public function getAutor()
+    public function getCant_Pag(): int
+    {
+        return $this->cant_paginas;
+    }
+    public function getAnio_Pub(): int
+    {
+        return $this->titulo;
+    }
+    public function getAutores(): array
     {
         $listaAutores =[];
-        foreach($this->autor as $autores){
-            $listaAutores = $autores->serializar();
+        foreach($this->autor as $autor){
+            $listaAutores = $autor->serializar();
         }
-        return $listaAutores;;
+        return $listaAutores; 
+    }
+    public function getEstado(): string
+    {
+        return $this->estado;
+    }
+    //---- Setters ----//
+    public function setTitulo(string $nuevoTitulo)
+    {
+        $this->titulo = $nuevoTitulo;
     }
 
-    public function setAutor(array $autorList)
+    public function setAutor(array $nuevoAutorList)
     {
-        foreach ($autorList as $autor) {
+        foreach ($nuevoAutorList as $autor) {
             $this->autor[] = $autor;
         }
     }
 
-    public function getGenero()
+    public function setCategoria(Categoria $nuevaCategoria)
     {
-        return $this->genero;
+        $this->categoria = $nuevaCategoria;
     }
 
-    public function setGenero(Genero $genero)
+    public function setGenero(Categoria $nuevoGenero)
     {
-        $this->genero = $genero;
+        $this->genero = $nuevoGenero;
     }
 
-    public function getCantPaginas()
+    public function setEditorial(Editorial $nuevaEditorial)
     {
-        return $this->cant_paginas;
+        $this->editorial = $nuevaEditorial;
     }
 
-    public function setCantPaginas($cant_paginas)
+    public function setCantPaginas(int $nuevaCantidadPaginas)
     {
-        $this->cant_paginas = $cant_paginas;
-    }
-
-    public function getAnioPublicacion()
-    {
-        return $this->anio_publicacion;
-    }
-
-    public function setAnioPublicacion($anio_publicacion)
-    {
-        $this->anio_publicacion = $anio_publicacion;
-    }
-
-    public function getEstado()
-    {
-        return $this->estado;
+        $this->cant_paginas = $nuevaCantidadPaginas;
     }
 
     public function setEstado($nuevoEstado)
@@ -120,13 +134,13 @@ class Libro extends ModelBase
         return [
             'id' => $this->getId(),
             'titulo' => $this->titulo,
-            'autor' => $this->getAutor(),
+            'autor' => $this->getAutores(),
             'editorial' => $this->editorial->serializar(),
             'cant_paginas' => $this->cant_paginas,
             'genero' => $this->genero->serializar(),
             'categoria' => $this->categoria->serializar(),
             'estado' => $this->estado,
-            'anio'=>$this->anio_publicacion
+            'anio'=>$this->anio
         ];
     }
     static function deserializar(array $datos): ModelBase
@@ -134,10 +148,10 @@ class Libro extends ModelBase
         return new Self(
             id: $datos['id'] === null ? 0 : $datos['id'],
             titulo: $datos['titulo'],
-            autor: $datos['autor'],
+            autorList: $datos['autor'],
             editorial: $datos['editorial'],
             cant_paginas: $datos['cant_paginas'],
-            anio_publicacion: $datos['anio'],
+            anio: $datos['anio'],
             genero: $datos['genero'],
             categoria: $datos['categoria'],
             estado: $datos['estado']
