@@ -1,41 +1,55 @@
 <script lang="ts" setup>
-import { RouterLink } from 'vue-router';
 
+import { RouterLink } from 'vue-router';
 
 </script>
 
 <template>
-  <div>
-    <a href="https://vuejs.org/" target="_blank">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container-fluid">
       <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
-  </div>
-  <nav>
-    <RouterLink to="/"> Home </RouterLink>
-    <RouterLink to="/BuscarLibro"> Buscar </RouterLink>
+      <a class="navbar-brand" href="/">Gestión de libros - PWD 2023</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <RouterLink class="nav-link active" aria-current="page" to="/"> Inicio </RouterLink>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Libros
+            </a>
+            <ul class="dropdown-menu">
+              <li>
+                <RouterLink class="dropdown-item" to="/CrearLibro"> Crear Libro </RouterLink>
+              </li>
+              <li>
+                <RouterLink class="dropdown-item" to="/EditarLibro"> Editar Libro </RouterLink>
+              </li>
+              <li>
+                <RouterLink class="dropdown-item" to="/EliminarLibro"> Eliminar Libro </RouterLink>
+              </li>
+            </ul>
+          </li>
+        </ul>
+        <form class="d-flex" role="search">
+          <input class="form-control me-2" type="search" placeholder="Buscar libro" aria-label="Buscar">
+          <button class="btn btn-outline-secondary bg-light" type="submit">Buscar</button>
+        </form>
+      </div>
+    </div>
   </nav>
-  <RouterView></RouterView>
+  <div class="container-fluid">
+    <RouterView />
+  </div>
+  
 </template>
 
 <style scoped>
+
 @import url('https://fonts.googleapis.com/css2?family=Outfit&display=swap');
 
-h1 {
-  font-family: 'Outfit', sans-serif;
-}
-
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
-}
 </style>
