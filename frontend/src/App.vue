@@ -1,55 +1,81 @@
-<script lang="ts" setup>
+<script lang="ts">
+import Footer from "../src/components/Footer.vue";
+import Boton from '../src/components/Boton.vue'
 
-import { RouterLink } from 'vue-router';
 
+export default {
+  components: { Footer, Boton }
+
+}
 </script>
-
 <template>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <div class="container-fluid">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-      <a class="navbar-brand" href="/">Gestión de libros - PWD 2023</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <RouterLink class="nav-link active" aria-current="page" to="/"> Inicio </RouterLink>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Libros
-            </a>
-            <ul class="dropdown-menu">
-              <li>
-                <RouterLink class="dropdown-item" to="/CrearLibro"> Crear Libro </RouterLink>
-              </li>
-              <li>
-                <RouterLink class="dropdown-item" to="/EditarLibro"> Editar Libro </RouterLink>
-              </li>
-              <li>
-                <RouterLink class="dropdown-item" to="/EliminarLibro"> Eliminar Libro </RouterLink>
-              </li>
-            </ul>
-          </li>
-        </ul>
-        <form class="d-flex" role="search">
-          <input class="form-control me-2" type="search" placeholder="Buscar libro" aria-label="Buscar">
-          <button class="btn btn-outline-secondary bg-light" type="submit">Buscar</button>
-        </form>
+  <body>
+
+    <nav>
+      <div class="logo">
+        <img src="../src/assets/logo_libro.svg" alt="logo">
+        <h2>App Prestamos de Libros</h2>
       </div>
+    <div>
+      <router-link to="/">Inicio</router-link>
+      <router-link to="/about">Acerca de</router-link>
+      <router-link to="/socios">Socios</router-link>
     </div>
-  </nav>
-  <div class="container-fluid">
-    <RouterView />
-  </div>
-  
+    </nav>
+
+    <section> 
+      <router-view></router-view>
+    </section>
+    <Footer></Footer>
+  </body>
 </template>
 
+
 <style scoped>
+* {
+  padding: 0px;
+  margin: 0px;
+  box-sizing: content-box;
 
-@import url('https://fonts.googleapis.com/css2?family=Outfit&display=swap');
+}
+.logo{
+  padding: 10px;
+  display: flex;
+  align-items: center;
+}
+.logo img{
+  padding: 25px;
+  width: 50px;
+  height: 50px;
+}
 
+body {
+
+}
+
+nav {
+  top: 0;
+  display: flex;
+  align-items: center;
+  align-content: space-between;
+  justify-content: space-between;
+  height: 10%;
+  background: #079d46;
+  color: aliceblue;
+}
+
+nav a {
+  padding: 20px;
+  text-transform: uppercase;
+  color: antiquewhite;
+}
+nav a:hover {
+  padding: 20px;
+  text-transform: uppercase;
+  color: rgb(158, 211, 0);
+}
+section{
+  height: 85%;
+  padding: 25px;
+}
 </style>

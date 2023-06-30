@@ -5,7 +5,7 @@ use Raiz\Bd\SocioDAO;
 use Raiz\Models\Socio;
 
 class SocioController implements InterfaceController{
-   
+
     //Clase que controla de acuerdo a lo que pida la vista: 
     // --- CRUD --- 
     //  Listar 
