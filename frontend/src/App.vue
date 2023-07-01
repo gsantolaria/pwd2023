@@ -18,8 +18,9 @@ export default {
       </div>
     <div>
       <router-link to="/">Inicio</router-link>
-      <router-link to="/about">Acerca de</router-link>
       <router-link to="/socios">Socios</router-link>
+      <router-link to="/libros">Libros</router-link>
+      <router-link to="/about">Acerca de</router-link>
     </div>
     </nav>
 
@@ -47,10 +48,6 @@ export default {
   padding: 25px;
   width: 50px;
   height: 50px;
-}
-
-body {
-
 }
 
 nav {
