@@ -1,157 +1,10 @@
-<!-- <template>
-  <h1>Listado de Libros</h1>
-
-  <RouterLink class="crear" to="libros/crear"><img src="../../assets/editar.svg" alt="">Agregar libro</RouterLink>
-
-
-  <select v-model=activo name="is_activo" id="activo">
-    <option value='activo'>Activos</option>
-    <option value='inactivo'>Inactivos</option>
-    <option value='prestados'>Prestados</option>
-  </select>
-
-  <table>
-    <thead>
-      <tr>
-        <td>id</td>
-        <td>Titulo</td>
-        <td>Autor</td>
-        <td>Editorial</td>
-        <td>Cant páginas</td>
-        <td>Categoría</td>
-        <td>Año</td>
-      </tr>
-    </thead>
-    <tbody>
-
-      <tr v-for="libro in items" :key="libro">
-
-        <template v-if="activo === 'activo'">
-          <template v-if='libro.activo === 1'>
-            <td>{{ libro.id }}</td>
-            <td>{{ libro.nombre_apellido }}</td>
-            <td>{{ libro.autor.nombre_apellido }}</td>
-            <td>{{ libro.editorial.nombre }}</td>
-            <td>{{ libro.cant_paginas }}</td>
-            <td>{{ libro.categoria }}</td>
-            <td>{{ libro.anio }}</td>
-      <tr>
-
-        <td>
-          <router-link :to="{ name: 'ActualizarLibro', params: { id: libro.id } }">
-            <Boton texto="editar" v-bind:class="{ primary: true }"></Boton>
-          </router-link>
-        </td>
-        <td>
-          <Boton texto="eliminar" v-bind:class="{ warning: true }" @click="borrar(libro.id)"></Boton>
-        </td>
-        <td>
-          <Boton texto="abrir" v-bind:class="{ alert: true }"></Boton>
-        </td>
-      </tr>
-      </template>
-      </template>
-      <template v-if="activo === 'inactivo'">
-        <template v-if='libro.activo === 0'>
-          <td>{{ libro.id }}</td>
-          <td>{{ libro.nombre_apellido }}</td>
-          <td>{{ libro.autor.nombre_apellido }}</td>
-          <td>{{ libro.editorial.nombre }}</td>
-          <td>{{ libro.cant_paginas }}</td>
-          <td>{{ libro.categoria }}</td>
-          <td>{{ libro.anio }}</td>
-          <tr>
-
-            <td>
-              <router-link :to="{ name: 'ActualizarLibro', params: { id: libro.id } }">
-                <Boton texto="editar" v-bind:class="{ primary: true }"></Boton>
-              </router-link>
-            </td>
-            <td>
-              <Boton texto="eliminar" v-bind:class="{ warning: true }" @click="borrar(libro.id)"></Boton>
-            </td>
-            <td>
-              <Boton texto="abrir" v-bind:class="{ alert: true }"></Boton>
-            </td>
-          </tr>
-        </template>
-      </template>
-      <template v-if="activo === 'prestados'">
-        <td>{{ libro.id }}</td>
-        <td>{{ libro.titulo }}</td>
-        <td>{{ libro.autor.nombre_apellido }}</td>
-        <td>{{ libro.editorial.nombre }}</td>
-        <td>{{ libro.cant_paginas }}</td>
-        <td>{{ libro.categoria }}</td>
-        <td>{{ libro.anio }}</td>
-        <tr class="acciones">
-
-          <td>
-            <router-link :to="{ name: 'ActualizarLibro', params: { id: libro.id } }">
-              <Boton texto="editar" v-bind:class="{ primary: true }"></Boton>
-            </router-link>
-          </td>
-          <td>
-            <Boton texto="eliminar" v-bind:class="{ warning: true }" @click="borrar(libro.id)"></Boton>
-          </td>
-          <td>
-            <Boton texto="abrir" v-bind:class="{ alert: true }"></Boton>
-          </td>
-        </tr>
-      </template>
-      </tr>
-    </tbody>
-  </table>
-</template>
-
-<script lang="ts">
-
-import axios from 'axios';
-import Boton from '../Boton.vue';
-
-export default {
-  components: { Boton },
-  data() {
-    return {
-      items: [],
-      activo: 'activo'
-
-    };
-  },
-  computed: {
-
-  },
-  created() {
-    this.listarLibros();
-  },
-  methods: {
-
-    buscarLibro(Items) {
-      Items.find()
-
-    },
-    async listarLibros() {
-      const res = await axios.get('http://127.0.0.1:8001/apiv1/libros');
-      this.items = res.data;
-      console.log(res.data);
-    },
-    borrar(id) {
-      axios.delete('http://localhost:8001/apiv1/libros/delete/' + id)
-        .then((response) => {
-          console.log(response)
-          if (response.data === null) { alert("Libro eliminado con éxito") }
-          this.listarLibros();
-        })
-        .catch((error) => { alert('El libro no puede eliminarse porque tiene registro de prestamos') });
-    }
-  }
-}
-</script>-->
-
 <template>
   <div>
     <h2>Listado de libros</h2>
-    <input v-model="busqueda" @input="buscarLibros" type="text" placeholder="Buscar libros...">
+    <div id="busqueda">
+      <RouterLink class="crear" to="libros/crear"><img src="../../assets/editar.svg" alt="">Crear libro</RouterLink>
+      <input v-model="busqueda" @input="buscarLibros" type="text" placeholder="Buscar libros...">
+    </div>
     <table>
       <thead>
         <tr>
@@ -267,7 +120,7 @@ tr {
 }
 
 .crear {
-  background: #272ef6;
+  background: #079d46;
   padding: 10px 20px;
   color: #fff
 }
@@ -285,5 +138,10 @@ select {
 tr .acciones {
   text-aling: center;
   background: #ccc;
+}
+
+#busqueda {
+  display: flex;
+  align-items: center;
 }
 </style>
