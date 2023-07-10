@@ -8,7 +8,7 @@
             </div>
             <div class="form-group">
                 <label for="autor">Autor:</label>
-                <input type="text" id="autor" v-model="libro.autor" required>
+                <input id="autor" v-model="libro.autor" required>
             </div>
             <div class="form-group">
                 <label for="genero">Género:</label>
@@ -60,10 +60,10 @@ export default {
         return {
             libro: {
                 titulo: '',
-                autor: '',
-                genero: '',
-                editorial: '',
-                categoria: '',
+                autor: [],
+                genero: [],
+                editorial: [],
+                categoria: [],
                 anioPublicacion: null,
                 cant_paginas: null
             },
@@ -110,6 +110,7 @@ export default {
                 });
         },
         crearLibro() {
+            
             if (this.libro.editorial === 'agregar') {
                 // Agregar la nueva editorial a la lista de editoriales
                 const nuevaEditorial = {
@@ -118,15 +119,16 @@ export default {
                 };
                 this.editoriales.push(nuevaEditorial);
                 this.libro.editorial = nuevaEditorial.id;
+                console.log(this.nuevaEditorial);
             }
             const nuevoLibro = {
-                titulo: this.titulo,
-                autor: this.autor,
-                editorial: this.editorial,
-                anioPublicacion: this.anioPublicacion,
-                paginas: this.paginas
+                titulo: this.libro.titulo,
+                autor: Array.isArray(this.libro.autor) ? this.libro.autor : [this.libro.autor],
+                editorial: this.libro.editorial.nombre,
+                anioPublicacion: this.libro.anioPublicacion,
+                paginas: this.libro.cant_paginas
             };
-
+            console.log(nuevoLibro);
             axios
                 .post('http://localhost:8001/apiv1/libros/nuevo', nuevoLibro)
                 .then(response => {
@@ -148,7 +150,7 @@ export default {
     max-width: 400px;
     margin: 0 auto;
     padding: 20px;
-    border: 1px solid #ccc;
+    border: 1px solid #adcfbe;
     border-radius: 5px;
     background-color: #fff;
 }
@@ -158,9 +160,8 @@ h2 {
 }
 
 .form-group {
-    margin-bottom: 20px;
-    margin-right: 40px;
-    align-items: center;
+    margin-bottom: 10px;
+    display: block;
 }
 
 label {
@@ -171,7 +172,7 @@ label {
 
 input[type="text"],
 select {
-    width: 100%;
+    width: 80%;
     padding: 8px;
     border: 1px solid #ccc;
     border-radius: 3px;
