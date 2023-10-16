@@ -1,6 +1,6 @@
 <template>
     <footer>
-        <span> App prestamos de libros PWD 2023 - CURZA </span>
+        App prestamos de libros PWD 2023 - CURZA
     </footer>
 </template>
 
@@ -8,8 +8,8 @@
 footer{
     box-sizing: border-box;
     padding: 10px;
-    height: 10%;
-    
+    height: 100%;
     background: #079d46;
+    text-align: center;
 }
 </style>

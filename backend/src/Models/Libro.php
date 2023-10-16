@@ -2,22 +2,22 @@
 
 namespace Raiz\Models;
 
-//use Error;
+use Error;
 
 class Libro extends ModelBase
 {
     private $titulo;
     /** @var Editorial */
     private $editorial;
-    /** @var array Autor */
-    private array $autor;
+    /** @var array<Autor> */
+    private array $autores;
     /** @var Genero */
     private $genero;
     /** @var Categoria */
     private $categoria;
-    private $cant_paginas;
-    private $anio;
-    private $estado;
+    private int $cant_paginas;
+    private int $anio;
+    private string $estado;
 
     const ACTIVO = 'Activo';
     const INACTIVO = 'Inactivo';
@@ -26,7 +26,7 @@ class Libro extends ModelBase
     public function __construct(
         $id,
         string $titulo,
-        array $autorList,
+        array $autores,
         Editorial $editorial,
         int $cant_paginas,
         int $anio,
@@ -38,7 +38,7 @@ class Libro extends ModelBase
         parent::__construct($id);
         $this->titulo = $titulo;
         $this->editorial = $editorial;
-        $this->autor=$autorList;
+        $this->autores = $autores;
         $this->genero = $genero;
         $this->cant_paginas = $cant_paginas;
         $this->anio = $anio;
@@ -68,15 +68,11 @@ class Libro extends ModelBase
     }
     public function getAnio_Pub(): int
     {
-        return $this->titulo;
+        return $this->anio;
     }
     public function getAutores(): array
     {
-        $listaAutores =[];
-        foreach($this->autor as $autor){
-            $listaAutores = $autor->serializar();
-        }
-        return $listaAutores; 
+        return $this->autores;
     }
     public function getEstado(): string
     {
@@ -88,11 +84,9 @@ class Libro extends ModelBase
         $this->titulo = $nuevoTitulo;
     }
 
-    public function setAutor(array $nuevoAutorList)
+    public function setAutores(array $nuevosAutores)
     {
-        foreach ($nuevoAutorList as $autor) {
-            $this->autor[] = $autor;
-        }
+        $this->autores = $nuevosAutores;
     }
 
     public function setCategoria(Categoria $nuevaCategoria)
@@ -100,7 +94,7 @@ class Libro extends ModelBase
         $this->categoria = $nuevaCategoria;
     }
 
-    public function setGenero(Categoria $nuevoGenero)
+    public function setGenero(Genero $nuevoGenero)
     {
         $this->genero = $nuevoGenero;
     }
@@ -134,26 +128,27 @@ class Libro extends ModelBase
         return [
             'id' => $this->getId(),
             'titulo' => $this->titulo,
-            'autor' => $this->getAutores(),
+            'autores' => $this->autores,
             'editorial' => $this->editorial->serializar(),
             'cant_paginas' => $this->cant_paginas,
             'genero' => $this->genero->serializar(),
             'categoria' => $this->categoria->serializar(),
             'estado' => $this->estado,
-            'anio'=>$this->anio
+            'anio' => $this->anio,
         ];
     }
+
     static function deserializar(array $datos): ModelBase
     {
         return new Self(
             id: $datos['id'] === null ? 0 : $datos['id'],
             titulo: $datos['titulo'],
-            autorList: $datos['autor'],
-            editorial: $datos['editorial'],
+            autores: $datos['autores'],
+            editorial: Editorial::deserializar($datos['editorial']),
             cant_paginas: $datos['cant_paginas'],
             anio: $datos['anio'],
-            genero: $datos['genero'],
-            categoria: $datos['categoria'],
+            genero: Genero::deserializar($datos['genero']),
+            categoria: Categoria::deserializar($datos['categoria']),
             estado: $datos['estado']
         );
     }
