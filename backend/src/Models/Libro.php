@@ -147,7 +147,7 @@ class Libro extends ModelBase
         return new Self(
             id: $datos['id'] === null ? 0 : $datos['id'],
             titulo: $datos['titulo'],
-            autores: $datos['autores'],
+            autores: $datos['autores'] ?? [],
             editorial: Editorial::deserializar($datosEditorial),
             cant_paginas: $datos['cant_paginas'],
             anio: $datos['anio'],
