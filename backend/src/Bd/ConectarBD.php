@@ -15,7 +15,7 @@ final class ConectarBD
         $user = "pwduser";
         $pass = "pwdpass";*/
         $db = $_ENV['DB_NAME'];
-        $host = "pgsql:host=192.168.20.1; port=5432; dbname=$db";
+        $host = "pgsql:host=172.19.0.4; port=5432; dbname=$db";
         $user = $_ENV['DB_USER'];
         $pass = $_ENV['DB_PASSWORD'];
 
@@ -51,4 +51,16 @@ final class ConectarBD
         $consulta->execute(params: $params);
         $consulta->closeCursor();
     }
+
+    public static function ultimoId(): ?int
+    {
+        $sql = 'SELECT MAX(id) as id FROM libros';
+        $cnx = ConectarBD::conectar();
+        $consulta = $cnx->prepare($sql);
+        $consulta->execute();
+        $ultimoId = $consulta->fetch(PDO::FETCH_ASSOC);
+
+        return $ultimoId ? (int)$ultimoId['id'] : null;
+    }
+
 }

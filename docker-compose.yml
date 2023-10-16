@@ -73,7 +73,7 @@ services:
         working_dir: /app
         entrypoint: /bin/bash
         ports:
-            - 80:8080
+            - 3000:3000
         volumes:
         - ./frontend/:/app
         tty: true

@@ -77,7 +77,7 @@ class LibroDAO implements InterfaceDAO
         $idLibro = ConectarBD::ultimoId();
         foreach ($params['autor'] as $autor) {
             $sql = 'INSERT INTO autores_libros (id_autor, id_libro) 
-            VALUES ( :id_autor, :id_libro)'
+            VALUES ( :id_autor, :id_libro)';
             $sql = 'INSERT INTO autores_libros (id_autor, id_libro) 
             VALUES ( :id_autor, :id_libro)';
             ConectarBD::escribir(

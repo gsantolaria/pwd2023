@@ -140,15 +140,19 @@ class Libro extends ModelBase
 
     static function deserializar(array $datos): ModelBase
     {
+        $datosEditorial = is_array($datos['editorial']) ? $datos['editorial'] : [];
+        $datosGenero = is_array($datos['genero']) ? $datos['genero'] : [];
+        $datosCategoria = is_array($datos['categoria']) ? $datos['categoria'] : [];
+
         return new Self(
             id: $datos['id'] === null ? 0 : $datos['id'],
             titulo: $datos['titulo'],
             autores: $datos['autores'],
-            editorial: Editorial::deserializar($datos['editorial']),
+            editorial: Editorial::deserializar($datosEditorial),
             cant_paginas: $datos['cant_paginas'],
             anio: $datos['anio'],
-            genero: Genero::deserializar($datos['genero']),
-            categoria: Categoria::deserializar($datos['categoria']),
+            genero: Genero::deserializar($datosGenero),
+            categoria: Categoria::deserializar($datosCategoria),
             estado: $datos['estado']
         );
     }

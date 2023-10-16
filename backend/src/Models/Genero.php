@@ -36,9 +36,14 @@ class Genero extends ModelBase
 
     public static function deserializar(array $datos): self
     {
+        $id = isset($datos['id']) ? (int) $datos['id'] : 0;
+        $descripcion = isset($datos['descripcion']) ? $datos['descripcion'] : '';
+
         return new Genero(
-            id: $datos['id'] === null ? 0 : intVal($datos['id']),
-            descripcion: $datos["descripcion"]
+            //id: $datos['id'] === null ? 0 : intVal($datos['id']),
+            //descripcion: $datos["descripcion"]
+            id: $id,
+            descripcion: $descripcion
         );
     }
     /** @Return mixed[] */
