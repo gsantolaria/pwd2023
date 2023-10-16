@@ -15,7 +15,7 @@ final class ConectarBD
         $user = "pwduser";
         $pass = "pwdpass";*/
         $db = $_ENV['DB_NAME'];
-        $host = "pgsql:host=172.19.0.4; port=5432; dbname=$db";
+        $host = "pgsql:host=172.19.0.5; port=5432; dbname=$db";
         $user = $_ENV['DB_USER'];
         $pass = $_ENV['DB_PASSWORD'];
 

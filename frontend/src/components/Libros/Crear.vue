@@ -9,7 +9,31 @@
             <div class="form-group">
                 <label for="autor">Autor:</label>
                 <input id="autor" v-model="libro.autor" required>
-            </div>            
+            </div>
+            <div class="form-group">
+                <label for="editorial">Editorial:</label>
+                <select v-model="libro.editorial" required>
+                    <option v-for="editorial in editoriales" :key="editorial.id" :value="editorial.id">
+                        {{ editorial.nombre }}
+                    </option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="categoria">Categoría:</label>
+                <select v-model="libro.categoria" required>
+                    <option v-for="categoria in categorias" :key="categoria.id" :value="categoria.id">
+                        {{ categoria.descripcion }}
+                    </option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="genero">Género:</label>
+                <select v-model="libro.genero" required>
+                    <option v-for="genero in generos" :key="genero.id" :value="genero.id">
+                        {{ genero.descripcion }}
+                    </option>
+                </select>
+            </div>
             <div class="form-group">
                 <label for="anio">Año de publicación:</label>
                 <input type="number" id="anio" v-model="libro.anioPublicacion" required>
@@ -37,20 +61,39 @@ export default {
                 genero: [],
                 editorial: [],
                 categoria: [],
-                anioPublicacion: null,
-                cant_paginas: null
+                anioPublicacion: 1967,
+                cant_paginas: 471
             },
+            editoriales: [],
+            categorias: [],
+            generos: []
         };
     },
     mounted() {
-        
+        // Cargar editoriales
+        axios.get('http://localhost:8001/apiv1/editoriales')
+            .then(response => this.editoriales = response.data)
+            .catch(error => console.error(error));
+
+        // Cargar categorías
+        axios.get('http://localhost:8001/apiv1/categorias')
+            .then(response => this.categorias = response.data)
+            .catch(error => console.error(error));
+
+        // Cargar géneros
+        axios.get('http://localhost:8001/apiv1/generos')
+            .then(response => this.generos = response.data)
+            .catch(error => console.error(error));
     },
     methods: {
         crearLibro() {
-        
+
             const nuevoLibro = {
                 titulo: this.libro.titulo,
                 autor: Array.isArray(this.libro.autor) ? this.libro.autor : [this.libro.autor],
+                editorial: this.libro.editorial,
+                categoria: this.libro.categoria,
+                genero: this.libro.genero,
                 anioPublicacion: this.libro.anioPublicacion,
                 paginas: this.libro.cant_paginas
             };
