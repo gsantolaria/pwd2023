@@ -57,10 +57,13 @@ class LibroDAO implements InterfaceDAO
     }
 
     public static function crear(Serializador $instancia): void
-    {
-        $params = $instancia->serializar();
+{
+    $params = $instancia->serializar();
+
+    // Verificar si 'id' está presente en $params
+    if (array_key_exists('id', $params)) {
         $sql = 'INSERT INTO libros (titulo, id_genero, id_categoria, cant_paginas, anio, estado, id_editorial) 
-        VALUES (:titulo, :id_genero, :id_categoria, :cant_paginas, :anio, :estado, :id_editorial);';
+            VALUES (:titulo, :id_genero, :id_categoria, :cant_paginas, :anio, :estado, :id_editorial);';
         ConectarBD::escribir(
             sql: $sql,
             params: [
@@ -73,22 +76,33 @@ class LibroDAO implements InterfaceDAO
                 ':id_editorial' => $params['editorial']->getId(),
             ]
         );
-        
+
+        // Obtener el ID del último libro insertado
         $idLibro = ConectarBD::ultimoId();
-        foreach ($params['autor'] as $autor) {
-            $sql = 'INSERT INTO autores_libros (id_autor, id_libro) 
-            VALUES ( :id_autor, :id_libro)';
-            $sql = 'INSERT INTO autores_libros (id_autor, id_libro) 
-            VALUES ( :id_autor, :id_libro)';
-            ConectarBD::escribir(
-                sql: $sql,
-                params: [
-                    ':id_autor' => $autor->getId(),
-                    ':id_libro' => $idLibro,
-                ]
-            );
+
+        // Verificar si 'id' está presente en $params['autor']
+        if (array_key_exists('autor', $params) && is_array($params['autor'])) {
+            foreach ($params['autor'] as $autor) {
+                $sql = 'INSERT INTO autores_libros (id_autor, id_libro) 
+                    VALUES ( :id_autor, :id_libro)';
+                ConectarBD::escribir(
+                    sql: $sql,
+                    params: [
+                        ':id_autor' => $autor['id'],
+                        ':id_libro' => $idLibro,
+                    ]
+                );
+            }
+        } else {
+            // Manejar el caso en el que 'autor' no está presente o no es un array
+            error_log("Error: 'autor' no está presente o no es un array en LibroDAO.");
         }
+    } else {
+        // Manejar el caso en el que 'id' no está presente en $params
+        error_log("Error: 'id' no está presente en los parámetros en LibroDAO.");
     }
+}
+
 
     public static function actualizar(Serializador $instancia): void
     {

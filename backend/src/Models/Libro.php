@@ -144,16 +144,20 @@ class Libro extends ModelBase
         $datosGenero = is_array($datos['genero']) ? $datos['genero'] : [];
         $datosCategoria = is_array($datos['categoria']) ? $datos['categoria'] : [];
 
+        $id = array_key_exists('id', $datos) ? $datos['id'] : 0;
+        $anio = array_key_exists('anio', $datos) ? $datos['anio'] : 0;
+        $estado = array_key_exists('estado', $datos) ? $datos['estado'] : '';
+
         return new Self(
-            id: $datos['id'] === null ? 0 : $datos['id'],
+            id: $id,
             titulo: $datos['titulo'],
             autores: $datos['autores'] ?? [],
             editorial: Editorial::deserializar($datosEditorial),
             cant_paginas: $datos['cant_paginas'],
-            anio: $datos['anio'],
+            anio: $anio,
             genero: Genero::deserializar($datosGenero),
             categoria: Categoria::deserializar($datosCategoria),
-            estado: $datos['estado']
+            estado: $estado
         );
     }
 }

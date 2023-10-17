@@ -61,8 +61,8 @@ export default {
                 genero: [],
                 editorial: [],
                 categoria: [],
-                anioPublicacion: 1967,
-                cant_paginas: 471
+                anioPublicacion: null,
+                cant_paginas: null
             },
             editoriales: [],
             categorias: [],

@@ -3,6 +3,8 @@
 namespace Raiz\Bd;
 
 use PDO;
+use PDOException;
+use RuntimeException;
 
 final class ConectarBD
 {
@@ -15,7 +17,7 @@ final class ConectarBD
         $user = "pwduser";
         $pass = "pwdpass";*/
         $db = $_ENV['DB_NAME'];
-        $host = "pgsql:host=172.19.0.5; port=5432; dbname=$db";
+        $host = "pgsql:host=db; port=5432; dbname=$db";
         $user = $_ENV['DB_USER'];
         $pass = $_ENV['DB_PASSWORD'];
 
@@ -46,11 +48,26 @@ final class ConectarBD
         string $sql,
         array $params = [],
     ) {
-        $conexion = self::conectar();
-        $consulta = $conexion->prepare(query: $sql);
-        $consulta->execute(params: $params);
-        $consulta->closeCursor();
+        try {
+            $conexion = self::conectar();
+            $consulta = $conexion->prepare(query: $sql);
+    
+            // Verificar el tipo de datos antes de ejecutar la consulta
+            foreach ($params as $param => $value) {
+                // Aquí necesitas ajustar para manejar correctamente los valores según su tipo.
+                // En el ejemplo, se asume que todos los parámetros son cadenas (TEXT).
+                $paramType = PDO::PARAM_STR;
+                $consulta->bindValue($param, $value, $paramType);
+            }
+    
+            $consulta->execute();
+            $consulta->closeCursor();
+        } catch (PDOException $e) {
+            error_log('Error en la consulta SQL: ' . $e->getMessage());
+            throw new RuntimeException('Error en la consulta SQL.', 0, $e);
+        }
     }
+    
 
     public static function ultimoId(): ?int
     {
@@ -62,5 +79,4 @@ final class ConectarBD
 
         return $ultimoId ? (int)$ultimoId['id'] : null;
     }
-
 }
