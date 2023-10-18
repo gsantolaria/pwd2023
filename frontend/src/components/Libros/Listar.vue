@@ -1,10 +1,10 @@
 <template>
   <div>
     <h2>Listado de libros</h2>
-    <div id="busqueda">
-      <RouterLink class="crear" to="libros/crear"><img src="../../assets/editar.svg" alt="">Crear libro</RouterLink>
-      <input v-model="busqueda" @input="buscarLibros" type="text" placeholder="Buscar libros...">
-    </div>
+      <div id="busqueda">
+        <RouterLink class="crear" to="libros/crear"><img src="../../assets/editar.svg" alt="">Crear libro</RouterLink>
+        <input v-model="busqueda" @input="buscarLibros" type="text" placeholder="Buscar libros...">
+      </div>
     <table>
       <thead>
         <tr>
@@ -21,7 +21,8 @@
         <tr v-for="libro in librosFiltrados" :key="libro.id">
           <td>{{ libro.id }}</td>
           <td>{{ libro.titulo }}</td>
-          <td>{{ libro.autor.nombre_apellido }}</td>
+          <!-- en consola veo que me llega un array vacio de autores, editoriales y generos, revisar como lo traigo de la bbdd -->
+          <td>{{ libro.autor }}</td> 
           <td>{{ libro.editorial.nombre }}</td>
           <td>{{ libro.cant_paginas }}</td>
           <td>{{ libro.anio }}</td>
@@ -72,7 +73,7 @@ export default {
           libro.mostrar = false;
         }
       });
-    },
+    }, 
     obtenerAutores(autores) {
       if (Array.isArray(autores)) {
         return autores.map(autor => autor.nombre_apellido);
