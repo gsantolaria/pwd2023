@@ -28,42 +28,46 @@ class LibroDAO implements InterfaceDAO
         return $libros;
     }
 
-    public static function buscarEscritoresPorLibro(string $id): array
+    public static function buscarEscritoresPorLibro(string $id)
     {
         $sql = 'SELECT id_autor FROM autores_libros WHERE id_libro =:id;';
         $autores = ConectarBD::leer(sql: $sql, params: [':id' => $id]);
+        
         if (count($autores) === 0) {
-            return [];
+            return null;
         } else {
-            $idsAutores = array_map(fn($autor) => $autor["id_autor"], $autores);
-            $autores = AutorDAO::listarPorIds($idsAutores);
-            return $autores;
+            return $autor[] =  AutorDAO::encontrarUno($autores[0]["id_autor"]);
+            
         }
     }
 
     public static function encontrarUno(string $id): ?libro
     {
-        $sql = 'SELECT * FROM libros WHERE id =:id;';
+    $sql = 'SELECT * FROM libros WHERE id =:id;';
         $libro = ConectarBD::leer(sql: $sql, params: [':id' => $id]);
         if (count($libro) === 0) {
             return null;
-        } else { 
+        } else {
+            
             $libro[0]['categoria'] = CategoriaDAO::encontrarUno($libro[0]['id_categoria']);
             $libro[0]['genero'] = GeneroDAO::encontrarUno($libro[0]['id_genero']);
             $libro[0]['editorial'] = EditorialDAO::encontrarUno($libro[0]['id_editorial']);
-            $libro[0]['autores'] = LibroDAO::buscarEscritoresPorLibro($libro[0]["id"]);
-            return Libro::deserializar($libro[0]);
+            $autoresLibros[] = static::buscarEscritoresporLibro($libro[0]["id"]);
+           
+            foreach ($autoresLibros as $autor) {
+                $libro[0]["autor"][] = $autor;
+            }
+            
+            $libro = Libro::deserializar($libro[0]);
+            return $libro;
         }
     }
 
     public static function crear(Serializador $instancia): void
 {
     $params = $instancia->serializar();
-
-    // Verificar si 'id' está presente en $params
-    if (array_key_exists('id', $params)) {
         $sql = 'INSERT INTO libros (titulo, id_genero, id_categoria, cant_paginas, anio, estado, id_editorial) 
-            VALUES (:titulo, :id_genero, :id_categoria, :cant_paginas, :anio, :estado, :id_editorial);';
+        VALUES (:titulo, :id_genero, :id_categoria, :cant_paginas, :anio, :estado, :id_editorial);';
         ConectarBD::escribir(
             sql: $sql,
             params: [
@@ -76,32 +80,19 @@ class LibroDAO implements InterfaceDAO
                 ':id_editorial' => $params['editorial']->getId(),
             ]
         );
-
-        // Obtener el ID del último libro insertado
-        $idLibro = ConectarBD::ultimoId();
-
-        // Verificar si 'id' está presente en $params['autor']
-        if (array_key_exists('autor', $params) && is_array($params['autor'])) {
-            foreach ($params['autor'] as $autor) {
-                $sql = 'INSERT INTO autores_libros (id_autor, id_libro) 
-                    VALUES ( :id_autor, :id_libro)';
-                ConectarBD::escribir(
-                    sql: $sql,
-                    params: [
-                        ':id_autor' => $autor['id'],
-                        ':id_libro' => $idLibro,
-                    ]
-                );
-            }
-        } else {
-            // Manejar el caso en el que 'autor' no está presente o no es un array
-            error_log("Error: 'autor' no está presente o no es un array en LibroDAO.");
+        
+        foreach ($params['autor'] as $autor) {
+            $sql = 'INSERT INTO autores_libros (id_autor, id_libro) 
+            VALUES ( :id_autor, :id_libro)';
+            ConectarBD::escribir(
+                sql: $sql,
+                params: [
+                    ':id_libro' => static::buscarUltimoLibro(),
+                    ':id_autor' => $autor[0],
+                ]
+            );
         }
-    } else {
-        // Manejar el caso en el que 'id' no está presente en $params
-        error_log("Error: 'id' no está presente en los parámetros en LibroDAO.");
     }
-}
 
 
     public static function actualizar(Serializador $instancia): void

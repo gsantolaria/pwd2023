@@ -49,7 +49,9 @@ class Genero extends ModelBase
     /** @Return mixed[] */
     public function serializar(): array
     {
-        $serializar = array("descripcion" => $this->getDescripcion());
-        return $serializar;
+        return [
+            'id' => $this->getId(),
+            'descripcion'=> $this->getDescripcion()
+        ];
     }
 }

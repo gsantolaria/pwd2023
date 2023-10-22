@@ -48,7 +48,9 @@ class Editorial extends ModelBase
     /** @Return mixed[] */
     public function serializar(): array
     {
-        $serializar = array("nombre" => $this->getNombre());
-        return $serializar;
+        return [
+            'id' => $this->getId(),
+            'nombre'=> $this->getNombre()
+        ];
     }
 }
