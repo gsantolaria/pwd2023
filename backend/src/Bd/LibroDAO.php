@@ -68,12 +68,12 @@ class LibroDAO implements InterfaceDAO
             sql: $sql,
             params: [
                 ':titulo' => $params['titulo'],
-                ':id_genero' => $params['genero']->getId(),
-                ':id_categoria' => $params['categoria']->getId(),
+                ':id_genero' => $params['generos']->getId(),
+                ':id_categoria' => $params['categorias']->getId(),
                 ':cant_paginas' => $params['cant_paginas'],
                 ':anio' => $params['anio'],
                 ':estado' => $params['estado'],
-                ':id_editorial' => $params['editorial']->getId(),
+                ':id_editorial' => $params['editoriales']->getId(),
             ]
         );
 

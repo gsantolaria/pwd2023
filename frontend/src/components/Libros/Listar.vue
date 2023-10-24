@@ -22,8 +22,8 @@
           <td>{{ libro.id }}</td>
           <td>{{ libro.titulo }}</td>
           <!-- en consola veo que me llega un array vacio de autores, editoriales y generos, revisar como lo traigo de la bbdd -->
-          <td>{{ libro.autor }}</td> 
-          <td>{{ libro.editorial.nombre }}</td>
+          <td>{{ libro.autores }}</td> 
+          <td>{{ libro.editoriales.nombre }}</td>
           <td>{{ libro.cant_paginas }}</td>
           <td>{{ libro.anio }}</td>
           <td>{{ libro.estado }}</td>

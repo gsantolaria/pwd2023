@@ -8,13 +8,13 @@ class Libro extends ModelBase
 {
     private $titulo;
     /** @var Editorial */
-    private $editorial;
+    private $editoriales;
     /** @var array<Autor> */
     private array $autores;
     /** @var Genero */
-    private $genero;
+    private $generos;
     /** @var Categoria */
-    private $categoria;
+    private $categorias;
     private int $cant_paginas;
     private int $anio;
     private string $estado;
@@ -27,22 +27,22 @@ class Libro extends ModelBase
         $id,
         string $titulo,
         array $autores,
-        Editorial $editorial,
+        Editorial $editoriales,
         int $cant_paginas,
         int $anio,
-        Genero $genero,
-        Categoria $categoria,
+        Genero $generos,
+        Categoria $categorias,
         string $estado = self::ACTIVO
 
     ) {
         parent::__construct($id);
         $this->titulo = $titulo;
-        $this->editorial = $editorial;
+        $this->editoriales = $editoriales;
         $this->autores = $autores;
-        $this->genero = $genero;
+        $this->generos = $generos;
         $this->cant_paginas = $cant_paginas;
         $this->anio = $anio;
-        $this->categoria = $categoria;
+        $this->categorias = $categorias;
         $this->estado = $estado;
     }
 
@@ -52,15 +52,15 @@ class Libro extends ModelBase
     }
     public function getGenero(): Genero
     {
-        return $this->genero;
+        return $this->generos;
     }
     public function getEditorial(): Editorial
     {
-        return $this->editorial;
+        return $this->editoriales;
     }
     public function getCategoria(): Categoria
     {
-        return $this->categoria;
+        return $this->categorias;
     }
     public function getCant_Pag(): int
     {
@@ -91,17 +91,17 @@ class Libro extends ModelBase
 
     public function setCategoria(Categoria $nuevaCategoria)
     {
-        $this->categoria = $nuevaCategoria;
+        $this->categorias = $nuevaCategoria;
     }
 
     public function setGenero(Genero $nuevoGenero)
     {
-        $this->genero = $nuevoGenero;
+        $this->generos = $nuevoGenero;
     }
 
     public function setEditorial(Editorial $nuevaEditorial)
     {
-        $this->editorial = $nuevaEditorial;
+        $this->editoriales = $nuevaEditorial;
     }
 
     public function setCantPaginas(int $nuevaCantidadPaginas)
@@ -129,10 +129,10 @@ class Libro extends ModelBase
             'id' => $this->getId(),
             'titulo' => $this->titulo,
             'autores' => $this->autores,
-            'editorial' => $this->editorial->serializar(),
+            'editoriales' => $this->editoriales->serializar(),
             'cant_paginas' => $this->cant_paginas,
-            'genero' => $this->genero->serializar(),
-            'categoria' => $this->categoria->serializar(),
+            'generos' => $this->generos->serializar(),
+            'categorias' => $this->categorias->serializar(),
             'estado' => $this->estado,
             'anio' => $this->anio,
         ];
@@ -140,24 +140,16 @@ class Libro extends ModelBase
 
     static function deserializar(array $datos): ModelBase
     {
-        $datosEditorial = is_array($datos['editorial']) ? $datos['editorial'] : [];
-        $datosGenero = is_array($datos['genero']) ? $datos['genero'] : [];
-        $datosCategoria = is_array($datos['categoria']) ? $datos['categoria'] : [];
-
-        $id = array_key_exists('id', $datos) ? $datos['id'] : 0;
-        $anio = array_key_exists('anio', $datos) ? $datos['anio'] : 0;
-        $estado = array_key_exists('estado', $datos) ? $datos['estado'] : '';
-
         return new Self(
-            id: $id,
+            id: $datos['id'] === null ? 0 : $datos['id'],
             titulo: $datos['titulo'],
-            autores: $datos['autores'] ?? [],
-            editorial: Editorial::deserializar($datosEditorial),
+            autores: $datos['autores'],
+            editoriales: $datos['editorial'],
             cant_paginas: $datos['cant_paginas'],
-            anio: $anio,
-            genero: Genero::deserializar($datosGenero),
-            categoria: Categoria::deserializar($datosCategoria),
-            estado: $estado
+            anio: $datos['anio'],
+            generos: $datos['genero'],
+            categorias: $datos['categoria'],
+            estado: $datos['estado']
         );
     }
 }
