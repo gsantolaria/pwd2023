@@ -128,36 +128,27 @@ class Libro extends ModelBase
         return [
             'id' => $this->getId(),
             'titulo' => $this->titulo,
-            'autores' => $this->autores,
+            'autor' => $this->getAutores(),
             'editorial' => $this->editorial->serializar(),
             'cant_paginas' => $this->cant_paginas,
             'genero' => $this->genero->serializar(),
             'categoria' => $this->categoria->serializar(),
             'estado' => $this->estado,
-            'anio' => $this->anio,
+            'anio'=>$this->anio
         ];
     }
-
     static function deserializar(array $datos): ModelBase
     {
-        $datosEditorial = is_array($datos['editorial']) ? $datos['editorial'] : [];
-        $datosGenero = is_array($datos['genero']) ? $datos['genero'] : [];
-        $datosCategoria = is_array($datos['categoria']) ? $datos['categoria'] : [];
-
-        $id = array_key_exists('id', $datos) ? $datos['id'] : 0;
-        $anio = array_key_exists('anio', $datos) ? $datos['anio'] : 0;
-        $estado = array_key_exists('estado', $datos) ? $datos['estado'] : '';
-
         return new Self(
-            id: $id,
+            id: $datos['id'] === null ? 0 : $datos['id'],
             titulo: $datos['titulo'],
-            autores: $datos['autores'] ?? [],
-            editorial: Editorial::deserializar($datosEditorial),
+            autores: $datos['autores'],
+            editorial: $datos['editoriales'],
             cant_paginas: $datos['cant_paginas'],
-            anio: $anio,
-            genero: Genero::deserializar($datosGenero),
-            categoria: Categoria::deserializar($datosCategoria),
-            estado: $estado
+            anio: $datos['anio'],
+            genero: $datos['generos'],
+            categoria: $datos['categorias'],
+            estado: $datos['estado']
         );
     }
 }

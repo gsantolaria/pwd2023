@@ -18,9 +18,9 @@ class LibroDAO implements InterfaceDAO
         $listaLibros = $consulta->fetchAll(PDO::FETCH_ASSOC);
         $libros = [];
         foreach ($listaLibros as $libro) {
-            $libro['categoria'] = CategoriaDAO::encontrarUno($libro['id_categoria']);
-            $libro['genero'] = GeneroDAO::encontrarUno($libro['id_genero']);
-            $libro['editorial'] = EditorialDAO::encontrarUno($libro['id_editorial']);
+            $libro['categorias'] = CategoriaDAO::encontrarUno($libro['id_categoria']);
+            $libro['generos'] = GeneroDAO::encontrarUno($libro['id_genero']);
+            $libro['editoriales'] = EditorialDAO::encontrarUno($libro['id_editorial']);
             $libro['autores'] = LibroDAO::buscarEscritoresPorLibro($libro['id']);
 
             $libros[] = Libro::deserializar($libro);
