@@ -21,24 +21,35 @@ class LibroDAO implements InterfaceDAO
             $libro['categoria'] = CategoriaDAO::encontrarUno($libro['id_categoria']);
             $libro['genero'] = GeneroDAO::encontrarUno($libro['id_genero']);
             $libro['editorial'] = EditorialDAO::encontrarUno($libro['id_editorial']);
-            $libro['autores'] = LibroDAO::buscarEscritoresPorLibro($libro['id']);
+            $libro['autores'][] = static::buscarAutoresPorLibro($libro['id']);
 
             $libros[] = Libro::deserializar($libro);
         }
+        //
         return $libros;
     }
 
-    public static function buscarEscritoresPorLibro(string $id): array
+    public static function buscarAutoresPorLibro(string $id): array
     {
         $sql = 'SELECT id_autor FROM autores_libros WHERE id_libro =:id;';
+        
         $autores = ConectarBD::leer(sql: $sql, params: [':id' => $id]);
         if (count($autores) === 0) {
             return [];
         } else {
             $idsAutores = array_map(fn($autor) => $autor["id_autor"], $autores);
+            var_dump($idsAutores);
             $autores = AutorDAO::listarPorIds($idsAutores);
             return $autores;
         }
+        /* $sql = 'SELECT id_autor FROM autores_libros WHERE id_libro =:id;';
+        $autores = ConectarBD::leer(sql: $sql, params: [':id' => $id]);
+        
+        if (count($autores) === 0) {
+            return [];
+        } else{
+            return $autor[] =  AutorDAO::encontrarUno($autores[0]["id_autor"]);
+        } */
     }
 
     public static function encontrarUno(string $id): ?libro
@@ -51,7 +62,7 @@ class LibroDAO implements InterfaceDAO
             $libro[0]['categoria'] = CategoriaDAO::encontrarUno($libro[0]['id_categoria']);
             $libro[0]['genero'] = GeneroDAO::encontrarUno($libro[0]['id_genero']);
             $libro[0]['editorial'] = EditorialDAO::encontrarUno($libro[0]['id_editorial']);
-            $libro[0]['autores'] = LibroDAO::buscarEscritoresPorLibro($libro[0]["id"]);
+            $libro[0]['autores'] = LibroDAO::buscarAutoresPorLibro($libro[0]["id"]);
             return Libro::deserializar($libro[0]);
         }
     }

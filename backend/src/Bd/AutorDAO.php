@@ -66,8 +66,8 @@ class AutorDAO implements InterfaceDAO {
         }
         // Crear una cadena de parámetros con comas para la consulta IN
         $inClause = implode(',', array_fill(0, count($idsAutores), '?'));
-
         $sql = "SELECT * FROM autores WHERE id IN ($inClause)";
+        var_dump($sql);
         $cnx = ConectarBD::conectar();
         $consulta = $cnx->prepare($sql);
         
