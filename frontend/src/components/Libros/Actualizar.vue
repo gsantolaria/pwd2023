@@ -1,3 +1,16 @@
+<template>
+    <h2>Actualizar Socio</h2>
+
+    <input v-model=Socio.nombre_apellido type="text" label='nombre y apellido' placeholder="apellido y nombre">
+    <input v-model=Socio.telefono type="text" label='Telefono' placeholder="telefono">
+    <input v-model=Socio.direccion type="text" label='direccion' placeholder="Direccion">
+
+    <router-link :to='{ name: "Socios" }'>
+        <boton class="alert" texto="Volver"></boton>
+    </router-link>
+    <boton class="primary" @click="ActualizarSocio(Socio)" texto="Actualizar"></boton>
+</template>
+
 <script lang="ts">
 import axios from 'axios'
 import Boton from '../Boton.vue'
@@ -15,7 +28,6 @@ export default {
                 fecha_alta: new Date().toISOString().substring(0, 10),
                 activo: 1,
             }
-
         }
     },
     created() {
@@ -34,19 +46,6 @@ export default {
     }
 }
 </script>
-
-<template>
-    <h2>Actualizar Socio</h2>
-
-    <input v-model=Socio.nombre_apellido type="text" label='nombre y apellido' placeholder="apellido y nombre">
-    <input v-model=Socio.telefono type="text" label='Telefono' placeholder="telefono">
-    <input v-model=Socio.direccion type="text" label='direccion' placeholder="Direccion">
-
-    <router-link :to='{ name: "Socios" }'>
-        <boton class="alert" texto="Volver"></boton>
-    </router-link>
-    <boton class="primary" @click="ActualizarSocio(Socio)" texto="Actualizar"></boton>
-</template>
 
 <style scope>
 input {
