@@ -21,7 +21,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr v-for="socio in filtrarSocios" :key="socio.id">
+      <tr v-for="socio in items" :key="socio.id">
         <td>{{ socio.id }}</td>
         <td>{{ socio.nombre_apellido }}</td>
         <td>{{ socio.fecha_alta }}</td>
@@ -61,7 +61,7 @@ export default {
       try {
         const response = await axios.get('http://127.0.0.1:8001/apiv1/socios');
         this.socios = response.data;
-        //console.log(this.socios);
+        console.log(this.socios);
       } catch (error) {
         console.error(error);
       }
@@ -81,7 +81,7 @@ export default {
     },
     filtrarSocios() {
       const busqueda = this.busqueda.toLowerCase();
-      return this.socios.filter(socio => {
+      this.items = this.socios.filter(socio => {
         const nombre = socio.nombre_apellido.toLowerCase();
         const direccion = socio.direccion.toLowerCase();
 
