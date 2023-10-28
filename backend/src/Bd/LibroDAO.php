@@ -21,25 +21,25 @@ class LibroDAO implements InterfaceDAO
             $libro['categoria'] = CategoriaDAO::encontrarUno($libro['id_categoria']);
             $libro['genero'] = GeneroDAO::encontrarUno($libro['id_genero']);
             $libro['editorial'] = EditorialDAO::encontrarUno($libro['id_editorial']);
-            $libro['autores'][] = static::buscarAutoresPorLibro($libro['id']);
-
+            $libro['autores'] = LibroDAO::buscarAutoresPorLibro($libro['id']);
+            //var_dump($libro);
             $libros[] = Libro::deserializar($libro);
         }
-        //
+        //var_dump($libros);
         return $libros;
     }
 
     public static function buscarAutoresPorLibro(string $id): array
     {
         $sql = 'SELECT id_autor FROM autores_libros WHERE id_libro =:id;';
-        
         $autores = ConectarBD::leer(sql: $sql, params: [':id' => $id]);
+
         if (count($autores) === 0) {
             return [];
         } else {
             $idsAutores = array_map(fn($autor) => $autor["id_autor"], $autores);
-            var_dump($idsAutores);
             $autores = AutorDAO::listarPorIds($idsAutores);
+            //var_dump($autores);
             return $autores;
         }
         /* $sql = 'SELECT id_autor FROM autores_libros WHERE id_libro =:id;';

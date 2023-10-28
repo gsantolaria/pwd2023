@@ -22,7 +22,10 @@
           <td>{{ libro.id }}</td>
           <td>{{ libro.titulo }}</td>
           <!-- en consola veo que me llega un array vacio de autores, editoriales y generos, revisar como lo traigo de la bbdd -->
-          <td>{{ libro.autores }}</td> 
+          <td><ul>
+                <li v-for="autor in libro.autores" :key="autor.id">{{ autor.nombre_apellido }}</li>
+              </ul>
+          </td> 
           <td>{{ libro.editoriales.nombre }}</td>
           <td>{{ libro.cant_paginas }}</td>
           <td>{{ libro.anio }}</td>
@@ -60,7 +63,7 @@ export default {
     buscarLibros() {
       const busqueda = this.busqueda.toLowerCase();
       this.libros.forEach(libro => {
-        const autores = this.obtenerAutores(libro.autor);
+        const autores = this.obtenerAutores(libro.autores);
         const editorial = libro.editorial.nombre.toLowerCase();
 
         if (
@@ -76,9 +79,9 @@ export default {
     }, 
     obtenerAutores(autores) {
       if (Array.isArray(autores)) {
-        return autores.map(autor => autor.nombre_apellido);
+        return autores.map(autor => autor.nombre_apellido).join(', ');
       }
-      return [];
+      return '';
     }
   },
   computed: {

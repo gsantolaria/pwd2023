@@ -123,12 +123,22 @@ class Libro extends ModelBase
         }
     }
 
+    public function serializarAutores(): array
+    {
+        $autores = [];
+        foreach ($this->autores as $autor){
+            $autores[] = $autor->serializar();
+        }
+        //var_dump($autores);
+        return $autores;
+    }
+
     public function serializar(): array
     {
         return [
             'id' => $this->getId(),
             'titulo' => $this->titulo,
-            'autores' => $this->autores,
+            'autores' => $this->serializarAutores(),
             'editoriales' => $this->editoriales->serializar(),
             'cant_paginas' => $this->cant_paginas,
             'generos' => $this->generos->serializar(),
