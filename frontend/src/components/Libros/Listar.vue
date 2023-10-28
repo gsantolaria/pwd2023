@@ -63,12 +63,12 @@ export default {
     buscarLibros() {
       const busqueda = this.busqueda.toLowerCase();
       this.libros.forEach(libro => {
-        const autores = this.obtenerAutores(libro.autores);
-        const editorial = libro.editorial.nombre.toLowerCase();
+        const autores = libro.autores;
+        const editorial = libro.editoriales.nombre.toLowerCase();
 
         if (
           libro.titulo.toLowerCase().includes(busqueda) ||
-          autores.some(autor => autor.toLowerCase().includes(busqueda)) ||
+          autores.some(autor => autor.nombre_apellido.toLowerCase().includes(busqueda)) ||
           editorial.includes(busqueda)
         ) {
           libro.mostrar = true;
@@ -77,12 +77,6 @@ export default {
         }
       });
     }, 
-    obtenerAutores(autores) {
-      if (Array.isArray(autores)) {
-        return autores.map(autor => autor.nombre_apellido).join(', ');
-      }
-      return '';
-    }
   },
   computed: {
     librosFiltrados() {
