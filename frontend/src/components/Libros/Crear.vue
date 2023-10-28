@@ -39,8 +39,8 @@
                 <input type="number" id="anio" v-model="libro.anioPublicacion" required>
             </div>
             <div class="form-group">
-                <label for="paginas">Cantidad de páginas:</label>
-                <input type="number" id="paginas" v-model="libro.cant_paginas" required>
+                <label for="cant_paginas">Cantidad de páginas:</label>
+                <input type="number" id="cant_paginas" v-model="libro.cant_paginas" required>
             </div>
             <div>
                 <button type="submit" class="btn-crear">Crear Libro</button>
@@ -95,7 +95,7 @@ export default {
                 categoria: this.libro.categoria,
                 genero: this.libro.genero,
                 anioPublicacion: this.libro.anioPublicacion,
-                paginas: this.libro.cant_paginas
+                cant_paginas: this.libro.cant_paginas
             };
             console.log(nuevoLibro);
             axios

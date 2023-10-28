@@ -144,10 +144,9 @@ class Libro extends ModelBase
             'generos' => $this->generos->serializar(),
             'categorias' => $this->categorias->serializar(),
             'estado' => $this->estado,
-            'anio' => $this->anio,
+            'anio'=>$this->anio
         ];
     }
-
     static function deserializar(array $datos): ModelBase
     {
         return new Self(
