@@ -69,10 +69,7 @@ export default {
         if (
           autores.some(autor => autor.nombre_apellido.toLowerCase().includes(busqueda)) ||
           libro.titulo.toLowerCase().includes(busqueda) ||
-<<<<<<< HEAD
-=======
           autores.some(autor => autor.nombre_apellido.toLowerCase().includes(busqueda)) ||
->>>>>>> e0b71794af68bca08bbe4630ac595618e48abf92
           editorial.includes(busqueda)
         ) {
           libro.mostrar = true;
@@ -80,11 +77,7 @@ export default {
           libro.mostrar = false;
         }
       });
-<<<<<<< HEAD
-    }
-=======
     }, 
->>>>>>> e0b71794af68bca08bbe4630ac595618e48abf92
   },
   computed: {
     librosFiltrados() {
