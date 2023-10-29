@@ -54,8 +54,6 @@ final class ConectarBD
     
             // Verificar el tipo de datos antes de ejecutar la consulta
             foreach ($params as $param => $value) {
-                // Aquí necesitas ajustar para manejar correctamente los valores según su tipo.
-                // En el ejemplo, se asume que todos los parámetros son cadenas (TEXT).
                 $paramType = PDO::PARAM_STR;
                 $consulta->bindValue($param, $value, $paramType);
             }

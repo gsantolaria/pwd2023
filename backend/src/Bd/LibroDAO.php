@@ -2,7 +2,6 @@
 
 namespace Raiz\Bd;
 
-use Raiz\Models\Autor;
 use Raiz\Models\Libro;
 use Raiz\Aux\Serializador;
 use PDO;
@@ -40,24 +39,16 @@ class LibroDAO implements InterfaceDAO
             $autores = AutorDAO::listarPorIds($idsAutores);
             return $autores;
         }
-        /* $sql = 'SELECT id_autor FROM autores_libros WHERE id_libro =:id;';
-        $autores = ConectarBD::leer(sql: $sql, params: [':id' => $id]);
-        
-        if (count($autores) === 0) {
-            return [];
-        } else{
-            return $autor[] =  AutorDAO::encontrarUno($autores[0]["id_autor"]);
-        } */
     }
 
     public static function encontrarUno(string $id): ?libro
     {
     $sql = 'SELECT * FROM libros WHERE id =:id;';
+        //var_dump($id);
         $libro = ConectarBD::leer(sql: $sql, params: [':id' => $id]);
         if (count($libro) === 0) {
             return null;
         } else {
-            
             $libro[0]['categoria'] = CategoriaDAO::encontrarUno($libro[0]['id_categoria']);
             $libro[0]['genero'] = GeneroDAO::encontrarUno($libro[0]['id_genero']);
             $libro[0]['editorial'] = EditorialDAO::encontrarUno($libro[0]['id_editorial']);
@@ -67,7 +58,7 @@ class LibroDAO implements InterfaceDAO
     }
 
     public static function crear(Serializador $instancia): void
-{
+    {
     $params = $instancia->serializar();
         $sql = 'INSERT INTO libros (titulo, id_genero, id_categoria, cant_paginas, anio, estado, id_editorial) 
         VALUES (:titulo, :id_genero, :id_categoria, :cant_paginas, :anio, :estado, :id_editorial);';

@@ -8,7 +8,16 @@
             </div>
             <div class="form-group">
                 <label for="autor">Autor:</label>
-                <input id="autor" v-model="libro.autor" required>
+                <!-- <input id="autor" v-model="autorBuscado" @input="buscarAutores" required> -->
+                <select v-model="libro.autor">
+                    <option v-for="autor in autores" :key="autor.id" :value="autor.id">{{ autor.nombre_apellido }}</option>
+                </select>
+                <button @click="mostrarFormularioAutorNuevo">Agregar Nuevo Autor</button>
+            </div>
+            <div v-if="mostrarFormularioNuevoAutor">
+                <label for="nuevoAutor">Nuevo Autor:</label>
+                <input id="nuevoAutor" v-model="nuevoAutor" required>
+                <button @click="agregarNuevoAutor">Guardar Autor</button>
             </div>
             <div class="form-group">
                 <label for="editorial">Editorial:</label>
@@ -57,7 +66,7 @@ export default {
         return {
             libro: {
                 titulo: '',
-                autor: [],
+                autor: null,
                 genero: [],
                 editorial: [],
                 categoria: [],
@@ -66,10 +75,19 @@ export default {
             },
             editoriales: [],
             categorias: [],
-            generos: []
+            generos: [],
+            autorBuscado: '', 
+            autores: [], 
+            mostrarFormularioNuevoAutor: false,
+            nuevoAutor: '',
         };
     },
     mounted() {
+        // Cargar autores
+        axios.get('http://localhost:8001/apiv1/autores')
+            .then(response => this.autores = response.data)
+            .catch(error => console.error(error));
+
         // Cargar editoriales
         axios.get('http://localhost:8001/apiv1/editoriales')
             .then(response => this.editoriales = response.data)
@@ -87,7 +105,6 @@ export default {
     },
     methods: {
         crearLibro() {
-
             const nuevoLibro = {
                 titulo: this.libro.titulo,
                 autor: Array.isArray(this.libro.autor) ? this.libro.autor : [this.libro.autor],
@@ -109,9 +126,40 @@ export default {
                     console.error(error);
                     alert('Error al crear el libro');
                 });
-        }
-    }
-};
+        },
+        mostrarFormularioAutorNuevo() {
+            this.mostrarFormularioNuevoAutor = true;
+        },
+        async listarAutores() {
+            try {
+                const response = await axios.get('http://localhost:8001/apiv1/autores');
+                this.autores = response.data;
+                } catch (error) {
+                    console.error(error);
+            }
+        },
+        async agregarNuevoAutor() {
+                const autorExiste = this.autores.find(autor => autor.nombre_apellido === this.nuevoAutor);
+                if (autorExiste) {
+                    // Si el autor existe, asignamos el ID al libro
+                    this.libro.autor = autorExiste.id;
+                } else {
+                    // Si el autor no existe, crea un nuevo autor y obtenemos el ID
+                    try {
+                        const response = await axios.post('http://localhost:8001/apiv1/autores', { nombre_apellido: this.nuevoAutor });
+                        this.libro.autor = response.data.id;
+                    } catch (error) {
+                        console.error(error);
+                        alert('Error al agregar el nuevo autor');
+                        return;
+                    }
+                }
+                this.mostrarFormularioNuevoAutor = false;
+                this.listarAutores();
+            }
+        },
+        
+    };
 </script>
 
 <style scoped>
@@ -137,6 +185,10 @@ label {
     display: block;
     margin-bottom: 5px;
     font-weight: bold;
+}
+
+button {
+    margin-top: 5px;
 }
 
 input[type="text"],
