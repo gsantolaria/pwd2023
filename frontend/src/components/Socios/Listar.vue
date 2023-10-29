@@ -22,7 +22,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr v-for="socio in sociosFiltrados" :key="socio.id">
+      <tr v-for="socio in filtrarSocios()" :key="socio.id">
         <td>{{ socio.id }}</td>
         <td>{{ socio.nombre_apellido }}</td>
         <td>{{ socio.fecha_alta }}</td>
@@ -88,7 +88,7 @@ export default {
     },
     filtrarSocios() {
       const busqueda = this.busqueda.toLowerCase();
-      this.items = this.socios.filter(socio => {
+      return this.socios.filter(socio => {
         const nombre = socio.nombre_apellido.toLowerCase();
         const direccion = socio.direccion.toLowerCase();
         return nombre.includes(busqueda) || direccion.includes(busqueda);
