@@ -29,6 +29,7 @@ $app->get('/apiv1/libros/{id}', function (Request $req, Response $res, array $ar
 // ---- Crear nuevo regitro ---- //
 
 $app->post('/apiv1/libros/nuevo', function (Request $request, Response $res, array $args) {
+    var_dump($request);
     $request = Utileria::PasarAJson(file_get_contents('php://input'));
     $payload = Json_Encode(LibroController::crear($request), JSON_PRETTY_PRINT);
     $res->getBody()->write($payload);
