@@ -35,20 +35,17 @@ class Editorial extends ModelBase
     }
     public static function deserializar(array $datos): self
     {
-        $id = isset($datos['id']) ? (int) $datos['id'] : 0;
-        $nombre = isset($datos['nombre']) ? $datos['nombre'] : '';
-
         return new Editorial(
-            // id: $datos['id'] === null ? 0 : intVal($datos['id']),
-            // nombre: $datos["nombre"]
-            id: $id,
-            nombre: $nombre
+            id: $datos['id'],
+            nombre: $datos["nombre"]
         );
     }
     /** @Return mixed[] */
     public function serializar(): array
     {
-        $serializar = array("nombre" => $this->getNombre());
-        return $serializar;
+        return [
+            'id' => $this->getId(),
+            'nombre'=> $this->getNombre()
+        ];
     }
 }

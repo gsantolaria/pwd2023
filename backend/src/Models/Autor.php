@@ -37,7 +37,7 @@ class Autor extends ModelBase
     public static function deserializar(array $datos): self
     {
         return new autor(
-            id: $datos['id'] === null ? 0 : intVal($datos['id']),
+            id: $datos['id'],
             nombre_apellido: $datos['nombre_apellido']
         );
     }

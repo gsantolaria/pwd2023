@@ -25,7 +25,7 @@ class AutorDAO implements InterfaceDAO {
         if (count($autor) === 0) {
             return null;
         } else {
-            $autor = Autor::deserializar($autor[0]);
+            $autor [] = Autor::deserializar($autor[0]);
             return $autor;
         }
     }

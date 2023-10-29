@@ -1,6 +1,7 @@
+
 <template>
-  <h1>Listado de Socios</h1>
-  <input v-model="busqueda" type="text" placeholder="Buscar socios..." @input="filtrarSocios">
+  <h1>listado de Socios</h1>
+  <input v-model="busqueda" @input="filtrarSocios" type="text" placeholder="Buscar socios...">
   <RouterLink class="crear" to="socios/crear"><img src="../../assets/editar.svg" alt="">Crear Socio</RouterLink>
 
   <select v-model="activo" name="is_activo" id="activo">
@@ -21,7 +22,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr v-for="socio in items" :key="socio.id">
+      <tr v-for="socio in filtrarSocios()" :key="socio.id">
         <td>{{ socio.id }}</td>
         <td>{{ socio.nombre_apellido }}</td>
         <td>{{ socio.fecha_alta }}</td>
@@ -31,7 +32,7 @@
           <router-link :to="{ name: 'ActualizarSocio', params: { id: socio.id } }">
             <Boton texto="editar" v-bind:class="{ primary: true }"></Boton>
           </router-link>
-          <Boton texto="eliminar" v-bind:class="{ warning: true }" @click="borrar(socio.id)"></Boton>
+          <Boton texto="eliminar" v-bind:class="{ warning: true }" @click="confirmarEliminar(socio.id)"></Boton>
           <Boton texto="abrir" v-bind:class="{ alert: true }"></Boton>
         </td>
       </tr>
@@ -66,6 +67,11 @@ export default {
         console.error(error);
       }
     },
+    confirmarEliminar(id) {
+      if (window.confirm('¿Seguro que deseas eliminar este socio?')) {
+        this.borrar(id);
+      }
+    },
     borrar(id) {
       axios
         .delete('http://localhost:8001/apiv1/socios/delete/' + id)
@@ -81,17 +87,13 @@ export default {
     },
     filtrarSocios() {
       const busqueda = this.busqueda.toLowerCase();
-      this.items = this.socios.filter(socio => {
+      return this.socios.filter(socio => {
         const nombre = socio.nombre_apellido.toLowerCase();
         const direccion = socio.direccion.toLowerCase();
-
-        return (
-          nombre.includes(busqueda) ||
-          direccion.includes(busqueda)
-        );
+        return nombre.includes(busqueda) || direccion.includes(busqueda);
       });
-    }
-  }
+    },
+  },
 };
 </script>
 
