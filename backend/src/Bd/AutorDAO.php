@@ -32,12 +32,13 @@ class AutorDAO implements InterfaceDAO {
 
     public static function crear(Serializador $instancia): void {
         $params = $instancia->serializar();
-        $sql = 'INSERT INTO autores (id, nombre) VALUES (:id, :nombre)';
+        $sql = 'INSERT INTO autores (nombre_apellido, activo) VALUES (:nombre_apellido, :activo)';
         ConectarBD::escribir(
             sql: $sql,
             params: [
                 ':id' => $params['id'],
-                ':nombre' => $params['nombre']
+                ':nombre_apellido' => $params['nombre_apellido'],
+                ':activo' => $params['estado']
             ]
         );
     }
