@@ -15,6 +15,7 @@
           <th>N° páginas</th>
           <th>Año</th>
           <th>Estado</th>
+          <th>Acciones</th>
         </tr>
       </thead>
       <tbody>
@@ -30,6 +31,10 @@
           <td>{{ libro.cant_paginas }}</td>
           <td>{{ libro.anio }}</td>
           <td>{{ libro.estado }}</td>
+          <td>
+              <button @click="editarLibro(libro.id)" class="boton editar">Editar</button>
+              <button @click="eliminarLibro(libro.id)" class="boton eliminar">Eliminar</button>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -120,7 +125,8 @@ tr {
 .crear {
   background: #079d46;
   padding: 10px 20px;
-  color: #fff
+  color: #fff;
+  border-radius: 4px
 }
 
 .crear img {
@@ -132,14 +138,30 @@ select {
   padding: 10px;
   font-size: 1em
 }
-
 tr .acciones {
   text-aling: center;
   background: #ccc;
 }
-
 #busqueda {
   display: flex;
   align-items: center;
 }
+.boton {
+    padding: 8px 16px;
+    margin-right: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  .editar {
+    background-color: #079d46;
+    color: #fff;
+    border: 1px solid #079d46;
+  }
+  .eliminar {
+    background-color: #dc3545;
+    color: #fff;
+    border: 1px solid #dc3545;
+  }
 </style>
