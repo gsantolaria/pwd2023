@@ -30,10 +30,9 @@
         <td>{{ socio.telefono }}</td>
         <td>
           <router-link :to="{ name: 'ActualizarSocio', params: { id: socio.id } }">
-            <Boton texto="editar" v-bind:class="{ primary: true }"></Boton>
+            <Boton texto="editar" v-bind:class="{ edit: true }"></Boton>
           </router-link>
           <Boton texto="eliminar" v-bind:class="{ warning: true }" @click="confirmarEliminar(socio.id)"></Boton>
-          <Boton texto="abrir" v-bind:class="{ alert: true }"></Boton>
         </td>
       </tr>
     </tbody>
@@ -126,7 +125,7 @@ tr {
 }
 
 .crear {
-  background: #272ef6;
+  background: #079d46;
   padding: 10px 20px;
   color: #fff
 }

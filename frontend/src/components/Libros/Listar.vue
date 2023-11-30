@@ -32,8 +32,14 @@
           <td>{{ libro.anio }}</td>
           <td>{{ libro.estado }}</td>
           <td>
-              <button @click="editarLibro(libro.id)" class="boton editar">Editar</button>
-              <button @click="eliminarLibro(libro.id)" class="boton eliminar">Eliminar</button>
+              <!-- <button @click="editarLibro(libro.id)" class="boton editar">Editar</button> -->
+              <router-link :to="{ name: 'ActualizarLibro', params: { id: libro.id } }">
+                <Boton texto="editar" v-bind:class="{ edit: true }"></Boton>
+              </router-link>
+              <router-link :to="{ name: 'EliminarLibro', params: { id: libro.id } }">
+                <Boton texto="eliminar" v-bind:class="{ warning: true }"></Boton>
+              </router-link>
+              <!-- <button @click="eliminarLibro(libro.id)" class="boton eliminar">Eliminar</button> -->
           </td>
         </tr>
       </tbody>
@@ -42,17 +48,18 @@
 </template>
 
 <script lang="ts">
-
+import Boton from '../Boton.vue';
 import axios from 'axios';
 
 export default {
+  components: { Boton },
   data() {
     return {
       libros: [],
       busqueda: ''
     };
   },
-  mounted() {
+  created() {
     this.obtenerLibros();
   },
   methods: {
@@ -81,7 +88,26 @@ export default {
           libro.mostrar = false;
         }
       });
-    }, 
+    },
+    async editarLibro(libroId) {
+      try {
+        const response = await axios.get(`http://127.0.0.1:8001/apiv1/libros/actualizar/${libroId}`);
+        const libroEditar = response.data;
+
+        this.$router.push({ name: 'editarLibro', params: { id: libroId, libro: libroEditar } });
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    async eliminarLibro(libroId) {
+      try {
+        await axios.delete(`http://127.0.0.1:8001/apiv1/libros/${libroId}`);
+        
+        this.obtenerLibros();
+      } catch (error) {
+        console.error(error);
+      }
+    },
   },
   computed: {
     librosFiltrados() {
@@ -125,8 +151,7 @@ tr {
 .crear {
   background: #079d46;
   padding: 10px 20px;
-  color: #fff;
-  border-radius: 4px
+  color: #fff
 }
 
 .crear img {
@@ -158,10 +183,12 @@ tr .acciones {
     background-color: #079d46;
     color: #fff;
     border: 1px solid #079d46;
+    cursor: pointer;
   }
   .eliminar {
     background-color: #dc3545;
     color: #fff;
     border: 1px solid #dc3545;
+    cursor: pointer;
   }
 </style>
