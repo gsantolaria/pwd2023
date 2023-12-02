@@ -11,7 +11,6 @@ export default {
     data() {
         return {
 
-
         }
     }
 
@@ -32,16 +31,20 @@ export default {
     background: rgb(33, 112, 177);
     color: #fff;
 }
+.btn.edit {
+    cursor: pointer;
+    background: #079d46;
+    color: #fff;
+}
 .btn img{
     width: 15px;
 }
 .btn.danger {
     background: rgb(235, 199, 0);
-    
     color: black;
 }
 .btn.warning {
-
+    cursor: pointer;
     background: rgba(231, 2, 2);
     color: #fff
 }

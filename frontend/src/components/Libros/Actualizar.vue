@@ -1,59 +1,53 @@
 <template>
-    <h2>Actualizar Socio</h2>
+    <div>
+    <h2>Editar Libro</h2>
+    
+        <label>Título:</label>
+        <input v-model="libro.titulo" type="text">
 
-    <input v-model=Socio.nombre_apellido type="text" label='nombre y apellido' placeholder="apellido y nombre">
-    <input v-model=Socio.telefono type="text" label='Telefono' placeholder="telefono">
-    <input v-model=Socio.direccion type="text" label='direccion' placeholder="Direccion">
+        <!-- aca agrego el resto de los campos que quiera editar -->
 
-    <router-link :to='{ name: "Socios" }'>
-        <boton class="alert" texto="Volver"></boton>
-    </router-link>
-    <boton class="primary" @click="ActualizarSocio(Socio)" texto="Actualizar"></boton>
+    <button @click="guardarCambios" class="boton guardar">Guardar Cambios</button>
+    </div>
 </template>
 
 <script lang="ts">
-import axios from 'axios'
-import Boton from '../Boton.vue'
+import axios from 'axios';
 
 export default {
-    components: { Boton },
     data() {
         return {
-            Socio:
-            {
-                id: "",
-                nombre_apellido: "",
-                direccion: "",
-                telefono: "",
-                fecha_alta: new Date().toISOString().substring(0, 10),
-                activo: 1,
-            }
-        }
+            libro: {},
+        };
     },
     created() {
-        this.buscar()
+    
+        const libroId = this.$route.params.id;
+        this.obtenerDetallesLibro(libroId);
     },
     methods: {
-        async ActualizarSocio(Socio) {
-            console.log(Socio);
-            const res = await axios.put('http://127.0.0.1:8001/apiv1/socios/' + this.$route.params.id, Socio)
+        async obtenerDetallesLibro(libroId) {
+            try {
+            const response = await axios.get(`http://127.0.0.1:8001/apiv1/libros/${libroId}`);
+            this.libro = response.data;
+            } catch (error) {
+            console.error(error);
+            }
         },
-        async buscar() {
-            const res = await axios.get('http://127.0.0.1:8001/apiv1/socios/' + this.$route.params.id);
-            this.Socio = res.data;
-            console.log(this.Socio)
-        }
-    }
-}
+        async guardarCambios() {
+            try {
+            // PUT para actualizar los detalles del libro
+            await axios.put(`http://127.0.0.1:8001/apiv1/libros/actualizar/${this.libro.id}`, this.libro);
+            // Redirigir a la página de listado de libros después de guardar los cambios
+            this.$router.push({ name: 'Libros' });
+            } catch (error) {
+            console.error(error);
+            }
+        },
+    },
+};
 </script>
 
-<style scope>
-input {
-    width: 50%;
-    font-size: 1.2em;
-    display: flex;
-    align-content: center;
-    padding: 10px;
-    margin: 15px;
-}
+<style scoped>
+    
 </style>

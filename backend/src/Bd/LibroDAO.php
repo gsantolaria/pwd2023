@@ -20,7 +20,7 @@ class LibroDAO implements InterfaceDAO
             $libro['categoria'] = CategoriaDAO::encontrarUno($libro['id_categoria']);
             $libro['genero'] = GeneroDAO::encontrarUno($libro['id_genero']);
             $libro['editorial'] = EditorialDAO::encontrarUno($libro['id_editorial']);
-            $libro['autores'] = LibroDAO::buscarAutoresPorLibro($libro['id']);
+            $libro['autores'] = static::buscarAutoresPorLibro($libro['id']);
             //var_dump($libro);
             $libros[] = Libro::deserializar($libro);
         }

@@ -15,6 +15,7 @@
           <th>N° páginas</th>
           <th>Año</th>
           <th>Estado</th>
+          <th>Acciones</th>
         </tr>
       </thead>
       <tbody>
@@ -30,6 +31,16 @@
           <td>{{ libro.cant_paginas }}</td>
           <td>{{ libro.anio }}</td>
           <td>{{ libro.estado }}</td>
+          <td>
+              <!-- <button @click="editarLibro(libro.id)" class="boton editar">Editar</button> -->
+              <router-link :to="{ name: 'ActualizarLibro', params: { id: libro.id } }">
+                <Boton texto="editar" v-bind:class="{ edit: true }"></Boton>
+              </router-link>
+              <router-link :to="{ name: 'EliminarLibro', params: { id: libro.id } }">
+                <Boton texto="eliminar" v-bind:class="{ warning: true }"></Boton>
+              </router-link>
+              <!-- <button @click="eliminarLibro(libro.id)" class="boton eliminar">Eliminar</button> -->
+          </td>
         </tr>
       </tbody>
     </table>
@@ -37,17 +48,18 @@
 </template>
 
 <script lang="ts">
-
+import Boton from '../Boton.vue';
 import axios from 'axios';
 
 export default {
+  components: { Boton },
   data() {
     return {
       libros: [],
       busqueda: ''
     };
   },
-  mounted() {
+  created() {
     this.obtenerLibros();
   },
   methods: {
@@ -77,7 +89,26 @@ export default {
           libro.mostrar = false;
         }
       });
-    }, 
+    },
+    async editarLibro(libroId) {
+      try {
+        const response = await axios.get(`http://127.0.0.1:8001/apiv1/libros/actualizar/${libroId}`);
+        const libroEditar = response.data;
+
+        this.$router.push({ name: 'editarLibro', params: { id: libroId, libro: libroEditar } });
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    async eliminarLibro(libroId) {
+      try {
+        await axios.delete(`http://127.0.0.1:8001/apiv1/libros/${libroId}`);
+        
+        this.obtenerLibros();
+      } catch (error) {
+        console.error(error);
+      }
+    },
   },
   computed: {
     librosFiltrados() {
@@ -133,14 +164,32 @@ select {
   padding: 10px;
   font-size: 1em
 }
-
 tr .acciones {
   text-aling: center;
   background: #ccc;
 }
-
 #busqueda {
   display: flex;
   align-items: center;
 }
+.boton {
+    padding: 8px 16px;
+    margin-right: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  .editar {
+    background-color: #079d46;
+    color: #fff;
+    border: 1px solid #079d46;
+    cursor: pointer;
+  }
+  .eliminar {
+    background-color: #dc3545;
+    color: #fff;
+    border: 1px solid #dc3545;
+    cursor: pointer;
+  }
 </style>
