@@ -106,7 +106,6 @@ export default {
     methods: {
         crearLibro() {
             // probamos esto porque me esta llegando null en vez de un array de autores
-            
             const nuevoLibro = {
                 titulo: this.libro.titulo,
                 autor: Array.isArray(this.libro.autor) ? this.libro.autor : [this.libro.autor],
@@ -143,11 +142,11 @@ export default {
         async agregarNuevoAutor() {
                 const autorExiste = this.autores.find(autor => autor.nombre_apellido === this.nuevoAutor);
                 if (autorExiste) {
-                    // Si el autor existe, asignamos el ID al libro
+                    // si el autor existe, asignamos el ID al libro
                     this.libro.autor = autorExiste.id;
                     console.log(this.libro.autor);
                 } else {
-                    // Si el autor no existe, crea un nuevo autor y obtenemos el ID
+                    // si el autor no existe, crea un nuevo autor y obtenemos el ID
                     try {
                         const response = await axios.post('http://localhost:8001/apiv1/autores', { nombre_apellido: this.nuevoAutor });
                         this.libro.autor = response.data.id;

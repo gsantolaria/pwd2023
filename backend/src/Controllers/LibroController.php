@@ -37,7 +37,9 @@ class LibroController implements InterfaceController
 
     public static function actualizar(array $parametros): array
     {
+        echo(var_dump($parametros));
         $libro = Libro::deserializar($parametros);
+        echo(var_dump($libro));
         LibroDAO::actualizar($libro);
         return $libro->serializar();
     }
