@@ -5,6 +5,7 @@ namespace Raiz\Bd;
 use Raiz\Models\Libro;
 use Raiz\Aux\Serializador;
 use PDO;
+use Raiz\Bd\PDOException;
 
 class LibroDAO implements InterfaceDAO
 {
@@ -59,29 +60,32 @@ class LibroDAO implements InterfaceDAO
 
     public static function crear(Serializador $instancia): void
     {
-    $params = $instancia->serializar();
+        $params = $instancia->serializar();
+        var_dump($params['autores']);
         $sql = 'INSERT INTO libros (titulo, id_genero, id_categoria, cant_paginas, anio, estado, id_editorial) 
-        VALUES (:titulo, :id_genero, :id_categoria, :cant_paginas, :anio, :estado, :id_editorial);';
+        VALUES (:titulo, :id_genero, :id_categoria, :cant_paginas, :anio, :estado, :id_editorial)';
         ConectarBD::escribir(
             sql: $sql,
             params: [
                 ':titulo' => $params['titulo'],
-                ':id_genero' => $params['genero']['id'],
-                ':id_categoria' => $params['categoria']['id'],
+                ':id_genero' => $params['generos']['id'],
+                ':id_categoria' => $params['categorias']['id'],
                 ':cant_paginas' => $params['cant_paginas'],
                 ':anio' => $params['anio'],
                 ':estado' => $params['estado'],
-                ':id_editorial' => $params['editorial']['id'],
+                ':id_editorial' => $params['editoriales']['id'],
             ]
         );
+
+        $idLibro = static::buscarUltimoLibro();    
         
-        foreach ($params['autor'] as $autor) {
-            $sql = 'INSERT INTO autores_libros (id_autor, id_libro) 
+        foreach ($params['autores'] as $autor) {
+            $sql3 = 'INSERT INTO autores_libros (id_autor, id_libro) 
             VALUES ( :id_autor, :id_libro)';
             ConectarBD::escribir(
-                sql: $sql,
+                sql: $sql3,
                 params: [
-                    ':id_libro' => static::buscarUltimoLibro(),
+                    ':id_libro' => $idLibro,
                     ':id_autor' => $autor['id'],
                 ]
             );
@@ -91,9 +95,9 @@ class LibroDAO implements InterfaceDAO
 
     public static function actualizar(Serializador $instancia): void
     {
-        var_dump($instancia);
+        //var_dump($instancia);
         $params = $instancia->serializar();
-        var_dump($params);
+        //var_dump($params);
         
         $sql = 'UPDATE libros SET titulo =:titulo, id_genero = :id_genero, id_categoria = :id_categoria, 
                 cant_paginas = :cant_paginas, anio = :anio, estado = :estado, id_editorial = :id_editorial 
@@ -112,19 +116,17 @@ class LibroDAO implements InterfaceDAO
             ]
         );
     }
-
-    public static function buscarUltimoLibro():int{
-        $sql = 'SELECT MAX(id) as id FROM libros ';
+    // podemos probar con lastinsertid() si usando esta funcion no me actualiza la tabla autores_libros
+    public static function buscarUltimoLibro():int
+    {
+        $sql = 'SELECT MAX(id) as id FROM libros';
         $cnx = ConectarBD::conectar();
         $consulta = $cnx->prepare($sql);
-        ConectarBD::escribir(
-            sql: $sql,
-            params: []
-        );
-        $consulta = $cnx->prepare($sql);
         $consulta->execute();
-        return $consulta->fetchAll(PDO::FETCH_ASSOC)[0]["id"];
 
+        $resultado = $consulta->fetch(PDO::FETCH_ASSOC);
+
+        return $resultado['id']
     }
 
     public static function actualizarEstado(Serializador $instancia): void

@@ -34,7 +34,37 @@ class LibroController implements InterfaceController
 
     public static function crear(array $parametros): array
     {
-        $libro = Libro::deserializar($parametros);
+        var_dump($parametros);
+        $parametros['generos'] = GeneroDAO::encontrarUno($parametros['generos']['id']);
+        $parametros['categorias'] = CategoriaDAO::encontrarUno($parametros['categorias']['id']);
+        $parametros['editoriales'] = EditorialDAO::encontrarUno($parametros['editoriales']['id']);
+        
+        $autores = [];
+
+        // vemos si existe un autor segun su id y luego iteramos si es un arreglo
+        if (isset($parametros['autor']) && is_array($parametros['autor'])) {
+            foreach ($parametros['autor'] as $autorData) {
+                if (isset($autorData['id'])) {
+                    $autor = AutorDAO::encontrarUno($autorData['id']);
+                    if ($autor !== null) {
+                        $autores[] = $autor;
+                    }
+                }
+            }
+        }
+        $parametros['autorList'] = $autores;
+        $libro = new Libro(
+            id: null,
+            titulo: $parametros['titulo'],
+            autores: $parametros['autorList'],
+            editoriales: $parametros['editoriales'],
+            cant_paginas: $parametros['cant_paginas'],
+            anio: $parametros['anio'],
+            generos: $parametros['generos'],
+            categorias: $parametros['categorias'],
+            estado: 'Activo',
+        );
+
         LibroDAO::crear($libro);
         return $libro->serializar();
     }

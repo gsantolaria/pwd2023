@@ -62,7 +62,7 @@ export default {
       try {
         const response = await axios.get('http://127.0.0.1:8001/apiv1/libros');
         this.libros = response.data;
-        console.log(response.data);
+        console.log(this.libros);
       } catch (error) {
         console.error(error);
       }

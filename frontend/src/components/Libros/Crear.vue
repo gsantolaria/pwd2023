@@ -8,7 +8,6 @@
             </div>
             <div class="form-group">
                 <label for="autor">Autor:</label>
-                <!-- <input id="autor" v-model="autorBuscado" @input="buscarAutores" required> -->
                 <select v-model="libro.autor" multiple required>
                     <option v-for="autor in autores" :key="autor.id" :value="autor.id">{{ autor.nombre_apellido }}</option>
                 </select>
@@ -21,31 +20,31 @@
             </div>
             <div class="form-group">
                 <label for="editorial">Editorial:</label>
-                <select v-model="libro.editorial" required>
-                    <option v-for="editorial in editoriales" :key="editorial.id" :value="editorial.id">
+                <select v-model="libro.editoriales" required>
+                    <option v-for="editorial in editoriales" :key="editorial.id" :value="{ id: editorial.id, nombre: editorial.nombre }">
                         {{ editorial.nombre }}
                     </option>
                 </select>
             </div>
             <div class="form-group">
                 <label for="categoria">Categoría:</label>
-                <select v-model="libro.categoria" required>
-                    <option v-for="categoria in categorias" :key="categoria.id" :value="categoria.id">
+                <select v-model="libro.categorias" required>
+                    <option v-for="categoria in categorias" :key="categoria.id" :value="{ id: categoria.id, descripcion: categoria.descripcion }">
                         {{ categoria.descripcion }}
                     </option>
                 </select>
             </div>
             <div class="form-group">
                 <label for="genero">Género:</label>
-                <select v-model="libro.genero" required>
-                    <option v-for="genero in generos" :key="genero.id" :value="genero.id">
+                <select v-model="libro.generos" required>
+                    <option v-for="genero in generos" :key="genero.id" :value="{ id: genero.id, descripcion: genero.descripcion }">
                         {{ genero.descripcion }}
                     </option>
                 </select>
             </div>
             <div class="form-group">
                 <label for="anio">Año de publicación:</label>
-                <input type="number" id="anio" v-model="libro.anioPublicacion" required>
+                <input type="number" id="anio" v-model="libro.anio" required>
             </div>
             <div class="form-group">
                 <label for="cant_paginas">Cantidad de páginas:</label>
@@ -70,7 +69,7 @@ export default {
                 genero: null,
                 editorial: null,
                 categoria: null,
-                anioPublicacion: null,
+                anio: null,
                 cant_paginas: null
             },
             editoriales: [],
@@ -109,10 +108,19 @@ export default {
             const nuevoLibro = {
                 titulo: this.libro.titulo,
                 autor: Array.isArray(this.libro.autor) ? this.libro.autor : [this.libro.autor],
-                editorial: this.libro.editorial,
-                categoria: this.libro.categoria,
-                genero: this.libro.genero,
-                anioPublicacion: this.libro.anioPublicacion,
+                editoriales: {
+                    id: this.libro.editoriales.id,
+                    nombre: this.libro.editoriales.nombre
+                },
+                generos: {
+                    id: this.libro.generos.id,
+                    nombre: this.libro.generos.descripcion
+                },
+                categorias: {
+                    id: this.libro.categorias.id,
+                    nombre: this.libro.categorias.descripcion
+                },
+                anio: this.libro.anio,
                 cant_paginas: this.libro.cant_paginas
             };
             console.log(nuevoLibro);

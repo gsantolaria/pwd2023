@@ -12,10 +12,10 @@ final class ConectarBD
 
     public static function conectar(): PDO
     {
-        /*$db = "pwd2023";
+        /* $db = "pwd2023";
         $host = "pgsql:host=192.168.20.1; port=5433; dbname=$db";
         $user = "pwduser";
-        $pass = "pwdpass";*/
+        $pass = "pwdpass"; */
         $db = $_ENV['DB_NAME'];
         $host = "pgsql:host=db; port=5432; dbname=$db";
         $user = $_ENV['DB_USER'];
