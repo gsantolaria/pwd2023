@@ -91,11 +91,13 @@ class LibroDAO implements InterfaceDAO
 
     public static function actualizar(Serializador $instancia): void
     {
+        var_dump($instancia);
         $params = $instancia->serializar();
+        var_dump($params);
         
         $sql = 'UPDATE libros SET titulo =:titulo, id_genero = :id_genero, id_categoria = :id_categoria, 
-        cant_paginas = :cant_paginas, anio = :anio, estado = :estado, id_editorial = :id_editorial 
-        WHERE id=:id';  
+                cant_paginas = :cant_paginas, anio = :anio, estado = :estado, id_editorial = :id_editorial 
+                WHERE id=:id';  
         ConectarBD::escribir(
             sql: $sql,
             params: [

@@ -43,25 +43,34 @@ class LibroController implements InterfaceController
     {
         var_dump($parametros);
         //$libro = Libro::deserializar($parametros);
-        $parametros['generos'] = GeneroDAO::encontrarUno($parametros['id']);
-        $parametros['categorias'] = CategoriaDAO::encontrarUno($parametros['id']);
-        $parametros['editoriales'] = EditorialDAO::encontrarUno($parametros['id']);
+        $parametros['generos'] = GeneroDAO::encontrarUno($parametros['generos']['id']);
+        $parametros['categorias'] = CategoriaDAO::encontrarUno($parametros['categorias']['id']);
+        $parametros['editoriales'] = EditorialDAO::encontrarUno($parametros['editoriales']['id']);
         
         $autores = [];
 
-        if (is_array($parametros['id'])) {
-            foreach ($parametros['id'] as $idAutor) {
+        // vemos si existe un autor segun su id y luego iteramos si es un arreglo
+        if (isset($parametros['autor']) && is_array($parametros['autor'])) {
+            foreach ($parametros['autor'] as $autorData) {
+                if (isset($autorData['id'])) {
+                    $autor = AutorDAO::encontrarUno($autorData['id']);
+                    if ($autor !== null) {
+                        $autores[] = $autor;
+                    }
+                }
+            }
+        }
+        /* if (is_array($parametros['autor']['id'])) {
+            foreach ($parametros['autor']['id'] as $idAutor) {
                 $autor = AutorDAO::encontrarUno($idAutor);
                 if ($autor !== null) {
                     $autores[] = $autor;
                 }
             }
-        }
-
+        } */
         $parametros['autorList'] = $autores;
         $libro = new Libro(
-        
-            id: null,
+            id: $parametros['id'],
             titulo: $parametros['titulo'],
             autores: $parametros['autorList'],
             editoriales: $parametros['editoriales'],

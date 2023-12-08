@@ -25,8 +25,9 @@ class AutorDAO implements InterfaceDAO {
         if (count($autor) === 0) {
             return null;
         } else {
-            $autor [] = Autor::deserializar($autor[0]);
-            return $autor;
+            //$autor [] = Autor::deserializar($autor[0]);
+            // comento esta linea porque segun la interfaz tengo que devolver un obj autor y no un arreglo de objetos autores
+            return Autor::deserializar($autor[0]);
         }
     }
 

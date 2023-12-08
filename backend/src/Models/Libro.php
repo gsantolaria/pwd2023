@@ -150,7 +150,7 @@ class Libro extends ModelBase
     static function deserializar(array $datos): ModelBase
     {
         return new Self(
-            id: $datos['id'] === null ? 0 : $datos['id'],
+            id: $datos['id'],
             titulo: $datos['titulo'],
             autores: $datos['autores'],
             editoriales: $datos['editorial'],

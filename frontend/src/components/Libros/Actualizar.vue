@@ -59,6 +59,7 @@ export default {
             const datosLibro = {
                 id: this.libro.id,
                 titulo: this.libro.titulo,
+                autor: this.libro.autores,
                 editoriales: {
                     id: this.libro.editoriales.id,
                     nombre: this.libro.editoriales.nombre
@@ -75,7 +76,7 @@ export default {
                 anio: this.libro.anio,
                 estado: this.libro.estado
             };
-
+            console.log(datosLibro);
             await axios.put(`http://127.0.0.1:8001/apiv1/libros/actualizar/${this.$route.params.id}`, datosLibro);
             this.$router.push({ name: 'Libros' });
 
@@ -85,28 +86,7 @@ export default {
         },
     },
 };    
-    /* methods: {
-        async obtenerDetallesLibro(libroId) {
-            try {
-                const response = await axios.get('http://127.0.0.1:8001/apiv1/libros/' + this.$route.params.id);
-                this.libro = response.data;
-                
-            } catch (error) {
-                console.error(error);
-            }
-        },
-        async guardarCambios() {
-            try {
-                console.log(this.libro);
-                await axios.put('http://127.0.0.1:8001/apiv1/libros/actualizar/' + this.$route.params.id, this.libro);
-                this.$router.push({ name: 'Libros' });
-            
-            } catch (error) {
-                console.error(error);
-            }
-        },
-    },
-}; */
+
 </script>
 
 <style scoped>
