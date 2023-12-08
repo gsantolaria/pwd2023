@@ -66,12 +66,12 @@ class LibroDAO implements InterfaceDAO
             sql: $sql,
             params: [
                 ':titulo' => $params['titulo'],
-                ':id_genero' => $params['generos']->getId(),
-                ':id_categoria' => $params['categorias']->getId(),
+                ':id_genero' => $params['genero']['id'],
+                ':id_categoria' => $params['categoria']['id'],
                 ':cant_paginas' => $params['cant_paginas'],
                 ':anio' => $params['anio'],
                 ':estado' => $params['estado'],
-                ':id_editorial' => $params['editoriales']->getId(),
+                ':id_editorial' => $params['editorial']['id'],
             ]
         );
         
@@ -82,7 +82,7 @@ class LibroDAO implements InterfaceDAO
                 sql: $sql,
                 params: [
                     ':id_libro' => static::buscarUltimoLibro(),
-                    ':id_autor' => $autor[0],
+                    ':id_autor' => $autor['id'],
                 ]
             );
         }
@@ -95,19 +95,18 @@ class LibroDAO implements InterfaceDAO
         
         $sql = 'UPDATE libros SET titulo =:titulo, id_genero = :id_genero, id_categoria = :id_categoria, 
         cant_paginas = :cant_paginas, anio = :anio, estado = :estado, id_editorial = :id_editorial 
-        WHERE id=:id';
-        var_dump($sql);
+        WHERE id=:id';  
         ConectarBD::escribir(
             sql: $sql,
             params: [
                 ':id' => $params['id'],
                 ':titulo' => $params['titulo'],
-                ':id_genero' => $params['genero']->getId(),
-                ':id_categoria' => $params['categoria']->getId(),
+                ':id_genero' => $params['generos']['id'],
+                ':id_categoria' => $params['categorias']['id'],
                 ':cant_paginas' => $params['cant_paginas'],
                 ':anio' => $params['anio'],
                 ':estado' => $params['estado'],
-                ':id_editorial' => $params['editorial']->getId(),
+                ':id_editorial' => $params['editoriales']['id'],
             ]
         );
     }
