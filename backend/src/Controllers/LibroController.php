@@ -78,6 +78,7 @@ class LibroController implements InterfaceController
             anio: $parametros['anio'],
             generos: $parametros['generos'],
             categorias: $parametros['categorias'],
+            estado: $parametros['estado'],
         );
 
         LibroDAO::actualizar($libro);

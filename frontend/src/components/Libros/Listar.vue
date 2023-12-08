@@ -22,24 +22,19 @@
         <tr v-for="libro in librosFiltrados" :key="libro.id">
           <td>{{ libro.id }}</td>
           <td>{{ libro.titulo }}</td>
-          <!-- en consola veo que me llega un array vacio de autores, editoriales y generos, revisar como lo traigo de la bbdd -->
-          <td><ul>
-                <li v-for="autor in libro.autores" :key="autor.id">{{ autor.nombre_apellido }}</li>
-              </ul>
-          </td> 
+          <!-- en consola veo que me llega un array vacio de autores, editoriales y generos, revisar como lo traigo de la bbdd, SOLUCIONADO -->
+          <td>{{ libro.autores.map(autor => autor.nombre_apellido).join(' ') }}</td> 
           <td>{{ libro.editoriales.nombre }}</td>
           <td>{{ libro.cant_paginas }}</td>
           <td>{{ libro.anio }}</td>
           <td>{{ libro.estado }}</td>
           <td>
-              <!-- <button @click="editarLibro(libro.id)" class="boton editar">Editar</button> -->
               <router-link :to="{ name: 'ActualizarLibro', params: { id: libro.id } }">
                 <Boton texto="editar" v-bind:class="{ edit: true }"></Boton>
               </router-link>
               <router-link :to="{ name: 'EliminarLibro', params: { id: libro.id } }">
                 <Boton texto="eliminar" v-bind:class="{ warning: true }"></Boton>
               </router-link>
-              <!-- <button @click="eliminarLibro(libro.id)" class="boton eliminar">Eliminar</button> -->
           </td>
         </tr>
       </tbody>
