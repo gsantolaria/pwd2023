@@ -9,7 +9,7 @@
             <div class="form-group">
                 <label for="autor">Autor:</label>
                 <select v-model="libro.autor" multiple required>
-                    <option v-for="autor in autores" :key="autor.id" :value="autor.id">{{ autor.nombre_apellido }}</option>
+                    <option v-for="autor in autores" :key="autor.id" :value="{id: autor.id}">{{ autor.nombre_apellido }}</option>
                 </select>
                 <button @click="mostrarFormularioAutorNuevo">Agregar Nuevo Autor</button>
             </div>
@@ -58,6 +58,7 @@
 </template>
 
 <script lang="ts">
+import Boton from '../Boton.vue';
 import axios from 'axios';
 
 export default {

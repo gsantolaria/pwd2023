@@ -61,7 +61,7 @@ class LibroDAO implements InterfaceDAO
     public static function crear(Serializador $instancia): void
     {
         $params = $instancia->serializar();
-        var_dump($params['autores']);
+        
         $sql = 'INSERT INTO libros (titulo, id_genero, id_categoria, cant_paginas, anio, estado, id_editorial) 
         VALUES (:titulo, :id_genero, :id_categoria, :cant_paginas, :anio, :estado, :id_editorial)';
         ConectarBD::escribir(
@@ -77,7 +77,9 @@ class LibroDAO implements InterfaceDAO
             ]
         );
 
-        $idLibro = static::buscarUltimoLibro();    
+        var_dump($params['autores']);
+        $idLibro = static::buscarUltimoLibro();
+        var_dump($idLibro);   
         
         foreach ($params['autores'] as $autor) {
             $sql3 = 'INSERT INTO autores_libros (id_autor, id_libro) 
@@ -125,8 +127,8 @@ class LibroDAO implements InterfaceDAO
         $consulta->execute();
 
         $resultado = $consulta->fetch(PDO::FETCH_ASSOC);
-
-        return $resultado['id']
+        //var_dump($resultado['id']);
+        return $resultado['id'];
     }
 
     public static function actualizarEstado(Serializador $instancia): void

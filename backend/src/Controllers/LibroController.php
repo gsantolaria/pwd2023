@@ -52,11 +52,12 @@ class LibroController implements InterfaceController
                 }
             }
         }
-        $parametros['autorList'] = $autores;
+        $parametros['autores'] = $autores;
+        var_dump($parametros['autores']);
         $libro = new Libro(
             id: null,
             titulo: $parametros['titulo'],
-            autores: $parametros['autorList'],
+            autores: $parametros['autores'],
             editoriales: $parametros['editoriales'],
             cant_paginas: $parametros['cant_paginas'],
             anio: $parametros['anio'],
