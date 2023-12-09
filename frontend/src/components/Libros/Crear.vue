@@ -11,12 +11,12 @@
                 <select v-model="libro.autor" multiple required>
                     <option v-for="autor in autores" :key="autor.id" :value="{id: autor.id}">{{ autor.nombre_apellido }}</option>
                 </select>
-                <button @click="mostrarFormularioAutorNuevo">Agregar Nuevo Autor</button>
+                <button @click.prevent="mostrarFormularioAutorNuevo">Agregar nuevo autor</button>
             </div>
             <div v-if="mostrarFormularioNuevoAutor">
                 <label for="nuevoAutor">Nuevo Autor:</label>
                 <input id="nuevoAutor" v-model="nuevoAutor" required>
-                <button @click="agregarNuevoAutor">Guardar Autor</button>
+                <button @click.prevent="agregarNuevoAutor">Guardar Autor</button>
             </div>
             <div class="form-group">
                 <label for="editorial">Editorial:</label>
@@ -25,6 +25,8 @@
                         {{ editorial.nombre }}
                     </option>
                 </select>
+                <button @click.prevent="mostrarFormulario('editorial')">Agregar nueva editorial</button>
+                <crear-editorial v-if="mostrarEditorial" v-model="libro.editoriales"></crear-editorial>
             </div>
             <div class="form-group">
                 <label for="categoria">Categoría:</label>
@@ -33,6 +35,8 @@
                         {{ categoria.descripcion }}
                     </option>
                 </select>
+                <button @click.prevent="mostrarFormulario('categoria')">Agregar nueva categoria</button>
+                <crear-categoria v-if="mostrarCategoria" v-model="libro.categorias"></crear-categoria>
             </div>
             <div class="form-group">
                 <label for="genero">Género:</label>
@@ -41,6 +45,8 @@
                         {{ genero.descripcion }}
                     </option>
                 </select>
+                <button @click.prevent="mostrarFormulario('genero')">Agregar nuevo genero</button>
+                <crear-genero v-if="mostrarGenero" v-model="libro.generos"></crear-genero>
             </div>
             <div class="form-group">
                 <label for="anio">Año de publicación:</label>
@@ -52,6 +58,9 @@
             </div>
             <div>
                 <button type="submit" class="btn-crear">Crear Libro</button>
+                <router-link to="/libros" class="routerlink">
+                    <button class="btn-primary">Volver</button>
+                </router-link>
             </div>
         </form>
     </div>
@@ -60,8 +69,17 @@
 <script lang="ts">
 import Swal from 'sweetalert2';
 import axios from 'axios';
+import CrearEditorial from '../Editoriales/CrearEditorial.vue';
+import CrearCategoria from '../Categorias/CrearCategoria.vue';
+import CrearGenero from '../Generos/CrearGenero.vue';
+
 
 export default {
+    components: {
+        CrearEditorial,
+        CrearCategoria,
+        CrearGenero,
+  },
     data() {
         return {
             libro: {
@@ -77,7 +95,11 @@ export default {
             categorias: [],
             generos: [],
             autorBuscado: '', 
-            autores: [], 
+            autores: [],
+            mostrarFormulario: null,
+            mostrarEditorial: false,
+            mostrarCategoria: false,
+            mostrarGenero: false,
             mostrarFormularioNuevoAutor: false,
             nuevoAutor: '',
         };
@@ -106,11 +128,30 @@ export default {
     methods: {
         mostrarCartelExito() {
             Swal.fire({
+                toast: true,
+                position: "top-end",
                 icon: 'success',
                 title: 'Libro creado con éxito',
                 showConfirmButton: false,
                 timer: 1600,
             });
+        },
+        mostrarFormulario(tipo) {
+            this.mostrarEditorial = false;
+            this.mostrarCategoria = false;
+            this.mostrarGenero = false;
+
+            switch (tipo) {
+                case 'editorial':
+                this.mostrarEditorial = true;
+                break;
+                case 'categoria':
+                this.mostrarCategoria = true;
+                break;
+                case 'genero':
+                this.mostrarGenero = true;
+                break;
+            }
         },
         crearLibro() {
             // probamos esto porque me esta llegando null en vez de un array de autores
@@ -166,12 +207,34 @@ export default {
                 } else {
                     // si el autor no existe, crea un nuevo autor y obtenemos el ID
                     try {
-                        const response = await axios.post('http://localhost:8001/apiv1/autores', { nombre_apellido: this.nuevoAutor });
-                        this.libro.autor = response.data.id;
-                        console.log(this.libro.autor);
+                        const response = await axios.post('http://localhost:8001/apiv1/autores/nuevo', {id: 0, nombre_apellido: this.nuevoAutor});
+                        const nuevoAutor = response.data;
+
+                        this.libro.autores.push(nuevoAutor.id);
+                        this.autores.push(nuevoAutor);
+
+                        this.nuevoAutor = '';
+                        this.mostrarFormularioNuevoAutor = false;
+                        this.listarAutores();
+
+                        Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Autor creado con éxito',
+                        showConfirmButton: false,
+                        timer: 1600,
+                        });
+                        //console.log(this.libro.autor);
                     } catch (error) {
                         console.error(error);
-                        alert('Error al agregar el nuevo autor');
+                        Swal.fire({
+                            toast: true,
+                            position: "top-end",
+                            icon: 'error',
+                            title: 'Error al crear el autor',
+                            text: 'Hubo un problema, intenta de nuevo.',
+                        });
                         return;
                     }
                 }
@@ -183,55 +246,69 @@ export default {
 </script>
 
 <style scoped>
-.crear-libro {
-    max-width: 400px;
-    margin: 0 auto;
-    padding: 20px;
-    border: 1px solid #adcfbe;
-    border-radius: 5px;
-    background-color: #fff;
-}
+    .crear-libro {
+        max-width: 400px;
+        margin: 0 auto;
+        padding: 20px;
+        border: 1px solid #adcfbe;
+        border-radius: 5px;
+        background-color: #fff;
+    }
 
-h2 {
-    margin-top: 0;
-}
+    h2 {
+        margin-top: 0;
+    }
 
-.form-group {
-    margin-bottom: 10px;
-    display: block;
-}
+    .form-group {
+        margin-bottom: 10px;
+        display: block;
+    }
 
-label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-}
+    label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
 
-button {
-    margin-top: 5px;
-}
+    button {
+        margin-top: 5px;
+    }
 
-input[type="text"],
-select {
-    width: 80%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 3px;
-}
+    input[type="text"],
+    select {
+        width: 80%;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+    }
 
-.btn-crear {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    background-color: #079d46;
-    color: #fff;
-    font-weight: bold;
-    cursor: pointer;
-}
+    .btn-crear {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        background-color: #079d46;
+        color: #fff;
+        font-weight: bold;
+        cursor: pointer;
+    }
 
-.btn-crear:hover {
-    background-color: #079d46;
-}
+    .btn-crear:hover {
+        background-color: #079d46;
+    }
+    .btn-primary {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        background-color: rgb(33, 112, 177);
+        color: #fff;
+        font-weight: bold;
+        cursor: pointer;
+    }
+    .routerlink{
+        text-decoration: none;
+    }
 </style>

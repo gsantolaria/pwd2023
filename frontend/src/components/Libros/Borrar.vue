@@ -45,6 +45,8 @@ export default {
         },
         mostrarCartelExito() {
             Swal.fire({
+                toast: true,
+                position: "top-end",
                 icon: 'success',
                 title: 'Libro eliminado con éxito',
                 showConfirmButton: false,

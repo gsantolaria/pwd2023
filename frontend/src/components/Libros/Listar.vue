@@ -145,6 +145,7 @@ tr {
 }
 
 .crear {
+  text-decoration: none;
   background: #079d46;
   padding: 10px 20px;
   color: #fff

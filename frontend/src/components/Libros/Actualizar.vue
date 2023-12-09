@@ -16,7 +16,7 @@
       <label for="editorial">Editorial:</label>
       <select v-model="libro.editoriales.id" id="editorial" class="form-control">
         <option v-for="editorial in editoriales" :key="editorial.id" :value="editorial.id">{{ editorial.nombre }}</option>
-        <option value="nuevo">Crear Nueva Editorial</option>
+        <!-- <option value="nuevo">Crear Nueva Editorial</option> -->
       </select>
     </div>
 
@@ -24,7 +24,7 @@
       <label for="categoria">Categoría:</label>
       <select v-model="libro.categorias.id" id="categoria" class="form-control">
         <option v-for="categoria in categorias" :key="categoria.id" :value="categoria.id">{{ categoria.descripcion }}</option>
-        <option value="nuevo">Crear Nueva Categoría</option>
+        <!-- <option value="nuevo">Crear Nueva Categoría</option> -->
       </select>
     </div>
 
@@ -32,7 +32,7 @@
       <label for="genero">Género:</label>
       <select v-model="libro.generos.id" id="genero" class="form-control">
         <option v-for="genero in generos" :key="genero.id" :value="genero.id">{{ genero.descripcion }}</option>
-        <option value="nuevo">Crear Nuevo Género</option>
+        <!-- <option value="nuevo">Crear Nuevo Género</option> -->
       </select>
     </div>
 
@@ -154,6 +154,8 @@ export default {
         },
         mostrarCartelExito() {
             Swal.fire({
+                toast: true,
+                position: "top-end",
                 icon: 'success',
                 title: 'Libro editado con éxito',
                 showConfirmButton: false,
