@@ -7,6 +7,7 @@ import LibrosListar from '../components/Libros/Listar.vue';
 import LibrosCrear from '../components/Libros/Crear.vue';
 import LibrosActualizar from '../components/Libros/Actualizar.vue';
 import LibrosBorrar from '../components/Libros/Borrar.vue';
+import LibrosPrestar from '../components/Prestamos/Prestar.vue';
 
 
 const router = createRouter({
@@ -56,6 +57,11 @@ const router = createRouter({
       path: '/libros/:id',
       name: 'EliminarLibro',
       component: LibrosBorrar
+    },
+    {
+      path: '/prestamos',
+      name: 'PrestarLibro',
+      component: LibrosPrestar
     },
   ]
 })
