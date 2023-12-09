@@ -172,7 +172,6 @@ tr .acciones {
     margin-right: 8px;
     font-size: 14px;
     cursor: pointer;
-    border: 1px solid #ccc;
     border-radius: 4px;
   }
   .editar {

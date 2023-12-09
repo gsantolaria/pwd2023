@@ -1,6 +1,6 @@
 
 <template>
-  <h1>listado de Socios</h1>
+  <h1>Listado de Socios</h1>
   <input v-model="busqueda" @input="filtrarSocios" type="text" placeholder="Buscar socios...">
   <RouterLink class="crear" to="socios/crear"><img src="../../assets/editar.svg" alt="">Crear Socio</RouterLink>
 
@@ -42,6 +42,7 @@
 <script lang="ts">
 import axios from 'axios';
 import Boton from '../Boton.vue';
+import Swal from 'sweetalert2'; 
 
 export default {
   components: { Boton },
@@ -50,7 +51,7 @@ export default {
       items: [],
       socios: [],
       busqueda: '',
-      activo: 'activo',
+      activo: 'todos',
     };
   },
   created() {
@@ -61,39 +62,63 @@ export default {
       try {
         const response = await axios.get('http://127.0.0.1:8001/apiv1/socios');
         this.socios = response.data;
-        console.log(this.socios);
+        //console.log(this.socios);
       } catch (error) {
         console.error(error);
       }
     },
-    confirmarEliminar(id) {
-      if (window.confirm('¿Seguro que deseas eliminar este socio?')) {
-        this.borrar(id);
-      }
+    filtrarSocios() {
+      const busqueda = this.busqueda.toLowerCase();
+      const estadoFiltrado = this.activo === 'todos' ? this.socios : this.socios.filter(socio => socio.activo === (this.activo === 'activo' ? 1 : 0));
+      
+      return estadoFiltrado.filter(socio => {
+        const nombre = socio.nombre_apellido.toLowerCase();
+        const direccion = socio.direccion.toLowerCase();
+        return nombre.includes(busqueda) || direccion.includes(busqueda);
+      });
     },
     borrar(id) {
       axios
         .delete('http://localhost:8001/apiv1/socios/delete/' + id)
         .then(response => {
           if (response.data === null) {
-            alert('Socio eliminado con éxito');
+            Swal.fire({
+              icon: 'success',
+              title: 'Socio eliminado con éxito',
+              showConfirmButton: false,
+              timer: 1500,
+            });
           }
           this.listarSocios();
         })
         .catch(error => {
-          alert('El socio no puede eliminarse porque tiene registro de prestamos');
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'El socio no puede eliminarse porque tiene registros de préstamos.',
+            });
         });
     },
-    filtrarSocios() {
-      const busqueda = this.busqueda.toLowerCase();
-      return this.socios.filter(socio => {
-        const nombre = socio.nombre_apellido.toLowerCase();
-        const direccion = socio.direccion.toLowerCase();
-        return nombre.includes(busqueda) || direccion.includes(busqueda);
-      });
+    confirmarEliminar(id) {
+      /* if (window.confirm('¿Seguro que deseas eliminar este socio?')) {
+        this.borrar(id);
+      } */
+        Swal.fire({
+          title: '¿Seguro que deseas eliminar este socio?',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#d33',
+          cancelButtonColor: '#3085d6',
+          confirmButtonText: 'Sí, eliminar',
+          cancelButtonText: 'Cancelar',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.borrar(id);
+          }
+        });
+      },
     },
-  },
-};
+  };
 </script>
 
 <style scoped>

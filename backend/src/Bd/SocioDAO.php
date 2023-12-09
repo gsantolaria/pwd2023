@@ -52,7 +52,7 @@ class SocioDAO implements InterfaceDAO
     public static function actualizar(Serializador $instancia): void
     {
         $params = $instancia->serializar();
-        $sql = 'UPDATE socios SET nombre_apellido = :nombre_apellido, telefono = :telefono, direccion = :direccion, estado = :estado WHERE id=:id';
+        $sql = 'UPDATE socios SET nombre_apellido = :nombre_apellido, telefono = :telefono, direccion = :direccion, activo = :activo WHERE id=:id';
         ConectarBD::escribir(
             sql: $sql,
             params: [
@@ -60,7 +60,7 @@ class SocioDAO implements InterfaceDAO
                 ':nombre_apellido' => $params['nombre_apellido'],
                 ':telefono' => $params['telefono'],
                 ':direccion' => $params['direccion'],
-                ':estado' => $params['estado']
+                ':activo' => $params['activo']
             ]
         );
     }
