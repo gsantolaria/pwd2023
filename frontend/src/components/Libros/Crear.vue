@@ -58,7 +58,7 @@
 </template>
 
 <script lang="ts">
-import Boton from '../Boton.vue';
+import Swal from 'sweetalert2';
 import axios from 'axios';
 
 export default {
@@ -104,6 +104,14 @@ export default {
             .catch(error => console.error(error));
     },
     methods: {
+        mostrarCartelExito() {
+            Swal.fire({
+                icon: 'success',
+                title: 'Libro creado con éxito',
+                showConfirmButton: false,
+                timer: 1600,
+            });
+        },
         crearLibro() {
             // probamos esto porque me esta llegando null en vez de un array de autores
             const nuevoLibro = {
@@ -124,12 +132,13 @@ export default {
                 anio: this.libro.anio,
                 cant_paginas: this.libro.cant_paginas
             };
-            console.log(nuevoLibro);
+            //console.log(nuevoLibro);
             axios
                 .post('http://localhost:8001/apiv1/libros/nuevo', nuevoLibro)
                 .then(response => {
                     console.log(response.data);
-                    alert('Libro creado exitosamente');
+                    this.mostrarCartelExito();
+                    //alert('Libro creado exitosamente');
                     this.$router.push('/libros')
                 })
                 .catch(error => {
@@ -170,7 +179,6 @@ export default {
                 this.listarAutores();
             }
         },
-        
     };
 </script>
 

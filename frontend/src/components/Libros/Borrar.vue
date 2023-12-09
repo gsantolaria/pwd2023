@@ -5,26 +5,18 @@
 
     
     <button @click="confirmarEliminar" class="boton eliminar">Confirmar eliminaciòn</button>
-    
-    <transition name="fade" mode="out-in">
-      <div v-if="libroEliminado" class="cartel-exito">
-        <p>Libro eliminado con éxito</p>
-        <button @click="volverALibros" class="boton volver">Volver a Libros</button>
-      </div>
-    </transition>
 
     </div>
 </template>
 
 <script lang="ts">
-
+import Swal from 'sweetalert2';
 import axios from 'axios';
 
 export default {
     data() {
     return {
         libro: {},
-        libroEliminado: false,
         };
     },
     created() {
@@ -44,15 +36,20 @@ export default {
             try {
                 // hAcer un DELETE del libro, aca seguro rompemos la consistencia de la bbdd si borramos asi nomas
                 await axios.delete(`http://127.0.0.1:8001/apiv1/libros/${this.libro.id}`);
-                this.libroEliminado = true;
-                
+                this.mostrarCartelExito();
+                this.$router.push({ name: 'Libros' });
+
             } catch (error) {
                 console.error(error);
             }
         },
-        volverALibros() {
-            // probando redirigir a la página de listado de libros después de eliminar
-            this.$router.push({ name: 'Libros' });
+        mostrarCartelExito() {
+            Swal.fire({
+                icon: 'success',
+                title: 'Libro eliminado con éxito',
+                showConfirmButton: false,
+                timer: 1600,
+            });
         },
     },
 };

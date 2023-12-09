@@ -61,6 +61,7 @@
 </template>
 
 <script lang="ts">
+import Swal from 'sweetalert2';
 import axios from 'axios';
 
 export default {
@@ -132,6 +133,7 @@ export default {
             console.log(datosLibro);
             await axios.put(`http://127.0.0.1:8001/apiv1/libros/actualizar/${this.$route.params.id}`, datosLibro);
             
+            this.mostrarCartelExito();
             this.$router.push({ name: 'Libros' });
 
             } catch (error) {
@@ -150,8 +152,16 @@ export default {
             } */
 
         },
+        mostrarCartelExito() {
+            Swal.fire({
+                icon: 'success',
+                title: 'Libro editado con éxito',
+                showConfirmButton: false,
+                timer: 1600,
+            });
+       },
     },
-};    
+}    
 
 </script>
 
@@ -168,6 +178,20 @@ export default {
         width: 100%;
         padding: 8px;
         box-sizing: border-box;
+    }
+    .boton {
+        padding: 8px 16px;
+        margin-right: 8px;
+        font-size: 14px;
+        cursor: pointer;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+    .guardar {
+        background-color: #079d46;
+        color: #fff;
+        border: 1px solid #079d46;
+        cursor: pointer;
     }
 
 </style>
