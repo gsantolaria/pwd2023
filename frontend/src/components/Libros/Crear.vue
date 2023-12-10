@@ -25,8 +25,16 @@
                         {{ editorial.nombre }}
                     </option>
                 </select>
-                <button @click.prevent="mostrarFormulario('editorial')">Agregar nueva editorial</button>
-                <crear-editorial v-if="mostrarEditorial" v-model="libro.editoriales"></crear-editorial>
+                <button @click.prevent="abrirPopup('editorial')">Agregar nueva editorial</button>
+                <crear-elemento-popup
+                    v-if="mostrarPopupEdi"
+                    titulo="Crear nueva editorial"
+                    etiqueta="Nombre de la editorial"
+                    tipo="editorial"
+                    :mostrar="mostrarPopupEdi"
+                    :guardar="guardarEditorial"
+                    :cerrar="cerrarPopupEdi">
+                </crear-elemento-popup>
             </div>
             <div class="form-group">
                 <label for="categoria">Categoría:</label>
@@ -35,8 +43,16 @@
                         {{ categoria.descripcion }}
                     </option>
                 </select>
-                <button @click.prevent="mostrarFormulario('categoria')">Agregar nueva categoria</button>
-                <crear-categoria v-if="mostrarCategoria" v-model="libro.categorias"></crear-categoria>
+                <button @click.prevent="abrirPopup('categoria')">Agregar nueva categoria</button>
+                <crear-elemento-popup
+                    v-if="mostrarPopupCat"
+                    titulo="Crear nueva categoria"
+                    etiqueta="Nombre de la categoria"
+                    tipo="categoria"
+                    :mostrar="mostrarPopupCat"
+                    :guardar="guardarCategoria"
+                    :cerrar="cerrarPopupCat">
+                </crear-elemento-popup>
             </div>
             <div class="form-group">
                 <label for="genero">Género:</label>
@@ -45,8 +61,16 @@
                         {{ genero.descripcion }}
                     </option>
                 </select>
-                <button @click.prevent="mostrarFormulario('genero')">Agregar nuevo genero</button>
-                <crear-genero v-if="mostrarGenero" v-model="libro.generos"></crear-genero>
+                <button @click.prevent="abrirPopup('genero')">Agregar nuevo genero</button>
+                <crear-elemento-popup
+                    v-if="mostrarPopupGen"
+                    titulo="Crear nuevo genero"
+                    etiqueta="Nombre del genero"
+                    tipo="genero"
+                    :mostrar="mostrarPopupGen"
+                    :guardar="guardarGenero"
+                    :cerrar="cerrarPopupGen">
+                </crear-elemento-popup>
             </div>
             <div class="form-group">
                 <label for="anio">Año de publicación:</label>
@@ -69,25 +93,21 @@
 <script lang="ts">
 import Swal from 'sweetalert2';
 import axios from 'axios';
-import CrearEditorial from '../Editoriales/CrearEditorial.vue';
-import CrearCategoria from '../Categorias/CrearCategoria.vue';
-import CrearGenero from '../Generos/CrearGenero.vue';
+import CrearElementoPopup from '../CrearElementoPopup.vue';
 
 
 export default {
     components: {
-        CrearEditorial,
-        CrearCategoria,
-        CrearGenero,
+        CrearElementoPopup,
   },
     data() {
         return {
             libro: {
                 titulo: '',
                 autor: [],
-                genero: null,
-                editorial: null,
-                categoria: null,
+                generos: null,
+                editoriales: null,
+                categorias: null,
                 anio: null,
                 cant_paginas: null
             },
@@ -96,12 +116,12 @@ export default {
             generos: [],
             autorBuscado: '', 
             autores: [],
-            mostrarFormulario: null,
-            mostrarEditorial: false,
-            mostrarCategoria: false,
-            mostrarGenero: false,
             mostrarFormularioNuevoAutor: false,
             nuevoAutor: '',
+            mostrarPopupEdi: false,
+            mostrarPopupCat: false,
+            mostrarPopupGen: false,
+            tipoElemento: "",
         };
     },
     mounted() {
@@ -136,25 +156,32 @@ export default {
                 timer: 1600,
             });
         },
-        mostrarFormulario(tipo) {
-            this.mostrarEditorial = false;
-            this.mostrarCategoria = false;
-            this.mostrarGenero = false;
-
+        abrirPopup(tipo) {
             switch (tipo) {
                 case 'editorial':
-                this.mostrarEditorial = true;
+                this.mostrarPopupEdi = true;
                 break;
                 case 'categoria':
-                this.mostrarCategoria = true;
+                this.mostrarPopupCat = true;
                 break;
                 case 'genero':
-                this.mostrarGenero = true;
+                this.mostrarPopupGen = true;
+                break;
+                default:
                 break;
             }
         },
+        cerrarPopupEdi() {
+            this.mostrarPopupEdi = false;
+        },
+        cerrarPopupCat() {
+            this.mostrarPopupCat = false;
+        },
+        cerrarPopupGen() {
+            this.mostrarPopupGen = false;
+        },
         crearLibro() {
-            // probamos esto porque me esta llegando null en vez de un array de autores
+            // probamos esto porque me estaba llegando null en vez de un array de autores
             const nuevoLibro = {
                 titulo: this.libro.titulo,
                 autor: Array.isArray(this.libro.autor) ? this.libro.autor : [this.libro.autor],
@@ -179,7 +206,7 @@ export default {
                 .then(response => {
                     console.log(response.data);
                     this.mostrarCartelExito();
-                    //alert('Libro creado exitosamente');
+                    //alert('Libro creado exitosamente') lo cambie por sweetalert2 que eran visualmente mas lindos;
                     this.$router.push('/libros')
                 })
                 .catch(error => {
@@ -203,7 +230,7 @@ export default {
                 if (autorExiste) {
                     // si el autor existe, asignamos el ID al libro
                     this.libro.autor = autorExiste.id;
-                    console.log(this.libro.autor);
+                    //console.log(this.libro.autor);
                 } else {
                     // si el autor no existe, crea un nuevo autor y obtenemos el ID
                     try {
@@ -215,15 +242,15 @@ export default {
 
                         this.nuevoAutor = '';
                         this.mostrarFormularioNuevoAutor = false;
-                        this.listarAutores();
+                        this.listarAutores(); // hice esta carga adicional pq a veces fallaba al crear el libro pq enviaba null
 
                         Swal.fire({
-                        toast: true,
-                        position: 'top-end',
-                        icon: 'success',
-                        title: 'Autor creado con éxito',
-                        showConfirmButton: false,
-                        timer: 1600,
+                            toast: true,
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'Autor creado con éxito',
+                            showConfirmButton: false,
+                            timer: 1600,
                         });
                         //console.log(this.libro.autor);
                     } catch (error) {
@@ -240,9 +267,111 @@ export default {
                 }
                 this.mostrarFormularioNuevoAutor = false;
                 this.listarAutores();
+        },
+        async guardarEditorial(nuevaEditorial) {
+            try {
+                const response = await axios.post('http://localhost:8001/apiv1/editoriales/nuevo', { id: 0, nombre: nuevaEditorial });
+                const nuevaEditorialGuardada = response.data;
+                
+                this.editoriales.push(nuevaEditorialGuardada);
+                this.libro.editoriales = { id: nuevaEditorialGuardada.id, nombre: nuevaEditorialGuardada.nombre };
+
+                axios.get('http://localhost:8001/apiv1/editoriales') // hice esta carga adicional pq a veces fallaba al crear el libro pq enviaba null
+                    .then(response => this.editoriales = response.data)
+                    .catch(error => console.error(error));
+
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    icon: 'success',
+                    title: `Editorial creada con éxito`,
+                    showConfirmButton: false,
+                    timer: 1600,
+                });
+            } catch (error) {
+                console.error(error);
+                
+                Swal.fire({
+                    toast: true,
+                    position: "top-end",
+                    icon: 'error',
+                    title: 'Error al crear la editorial',
+                    text: 'Hubo un problema, intenta de nuevo.',
+                });
+                } finally {
+                    this.cerrarPopupEdi();
             }
         },
-    };
+        async guardarGenero(nuevoGenero) {
+            try {
+                const response = await axios.post('http://localhost:8001/apiv1/generos/nuevo', { id: 0, descripcion: nuevoGenero });
+                const nuevoGeneroGuardado = response.data;
+
+                this.generos.push(nuevoGeneroGuardado);
+                this.libro.generos = { id: nuevoGeneroGuardado.id, descripcion: nuevoGeneroGuardado.descripcion };
+
+                axios.get('http://localhost:8001/apiv1/generos') // hice esta carga adicional pq a veces fallaba al crear el libro pq enviaba null
+                    .then(response => this.generos = response.data)
+                    .catch(error => console.error(error));
+
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    icon: 'success',
+                    title: `Genero creado con éxito`,
+                    showConfirmButton: false,
+                    timer: 1600,
+                });
+            } catch (error) {
+                console.error(error);
+                
+                Swal.fire({
+                    toast: true,
+                    position: "top-end",
+                    icon: 'error',
+                    title: 'Error al crear el genero',
+                    text: 'Hubo un problema, intenta de nuevo.',
+                });
+                } finally {
+                    this.cerrarPopupGen();
+            }
+        },
+        async guardarCategoria(nuevaCategoria) {
+            try {
+                const response = await axios.post('http://localhost:8001/apiv1/categorias/nuevo', { id: 0, descripcion: nuevaCategoria });
+                const nuevaCategoriaGuardada = response.data;
+
+                this.categorias.push(nuevaCategoriaGuardada);
+                this.libro.categorias = { id: nuevaCategoriaGuardada.id, descripcion: nuevaCategoriaGuardada.descripcion };
+
+                axios.get('http://localhost:8001/apiv1/categorias') // hice esta carga adicional pq a veces fallaba al crear el libro pq enviaba null
+                    .then(response => this.categorias = response.data)
+                    .catch(error => console.error(error));
+
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    icon: 'success',
+                    title: `Categoria creada con éxito`,
+                    showConfirmButton: false,
+                    timer: 1600,
+                });
+            } catch (error) {
+                console.error(error);
+                
+                Swal.fire({
+                    toast: true,
+                    position: "top-end",
+                    icon: 'error',
+                    title: 'Error al crear la categoria',
+                    text: 'Hubo un problema, intenta de nuevo.',
+                });
+                } finally {
+                    this.cerrarPopupCat();
+            }
+        },
+    },
+};
 </script>
 
 <style scoped>

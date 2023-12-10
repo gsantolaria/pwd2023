@@ -27,7 +27,7 @@ export default {
     padding: 10px;
 }
 .btn.primary {
-    background: rgb(33, 112, 177);
+    background: #2170b1;
     color: #fff;
 }
 .btn.edit {

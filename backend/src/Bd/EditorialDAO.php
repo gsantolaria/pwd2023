@@ -30,11 +30,11 @@ class EditorialDAO implements InterfaceDAO {
 
     public static function crear(Serializador $instancia): void {
         $params = $instancia->serializar();
-        $sql = 'INSERT INTO editoriales (id, nombre) VALUES (:id, :nombre)';
+        $sql = 'INSERT INTO editoriales (nombre) VALUES (:nombre)';
         ConectarBD::escribir(
             sql: $sql,
             params: [
-                ':id' => $params['id'],
+                //':id' => $params['id'],
                 ':nombre' => $params['nombre']
             ]
         );
