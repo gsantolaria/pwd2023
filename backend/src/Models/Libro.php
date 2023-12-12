@@ -153,7 +153,7 @@ class Libro extends ModelBase
             id: $datos['id'],
             titulo: $datos['titulo'],
             autores: $datos['autores'],
-            editoriales: $datos['editorial'],
+            editoriales: $datos['editorial'], //ojo con este cambio de editorial a editoriales cuando trabajas en el prestamo pq si falla lo otro volvelo para atras.
             cant_paginas: $datos['cant_paginas'],
             anio: $datos['anio'],
             generos: $datos['genero'],

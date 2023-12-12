@@ -77,9 +77,9 @@ class LibroDAO implements InterfaceDAO
             ]
         );
 
-        var_dump($params['autores']);
+        //var_dump($params['autores']);
         $idLibro = static::buscarUltimoLibro();
-        var_dump($idLibro);   
+        //var_dump($idLibro);   
         
         foreach ($params['autores'] as $autor) {
             $sql3 = 'INSERT INTO autores_libros (id_autor, id_libro) 

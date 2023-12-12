@@ -1,7 +1,7 @@
 <?php
-
 declare(strict_types=1);
 namespace Raiz\Models;
+
 use DateTime;
 
 class Prestamo extends ModelBase
@@ -87,9 +87,14 @@ class Prestamo extends ModelBase
 
     public static function deserializar(array $datos): self
     {
+        var_dump($datos); 
+        //recibo un arreglo, en el que parece que tengo 2 obj socio y libro, pero falla, asique puebo armandolos yo
+        //$socio = Socio::deserializar($datos["socio"]);
+        //$libro = Libro::deserializar($datos["libro"]);
+
         return new Prestamo(
-            socio: $datos["socio"],
-            libro: $datos["libro"],
+            socio: $socio,
+            libro: $libro,
             fecha_desde: $datos["fecha_desde"],
             fecha_hasta: $datos["fecha_hasta"]
         );

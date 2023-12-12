@@ -204,7 +204,7 @@ export default {
             axios
                 .post('http://localhost:8001/apiv1/libros/nuevo', nuevoLibro)
                 .then(response => {
-                    console.log(response.data);
+                    //console.log(response.data);
                     this.mostrarCartelExito();
                     //alert('Libro creado exitosamente') lo cambie por sweetalert2 que eran visualmente mas lindos;
                     this.$router.push('/libros')

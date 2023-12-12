@@ -130,7 +130,7 @@ export default {
                 anio: this.libro.anio,
                 estado: this.libro.estado
             };
-            console.log(datosLibro);
+            //console.log(datosLibro);
             await axios.put(`http://127.0.0.1:8001/apiv1/libros/actualizar/${this.$route.params.id}`, datosLibro);
             
             this.mostrarCartelExito();

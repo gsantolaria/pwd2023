@@ -7,7 +7,9 @@ import LibrosListar from '../components/Libros/Listar.vue';
 import LibrosCrear from '../components/Libros/Crear.vue';
 import LibrosActualizar from '../components/Libros/Actualizar.vue';
 import LibrosBorrar from '../components/Libros/Borrar.vue';
-import LibrosPrestar from '../components/Prestamos/Prestar.vue';
+import LibrosPrestar from '../components/Prestamos/Prestamo.vue';
+import LibrosDevolver from '../components/Prestamos/Devolucion.vue';
+import MenuPrestamo from '../components/Prestamos/Menu.vue';
 
 
 const router = createRouter({
@@ -59,10 +61,21 @@ const router = createRouter({
       component: LibrosBorrar
     },
     {
-      path: '/prestamos',
+      path: '/prestamos/prestamo',
       name: 'PrestarLibro',
       component: LibrosPrestar
     },
+    {
+      path: '/prestamos/devolucion',
+      name: 'DevolverLibro',
+      component: LibrosDevolver
+    },
+    {
+      path: '/prestamos/menu',
+      name: 'Menu',
+      component: MenuPrestamo
+    },
+
   ]
 })
 
