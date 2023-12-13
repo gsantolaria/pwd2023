@@ -70,8 +70,8 @@
         const libro = this.libros.find(lib => lib.id === this.libroSeleccionado);
 
         const nuevoPrestamo = {
-          libro: libro,
-          socio: socio,
+          libro: libro.id,
+          socio: socio.id,
           fecha_desde: this.fechaDesde,
           fecha_hasta: this.fechaHasta,
         };

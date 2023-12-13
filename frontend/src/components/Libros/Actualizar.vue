@@ -24,7 +24,6 @@
       <label for="categoria">Categoría:</label>
       <select v-model="libro.categorias.id" id="categoria" class="form-control">
         <option v-for="categoria in categorias" :key="categoria.id" :value="categoria.id">{{ categoria.descripcion }}</option>
-        <!-- <option value="nuevo">Crear Nueva Categoría</option> -->
       </select>
     </div>
 
@@ -32,7 +31,6 @@
       <label for="genero">Género:</label>
       <select v-model="libro.generos.id" id="genero" class="form-control">
         <option v-for="genero in generos" :key="genero.id" :value="genero.id">{{ genero.descripcion }}</option>
-        <!-- <option value="nuevo">Crear Nuevo Género</option> -->
       </select>
     </div>
 
@@ -139,18 +137,6 @@ export default {
             } catch (error) {
                 console.error(error);
             }
-            /* if (this.libro.editoriales.id === 'nuevo') {
-            
-            }
-
-            if (this.libro.categorias.id === 'nuevo') {
-               
-            }
-
-            if (this.libro.generos.id === 'nuevo') {
-               
-            } */
-
         },
         mostrarCartelExito() {
             Swal.fire({

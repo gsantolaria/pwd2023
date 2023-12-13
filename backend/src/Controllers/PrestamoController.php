@@ -2,6 +2,8 @@
 namespace Raiz\Controllers;
 
 use Raiz\Bd\PrestamoDAO;
+use Raiz\Bd\LibroDAO;
+use Raiz\Bd\SocioDAO;
 use Raiz\Models\Prestamo;
 
     class PrestamoController implements InterfaceController {
@@ -26,6 +28,13 @@ use Raiz\Models\Prestamo;
         public static function crear(array $parametros): array {
             var_dump($parametros); // parece llegar el arreglo bien pero cuando deserializo me dice que socio debe ser objeto.
             //preguntarle a edu para que pasamos los dos obj completos si necesito solo el id de libro y de socio.
+            $socioId = $parametros['socio'];
+            $libroId = $parametros['libro'];
+
+            $socioDeser = SocioDAO::encontrarUno($socioId);
+            $libroDeser = LibroDAO::encontrarUno($libroId);
+
+            
             $prestamo = Prestamo::deserializar($parametros);
             PrestamoDAO::crear($prestamo);
             return $prestamo->serializar();

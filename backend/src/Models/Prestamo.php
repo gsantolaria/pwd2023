@@ -93,8 +93,8 @@ class Prestamo extends ModelBase
         //$libro = Libro::deserializar($datos["libro"]);
 
         return new Prestamo(
-            socio: $socio,
-            libro: $libro,
+            socio: $datos['socio'],
+            libro: $datos['libro'],
             fecha_desde: $datos["fecha_desde"],
             fecha_hasta: $datos["fecha_hasta"]
         );
