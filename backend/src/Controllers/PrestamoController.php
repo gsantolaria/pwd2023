@@ -34,8 +34,14 @@ use Raiz\Models\Prestamo;
             $socioDeser = SocioDAO::encontrarUno($socioId);
             $libroDeser = LibroDAO::encontrarUno($libroId);
 
+            $parametros['socio'] = $socioDeser;
+            $parametros['libro'] = $libroDeser;
+
+            var_dump($parametros);
             
             $prestamo = Prestamo::deserializar($parametros);
+            var_dump($prestamo);
+            
             PrestamoDAO::crear($prestamo);
             return $prestamo->serializar();
         }

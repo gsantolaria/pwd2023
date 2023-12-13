@@ -48,7 +48,7 @@ class PrestamoDAO implements InterfaceDAO {
             $prestamo[0]['genero'] = GeneroDAO::encontrarUno($prestamo[0]['id_genero']);
             $prestamo[0]['editorial'] = EditorialDAO::encontrarUno($prestamo[0]['id_editorial']);
             $autoresprestamos[] = static::BuscarPrestamos($prestamo[0]["id"]);
-           
+
             foreach ($autoresprestamos as $autor) {
                 $prestamo[0]["autor"][] = $autor;
             }
@@ -68,12 +68,12 @@ class PrestamoDAO implements InterfaceDAO {
     
     public static function crear(Serializador $instancia): void {
         $params = $instancia->serializar();
-        $sql = 'INSERT INTO prestamos (socio, libro, fecha_desde, fecha_hasta, $fecha_dev) VALUES (:socio, :libro, :fecha_desde, :fecha_hasta, :fecha_dev)';
+        $sql = 'INSERT INTO prestamos (socio, libro, fecha_desde, fecha_hasta, fecha_dev) VALUES (:socio, :libro, :fecha_desde, :fecha_hasta, :fecha_dev)';
         ConectarBD::escribir(
             sql: $sql,
             params: [
-                ':socio' => $params['socio']->getId(),
-                ':libro' => $params['libro']->getId(),
+                ':socio' => $params['socio']['id'],
+                ':libro' => $params['libro']['id'],
                 ':fecha_desde' => $params['fecha_desde'],
                 ':fecha_hasta' => $params['fecha_hasta'],
                 ':fecha_dev' => $params['fecha_dev']
