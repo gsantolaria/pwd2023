@@ -86,7 +86,7 @@
                 title: 'Préstamo realizado con éxito',
                 text: 'Préstamo registrado correctamente.',
           });
-            console.log(response.data);
+          this.$router.push('/prestamos/prestamo')
           })
           .catch(error => {
                 Swal.fire({
