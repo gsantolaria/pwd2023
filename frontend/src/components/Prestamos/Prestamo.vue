@@ -22,7 +22,10 @@
           <label for="fechaHasta">Fecha de devolución:</label>
           <input type="date" v-model="fechaHasta" required>
         </div>
-        <button type="submit">Realizar préstamo</button>
+        <button type="submit" class="guardar">Realizar préstamo</button>
+        <router-link to="/prestamos/menu">
+            <button class="editar">Volver atrás</button>
+        </router-link>
       </form>
     </div>
   </template>
@@ -86,7 +89,7 @@
                 title: 'Préstamo realizado con éxito',
                 text: 'Préstamo registrado correctamente.',
           });
-          this.$router.push('/prestamos/prestamo')
+          this.$router.push('/prestamos/menu')
           })
           .catch(error => {
                 Swal.fire({
@@ -106,6 +109,33 @@
   </script>
   
   <style scoped>
-
+    input {
+        width: 50%;
+        font-size: 1.2em;
+        display: flex;
+        align-content: center;
+        padding: 10px;
+        margin: 15px;
+    }
+    button {
+        padding: 8px 16px;
+        margin-right: 8px;
+        font-size: 14px;
+        cursor: pointer;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+    .guardar {
+        background-color: #079d46;
+        color: #fff;
+        border: 1px solid #079d46;
+        cursor: pointer;
+    }
+    .editar {
+        background-color: #2170b1;
+        color: #fff;
+        border: 1px solid #2170b1;
+        cursor: pointer;
+    }
   </style>
   

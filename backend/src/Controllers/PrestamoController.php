@@ -13,6 +13,7 @@ use Raiz\Models\Prestamo;
             foreach($listadoPrestamo as $prestamo){
                 $prestamos[] = $prestamo->serializar();
             }
+            var_dump($prestamos[0]);
             return $prestamos;
         }
         
@@ -26,7 +27,7 @@ use Raiz\Models\Prestamo;
         }
         
         public static function crear(array $parametros): array {
-            var_dump($parametros); // parece llegar el arreglo bien pero cuando deserializo me dice que socio debe ser objeto.
+            //var_dump($parametros); parece llegar el arreglo bien pero cuando deserializo me dice que socio debe ser objeto.
             //preguntarle a edu para que pasamos los dos obj completos si necesito solo el id de libro y de socio.
             $socioId = $parametros['socio'];
             $libroId = $parametros['libro'];
@@ -36,8 +37,6 @@ use Raiz\Models\Prestamo;
 
             $parametros['socio'] = $socioDeser;
             $parametros['libro'] = $libroDeser;
-
-            var_dump($parametros);
             
             $prestamo = Prestamo::deserializar($parametros);
             var_dump($prestamo);

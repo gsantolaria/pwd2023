@@ -65,7 +65,9 @@ export default {
     <input v-model=Socio.direccion type="text" label='direccion' placeholder="Direccion">
 
     <button @click="crearSocio()" class="boton guardar">Guardar</button>
-    <router-link :to='{ name: "Socios" }'><button class="boton editar">Volver</button></router-link>
+    <router-link :to='{ name: "Socios" }'>
+        <button class="boton editar">Volver</button>
+    </router-link>
 </template>
 
 <style scope>

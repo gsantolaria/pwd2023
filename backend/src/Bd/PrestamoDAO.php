@@ -15,11 +15,13 @@ class PrestamoDAO implements InterfaceDAO {
         $consulta = $cnx->prepare($sql);
         $consulta->execute();
         $listaprestamos = $consulta->fetchAll(PDO::FETCH_ASSOC);
+        
         $prestamos = [];
         foreach ($listaprestamos as $prestamo) {
+            //$prestamo['id'] = (int)$prestamo['id'];
             $prestamo['socio'] = SocioDAO::encontrarUno($prestamo['id_socio']);
             $prestamo['libro'] = LibroDAO::encontrarUno($prestamo['id_libro']);
-            $prestamos[] = prestamo::deserializar($prestamo);
+            $prestamos[] = Prestamo::deserializar($prestamo);
             
         }
         return $prestamos;
