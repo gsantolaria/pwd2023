@@ -88,8 +88,6 @@ class Prestamo extends ModelBase
 
     public static function deserializar(array $datos): self
     {
-        //var_dump($datos); 
-
         return new Prestamo(
             id: $datos['id'],
             socio: $datos['socio'],

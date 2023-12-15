@@ -4,13 +4,13 @@
     <form @submit.prevent="devolverLibro">
       <div class="form-group">
         <label for="prestamoId">Seleccionar Préstamo:</label>
-        <select v-model="prestamoId" required>
+        <select v-model="prestamoId" @change="mostrarDetalles"   required>
           <option v-for="prestamo in prestamos" :key="prestamo.id" :value="prestamo.id">
             {{ prestamo.id }} - {{ prestamo.libro.titulo }} - {{ prestamo.socio.nombre_apellido }}
           </option>
         </select>
       </div>
-      <div class="form-group" v-if="prestamoId !== ''">
+      <div class="form-group" v-if="detallePrestamo">
         <h2>Detalles del Préstamo Seleccionado:</h2>
         <ul>
           <li><strong>ID del Préstamo:</strong> {{ detallePrestamo.id }}</li>
@@ -60,12 +60,14 @@ export default {
         console.error(error);
       }
     },
+    mostrarDetalles() {
+      this.detallePrestamo = this.prestamos.find(prestamo => prestamo.id === this.prestamoId  );
+    },
     async devolverLibro() {
       try {
-        const response = await axios.put(`http://localhost:8001/apiv1/prestamos/${this.prestamoId}/librodevuelto`, {
-          fecha_dev: this.fechaDevolucion,
-        });
+        const response = await axios.delete(`http://localhost:8001/apiv1/prestamos/${this.prestamoId}`);
         console.log(response.data);
+        this.$router.push('/prestamos/menu')
 
         Swal.fire({
           toast: true,

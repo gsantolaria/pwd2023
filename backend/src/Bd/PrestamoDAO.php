@@ -45,8 +45,7 @@ class PrestamoDAO implements InterfaceDAO {
         $prestamo = ConectarBD::leer(sql: $sql, params: [':id' => $id]);
         if (count($prestamo) === 0) {
             return null;
-        } else {
-            
+        } else { 
             $prestamo[0]['genero'] = GeneroDAO::encontrarUno($prestamo[0]['id_genero']);
             $prestamo[0]['editorial'] = EditorialDAO::encontrarUno($prestamo[0]['id_editorial']);
             $autoresprestamos[] = static::BuscarPrestamos($prestamo[0]["id"]);
@@ -56,17 +55,10 @@ class PrestamoDAO implements InterfaceDAO {
             }
             
             $prestamo = prestamo::deserializar($prestamo[0]);
+            var_dump($prestamo);
             return $prestamo;
         }
     }
-        /* $sql = 'SELECT * FROM prestamos WHERE id =:id;';
-        $prestamo = ConectarBD::leer(sql: $sql, params: [':id' => $id]);
-        if (count($prestamo) === 0) {
-            return null;
-        } else {
-            $prestamo = Prestamo::deserializar($prestamo[0]);
-            return $prestamo;
-        } */
     
     public static function crear(Serializador $instancia): void {
         $params = $instancia->serializar();

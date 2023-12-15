@@ -73,12 +73,15 @@
         const libro = this.libros.find(lib => lib.id === this.libroSeleccionado);
 
         const nuevoPrestamo = {
-          libro: libro.id,
-          socio: socio.id,
-          fecha_desde: this.fechaDesde,
-          fecha_hasta: this.fechaHasta,
+            id: 0,
+            libro: libro.id,
+            socio: socio.id,
+            fecha_desde: this.fechaDesde,
+            fecha_hasta: this.fechaHasta,
         };
         console.log(nuevoPrestamo);
+
+        this.actualizarEstadoLibro(this.libroId, 'Prestado');
   
         axios.post('http://localhost:8001/apiv1/prestamos/nuevo', nuevoPrestamo)
           .then(response => {
@@ -103,8 +106,17 @@
                 console.error(error);
             });
         
-      },
-    },
+        },
+        async actualizarEstadoLibro(libroId, nuevoEstado) {
+            try {
+                await axios.put(`http://localhost:8001/apiv1/libros/${libroId}`, {
+                estado: nuevoEstado,
+                });
+            } catch (error) {
+                console.error(error);
+                }
+            },
+        },
   };
   </script>
   
