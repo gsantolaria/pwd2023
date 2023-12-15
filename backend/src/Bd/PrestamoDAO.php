@@ -18,7 +18,7 @@ class PrestamoDAO implements InterfaceDAO {
         
         $prestamos = [];
         foreach ($listaprestamos as $prestamo) {
-            //$prestamo['id'] = (int)$prestamo['id'];
+            $prestamo['id'] = (int)$prestamo['id'];
             $prestamo['socio'] = SocioDAO::encontrarUno($prestamo['id_socio']);
             $prestamo['libro'] = LibroDAO::encontrarUno($prestamo['id_libro']);
             $prestamos[] = Prestamo::deserializar($prestamo);

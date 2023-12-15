@@ -6,7 +6,7 @@
         <label for="prestamoId">Seleccionar Préstamo:</label>
         <select v-model="prestamoId" required>
           <option v-for="prestamo in prestamos" :key="prestamo.id" :value="prestamo.id">
-            {{ ${prestamo.id} - ${prestamo.libro.titulo} - ${prestamo.socio.nombre_apellido} }}
+            {{ prestamo.id }} - {{ prestamo.libro.titulo }} - {{ prestamo.socio.nombre_apellido }}
           </option>
         </select>
       </div>
@@ -54,6 +54,8 @@ export default {
         const response = await axios.get('http://localhost:8001/apiv1/prestamos');
         this.prestamos = response.data;
 
+        console.log(this.prestamos);
+        
       } catch (error) {
         console.error(error);
       }

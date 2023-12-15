@@ -13,7 +13,6 @@ use Raiz\Models\Prestamo;
             foreach($listadoPrestamo as $prestamo){
                 $prestamos[] = $prestamo->serializar();
             }
-            var_dump($prestamos[0]);
             return $prestamos;
         }
         
