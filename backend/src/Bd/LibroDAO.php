@@ -76,11 +76,9 @@ class LibroDAO implements InterfaceDAO
                 ':id_editorial' => $params['editoriales']['id'],
             ]
         );
-
         //var_dump($params['autores']);
         $idLibro = static::buscarUltimoLibro();
         //var_dump($idLibro);   
-        
         foreach ($params['autores'] as $autor) {
             $sql3 = 'INSERT INTO autores_libros (id_autor, id_libro) 
             VALUES ( :id_autor, :id_libro)';
@@ -94,13 +92,11 @@ class LibroDAO implements InterfaceDAO
         }
     }
 
-
     public static function actualizar(Serializador $instancia): void
     {
         //var_dump($instancia);
         $params = $instancia->serializar();
         //var_dump($params);
-        
         $sql = 'UPDATE libros SET titulo =:titulo, id_genero = :id_genero, id_categoria = :id_categoria, 
                 cant_paginas = :cant_paginas, anio = :anio, estado = :estado, id_editorial = :id_editorial 
                 WHERE id=:id';  
@@ -131,7 +127,7 @@ class LibroDAO implements InterfaceDAO
         return $resultado['id'];
     }
 
-    public static function actualizarEstado(Serializador $instancia): void
+    /* public static function actualizarEstado(Serializador $instancia): void
     {
         $params = $instancia->serializar();
         $sql = 'UPDATE libros SET estado =:estado WHERE id=:id';
@@ -142,6 +138,24 @@ class LibroDAO implements InterfaceDAO
                 ':estado' => $params['estado'],
             ]
         );
+    } */
+    // comente el metodo anterior y arme uno nuevo solo para actualizar el estado siguiento la misma logica
+    // modificando librocontroller y librosroutes, asi no pasaba todo el objeto libro cuando solo necesitaba
+    // actualizar el estado entre prestado y activo (inactivo lo puse, pero no lo use).
+
+    public static function actualizarEstado(string $id, string $nuevoEstado): void
+    {
+        $estadosValidos = ["activo", "inactivo", "prestado"];
+        if (in_array(strtolower($nuevoEstado), $estadosValidos)){
+            $sql = 'UPDATE libros SET estado =:estado WHERE id=:id';
+            ConectarBD::escribir(
+                sql: $sql,
+                params: [
+                    ':id' => $id,
+                    ':estado' => $nuevoEstado,
+                ]
+            );
+        }
     }
 
     public static function borrar(string $id)

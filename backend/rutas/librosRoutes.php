@@ -45,8 +45,11 @@ $app->put('/apiv1/libros/actualizar/{id}', function (Request $request, Response 
 });
 
 $app->put('/apiv1/libros/{id}/actualizarestado', function (Request $request, Response $res, array $args) {
+    $id = $args['id']; 
+    $data = $request->getParsedBody();
+    $estado = $data['estado'];
     $request = Utileria::PasarAJson(file_get_contents('php://input'));
-    $payload = Json_Encode(LibroController::actualizar($request), JSON_PRETTY_PRINT);
+    $payload = Json_Encode(LibroController::actualizarEstado($id, $estado), JSON_PRETTY_PRINT);
     $res->getBody()->write($payload);
     return $res->withHeader("Content-Type", "application/json");
 });

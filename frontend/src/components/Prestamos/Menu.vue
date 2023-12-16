@@ -28,10 +28,10 @@
       <h3>Que accion desea realizar?</h3>
       <div class="menu-options">
         <router-link to="/prestamos/prestamo" class="menu-option">
-          <button class="btn-option">Prestar libro</button>
+          <button class="guardar">Prestar libro</button>
         </router-link>
         <router-link to="/prestamos/devolucion" class="menu-option">
-          <button class="btn-option">Devolver libro</button>
+          <button class="editar">Devolver libro</button>
         </router-link>
       </div>
     </div>
@@ -69,47 +69,61 @@ export default {
 </script>
 
 <style scoped>
-.menu-container {
-  text-align: center;
-  margin-top: 50px;
-}
+  .menu-container {
+    text-align: center;
+    margin-top: 50px;
+  }
 
-.menu-options {
-  display: flex;
-  justify-content: space-around;
-  margin-top: 20px;
-}
+  .menu-options {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+  }s
 
-.btn-option {
-  padding: 10px;
-  font-size: 16px;
-  cursor: pointer;
-}
+  table {
+    background: #fff;
+    border-radius: 10px;
+    inset: 10px 50px 10px;
+    box-shadow: 5px 5px 50px rgb(4, 96, 96, 0.2);
+    width: 100%;
+    color: black;
+    margin: 20px;
+    padding: 15px;
+  }
 
-table {
-  background: #fff;
-  border-radius: 10px;
-  inset: 10px 50px 10px;
-  box-shadow: 5px 5px 50px rgb(4, 96, 96, 0.2);
-  width: 100%;
-  color: black;
-  margin: 20px;
-  padding: 15px;
-}
+  th {
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 1.6;
+    color: rgb(4, 96, 96);
+    background: #ccc;
+  }
 
-th {
-  text-align: center;
-  text-transform: uppercase;
-  font-size: 1.6;
-  color: rgb(4, 96, 96);
-  background: #ccc;
-}
-
-td,
-tr {
-  text-align: center;
-  border: 1px solid #ddd;
-  padding: 8px;
-}
+  td,
+  tr {
+    text-align: center;
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+  button {
+        padding: 8px 16px;
+        margin-right: 8px;
+        font-size: 14px;
+        cursor: pointer;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+  }
+  .guardar {
+      background-color: #079d46;
+      color: #fff;
+      border: 1px solid #079d46;
+      cursor: pointer;
+  }
+  .editar {
+      background-color: #2170b1;
+      color: #fff;
+      border: 1px solid #2170b1;
+      cursor: pointer;
+  }
 </style>
   

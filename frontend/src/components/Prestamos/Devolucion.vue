@@ -67,6 +67,9 @@ export default {
       try {
         const response = await axios.delete(`http://localhost:8001/apiv1/prestamos/${this.prestamoId}`);
         console.log(response.data);
+        
+        await axios.put(`http://localhost:8001/apiv1/libros/${this.detallePrestamo.libro.id}/actualizarestado`, { estado: 'Activo' });
+
         this.$router.push('/prestamos/menu')
 
         Swal.fire({

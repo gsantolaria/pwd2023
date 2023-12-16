@@ -116,6 +116,11 @@ class LibroController implements InterfaceController
         return $libro->serializar();
     }
 
+    public static function actualizarEstado(string $id, string $nuevoEstado): void
+    {
+        LibroDAO::actualizarEstado($id, $nuevoEstado);
+    }
+
     public static function borrar(string $id): void
     {
         LibroDAO::borrar($id);

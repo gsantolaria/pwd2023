@@ -1,5 +1,6 @@
 <template>
     <div>
+    
     <h2>Editar Libro</h2>
     
     <div class="form-group">
@@ -54,7 +55,7 @@
     </div>
 
     <button @click="guardarCambios" class="boton guardar">Guardar Cambios</button>
-
+    
     </div>
 </template>
 
@@ -95,7 +96,6 @@ export default {
     },
         async obtenerDetallesLibro(libroId) {
             try {
-
                 const response = await axios.get('http://127.0.0.1:8001/apiv1/libros/' + this.$route.params.id);
                 this.libro = response.data;
                 this.autores = response.data.autores;
@@ -108,26 +108,26 @@ export default {
         },
         async guardarCambios() {
             try {
-            const datosLibro = {
-                id: this.libro.id,
-                titulo: this.libro.titulo,
-                autor: this.libro.autores,
-                editoriales: {
-                    id: this.libro.editoriales.id,
-                    nombre: this.libro.editoriales.nombre
-                },
-                generos: {
-                    id: this.libro.generos.id,
-                    nombre: this.libro.generos.descripcion
-                },
-                categorias: {
-                    id: this.libro.categorias.id,
-                    nombre: this.libro.categorias.descripcion
-                },
-                cant_paginas: this.libro.cant_paginas,
-                anio: this.libro.anio,
-                estado: this.libro.estado
-            };
+                const datosLibro = {
+                    id: this.libro.id,
+                    titulo: this.libro.titulo,
+                    autor: this.libro.autores,
+                    editoriales: {
+                        id: this.libro.editoriales.id,
+                        nombre: this.libro.editoriales.nombre
+                    },
+                    generos: {
+                        id: this.libro.generos.id,
+                        nombre: this.libro.generos.descripcion
+                    },
+                    categorias: {
+                        id: this.libro.categorias.id,
+                        nombre: this.libro.categorias.descripcion
+                    },
+                    cant_paginas: this.libro.cant_paginas,
+                    anio: this.libro.anio,
+                    estado: this.libro.estado
+                };
             //console.log(datosLibro);
             await axios.put(`http://127.0.0.1:8001/apiv1/libros/actualizar/${this.$route.params.id}`, datosLibro);
             
@@ -149,7 +149,7 @@ export default {
             });
        },
     },
-}    
+}  
 
 </script>
 

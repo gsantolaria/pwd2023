@@ -30,7 +30,7 @@
     </div>
   </template>
   
-  <script lang="ts">
+<script lang="ts">
 
   import axios from 'axios';
   import Swal from 'sweetalert2';
@@ -48,26 +48,28 @@
     },
     mounted() {
       this.cargarLibros(); 
-      this.cargarSocios(); // y socios por lo pronto vamos a omitir su estado y permitir que todos saquen prestamos
+      this.cargarSocios(); 
+      // en los socios por lo pronto vamos a omitir su estado y permitir que todos saquen 1 o mas prestamos
     },
     computed: {
         librosDisponibles() {
             console.log(this.libros);
-            return this.libros.filter(libro => (libro.estado.toLowerCase() !== 'prestado')); // por ahora solo descartamos libros que estan prestados, no importa si esta activo o no
+            return this.libros.filter(libro => (libro.estado.toLowerCase() !== 'prestado')); 
+            // por ahora solo descartamos libros que estan prestados, no importa si esta activo o inactivo
         },
   },
     methods: {
-      cargarLibros() {
-        axios.get('http://localhost:8001/apiv1/libros')
-          .then(response => this.libros = response.data)
-          .catch(error => console.error(error));
-      },
-      cargarSocios() {
-        axios.get('http://localhost:8001/apiv1/socios')
-          .then(response => this.socios = response.data)
-          .catch(error => console.error(error));
-      },
-      realizarPrestamo() {
+        cargarLibros() {
+            axios.get('http://localhost:8001/apiv1/libros')
+            .then(response => this.libros = response.data)
+            .catch(error => console.error(error));
+        },
+        cargarSocios() {
+            axios.get('http://localhost:8001/apiv1/socios')
+            .then(response => this.socios = response.data)
+            .catch(error => console.error(error));
+    },
+    realizarPrestamo() {
 
         const socio = this.socios.find(soc => soc.id === this.socioSeleccionado);
         const libro = this.libros.find(lib => lib.id === this.libroSeleccionado);
@@ -79,9 +81,7 @@
             fecha_desde: this.fechaDesde,
             fecha_hasta: this.fechaHasta,
         };
-        console.log(nuevoPrestamo);
-
-        this.actualizarEstadoLibro(this.libroId, 'Prestado');
+        console.log(nuevoPrestamo); 
   
         axios.post('http://localhost:8001/apiv1/prestamos/nuevo', nuevoPrestamo)
           .then(response => {
@@ -92,6 +92,7 @@
                 title: 'Préstamo realizado con éxito',
                 text: 'Préstamo registrado correctamente.',
           });
+          
           this.$router.push('/prestamos/menu')
           })
           .catch(error => {
@@ -102,25 +103,21 @@
                     title: 'Error al realizar el préstamo',
                     text: 'Hubo un problema. Inténtalo de nuevo.',
                 });
-
                 console.error(error);
             });
-        
-        },
-        async actualizarEstadoLibro(libroId, nuevoEstado) {
-            try {
-                await axios.put(`http://localhost:8001/apiv1/libros/${libroId}`, {
-                estado: nuevoEstado,
+            axios.put(`http://localhost:8001/apiv1/libros/${this.libroSeleccionado}/actualizarestado`, { estado: 'Prestado' })
+                .then(response => {
+                    this.$router.push('/prestamos/menu');
+                })
+                .catch(error => {
+                    console.error(error);
                 });
-            } catch (error) {
-                console.error(error);
-                }
-            },
         },
-  };
-  </script>
+    },
+};
+</script>
   
-  <style scoped>
+<style scoped>
     input {
         width: 50%;
         font-size: 1.2em;
@@ -149,5 +146,5 @@
         border: 1px solid #2170b1;
         cursor: pointer;
     }
-  </style>
+</style>
   
