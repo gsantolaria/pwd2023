@@ -54,7 +54,10 @@
       </select>
     </div>
 
-    <button @click="guardarCambios" class="boton guardar">Guardar Cambios</button>
+    <button @click="guardarCambios" class="guardar">Guardar Cambios</button>
+    <router-link to="/libros" class="routerlink">
+        <button class="volver">Volver</button>
+    </router-link>
     
     </div>
 </template>
@@ -130,15 +133,6 @@ export default {
                 };
             //console.log(datosLibro);
             await axios.put(`http://127.0.0.1:8001/apiv1/libros/actualizar/${this.$route.params.id}`, datosLibro);
-            
-            this.mostrarCartelExito();
-            this.$router.push({ name: 'Libros' });
-
-            } catch (error) {
-                console.error(error);
-            }
-        },
-        mostrarCartelExito() {
             Swal.fire({
                 toast: true,
                 position: "top-end",
@@ -147,7 +141,12 @@ export default {
                 showConfirmButton: false,
                 timer: 1600,
             });
-       },
+            this.$router.push({ name: 'Libros' });
+
+            } catch (error) {
+                console.error(error);
+            }
+        },
     },
 }  
 
@@ -167,7 +166,7 @@ export default {
         padding: 8px;
         box-sizing: border-box;
     }
-    .boton {
+    .button {
         padding: 8px 16px;
         margin-right: 8px;
         font-size: 14px;
@@ -181,5 +180,10 @@ export default {
         border: 1px solid #079d46;
         cursor: pointer;
     }
-
+    .volver {
+        background-color: #2170b1;
+        color: #fff;
+        border: 1px solid #2170b1;
+        cursor: pointer;
+    }
 </style>

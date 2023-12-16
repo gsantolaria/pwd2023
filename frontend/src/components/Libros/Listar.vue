@@ -30,10 +30,10 @@
           <td>{{ libro.estado }}</td>
           <td>
               <router-link :to="{ name: 'ActualizarLibro', params: { id: libro.id } }">
-                <Boton texto="editar" v-bind:class="{ edit: true }"></Boton>
+                <button class="editar">Editar</button>
               </router-link>
               <router-link :to="{ name: 'EliminarLibro', params: { id: libro.id } }">
-                <Boton texto="eliminar" v-bind:class="{ warning: true }"></Boton>
+                <button class="eliminar">Eliminar</button>
               </router-link>
           </td>
         </tr>
@@ -168,23 +168,24 @@ tr .acciones {
   display: flex;
   align-items: center;
 }
-.boton {
+.button {
     padding: 8px 16px;
     margin-right: 8px;
     font-size: 14px;
     cursor: pointer;
+    border: 1px solid #ccc;
     border-radius: 4px;
-  }
-  .editar {
+}
+.eliminar {
+    background-color: #ff0000;
+    color: #fff;
+    border: 1px solid #ff0000;
+    cursor: pointer;
+}
+.editar {
     background-color: #079d46;
     color: #fff;
     border: 1px solid #079d46;
     cursor: pointer;
-  }
-  .eliminar {
-    background-color: #dc3545;
-    color: #fff;
-    border: 1px solid #dc3545;
-    cursor: pointer;
-  }
+}
 </style>

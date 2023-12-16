@@ -12,9 +12,9 @@
         </select>
     </div>
 
-    <boton class="edit" @click="ActualizarSocio(Socio)" texto="Actualizar"></boton>
+    <button class="actualizar" @click="ActualizarSocio(Socio)">Actualizar</button>
     <router-link :to='{ name: "Socios" }'>
-        <boton class="primary" texto="Volver"></boton>
+        <button class="volver">Volver</button>
     </router-link>
     
 </template>
@@ -49,6 +49,8 @@ export default {
                 await axios.put('http://127.0.0.1:8001/apiv1/socios/' + this.$route.params.id, Socio);
 
                 Swal.fire({
+                    toast: true,
+                    position: "top-end",
                     icon: 'success',
                     title: 'Socio actualizado con éxito',
                     showConfirmButton: false,
@@ -60,6 +62,8 @@ export default {
                 console.error(error);
 
                 Swal.fire({
+                    toast: true,
+                    position: "top-end",
                     icon: 'error',
                     title: 'Error al actualizar el socio',
                     text: 'Hubo un problema al actualizar el socio. Por favor, intenta de nuevo.',
@@ -98,5 +102,25 @@ export default {
         align-content: center;
         padding: 10px;
         margin: 15px;
+    }
+    button {
+        padding: 8px 16px;
+        margin-right: 8px;
+        font-size: 14px;
+        cursor: pointer;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+    .actualizar {
+        background-color: #079d46;
+        color: #fff;
+        border: 1px solid #079d46;
+        cursor: pointer;
+    }
+    .volver {
+        background-color: #2170b1;
+        color: #fff;
+        border: 1px solid #2170b1;
+        cursor: pointer;
     }
 </style>

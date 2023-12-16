@@ -30,9 +30,9 @@
         <td>{{ socio.telefono }}</td>
         <td>
           <router-link :to="{ name: 'ActualizarSocio', params: { id: socio.id } }">
-            <Boton texto="editar" v-bind:class="{ edit: true }"></Boton>
+            <button class="editar">Editar</button>
           </router-link>
-          <Boton texto="eliminar" v-bind:class="{ warning: true }" @click="confirmarEliminar(socio.id)"></Boton>
+            <button class="eliminar" @click="confirmarEliminar(socio.id)">Eliminar</button>
         </td>
       </tr>
     </tbody>
@@ -83,6 +83,8 @@ export default {
         .then(response => {
           if (response.data === null) {
             Swal.fire({
+              toast: true,
+              position: "top-end",
               icon: 'success',
               title: 'Socio eliminado con éxito',
               showConfirmButton: false,
@@ -93,6 +95,8 @@ export default {
         })
         .catch(error => {
             Swal.fire({
+              toast: true,
+              position: "top-end",
               icon: 'error',
               title: 'Error',
               text: 'El socio no puede eliminarse porque tiene registros de préstamos.',
@@ -163,9 +167,28 @@ select {
   padding: 10px;
   font-size: 1em
 }
-
 tr .acciones {
   text-aling: center;
   background: #ccc;
+}
+button {
+    padding: 8px 16px;
+    margin-right: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+.eliminar {
+    background-color: #ff0000;
+    color: #fff;
+    border: 1px solid #ff0000;
+    cursor: pointer;
+}
+.editar {
+    background-color: #079d46;
+    color: #fff;
+    border: 1px solid #079d46;
+    cursor: pointer;
 }
 </style>

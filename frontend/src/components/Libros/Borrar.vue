@@ -2,9 +2,11 @@
     <div>
     <h2>Eliminar Libro</h2>
     <p>¿Está seguro de que desea eliminar este libro?</p>
-
     
-    <button @click="confirmarEliminar" class="boton eliminar">Confirmar eliminaciòn</button>
+    <button @click="confirmarEliminar" class="eliminar">Confirmar eliminación</button>
+    <router-link to="/libros" class="routerlink">
+        <button class="volver">Volver</button>
+    </router-link>
 
     </div>
 </template>
@@ -34,31 +36,37 @@ export default {
         },
         async confirmarEliminar() {
             try {
-                // hAcer un DELETE del libro, aca seguro rompemos la consistencia de la bbdd si borramos asi nomas
+                if (this.libro.estado.toLowerCase() === 'prestado') {
+                    Swal.fire({
+                        toast: true,
+                        position: "top-end",
+                        icon: 'error',
+                        title: 'No se puede eliminar',
+                        text: 'El libro está prestado y no puede ser eliminado',
+                    });
+                    return;
+                }
                 await axios.delete(`http://127.0.0.1:8001/apiv1/libros/${this.libro.id}`);
-                this.mostrarCartelExito();
+                Swal.fire({
+                    toast: true,
+                    position: "top-end",
+                    icon: 'success',
+                    title: 'Libro eliminado con éxito',
+                    showConfirmButton: false,
+                    timer: 1600,
+                });
                 this.$router.push({ name: 'Libros' });
 
-            } catch (error) {
-                console.error(error);
-            }
-        },
-        mostrarCartelExito() {
-            Swal.fire({
-                toast: true,
-                position: "top-end",
-                icon: 'success',
-                title: 'Libro eliminado con éxito',
-                showConfirmButton: false,
-                timer: 1600,
-            });
+                } catch (error) {
+                    console.error(error);
+                }
         },
     },
 };
 </script>
 
 <style scoped>
-    .boton {
+    .button {
         padding: 8px 16px;
         margin-right: 8px;
         font-size: 14px;
@@ -67,9 +75,15 @@ export default {
         border-radius: 4px;
     }
     .eliminar {
-        background-color: #dc3545;
+        background-color: #ff0019;
         color: #fff;
-        border: 1px solid #dc3545;
+        border: 1px solid #ff0019;
+        cursor: pointer;
+    }
+    .volver {
+        background-color: #2170b1;
+        color: #fff;
+        border: 1px solid #2170b1;
         cursor: pointer;
     }
 

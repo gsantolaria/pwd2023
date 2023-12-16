@@ -1,3 +1,16 @@
+<template>
+    <h2>Crear nuevo Socio</h2>
+
+    <input v-model=Socio.nombre_apellido type="text" label='nombre y apellido' placeholder="apellido y nombre">
+    <input v-model=Socio.telefono type="text" label='Telefono' placeholder="telefono">
+    <input v-model=Socio.direccion type="text" label='direccion' placeholder="Direccion">
+
+    <button @click="crearSocio()" class="boton guardar">Guardar</button>
+    <router-link :to='{ name: "Socios" }'>
+        <button class="boton volver">Volver</button>
+    </router-link>
+</template>
+
 <script lang="ts">
 import Swal from 'sweetalert2';
 import axios from 'axios'
@@ -28,12 +41,13 @@ export default {
                 activo: this.Socio.activo,
                 fecha_alta: this.Socio.fecha_alta
             }
-
             try {
                 const response = await axios.post('http://127.0.0.1:8001/apiv1/socios/nuevo', socio);
                 console.log(response.data);
 
                 Swal.fire({
+                    toast: true,
+                    position: "top-end",
                     icon: 'success',
                     title: 'Socio creado con éxito',
                     showConfirmButton: false,
@@ -44,31 +58,18 @@ export default {
             } catch (error) {
                 
                 console.error(error);
-
                 Swal.fire({
+                    toast: true,
+                    position: "top-end",
                     icon: 'error',
                     title: 'Error al crear socio',
                     text: 'Hubo un problema al crear el socio. Por favor, intenta de nuevo.',
                 });
             }
-
         },
     },
 };
 </script>
-
-<template>
-    <h2>Crear nuevo Socio</h2>
-
-    <input v-model=Socio.nombre_apellido type="text" label='nombre y apellido' placeholder="apellido y nombre">
-    <input v-model=Socio.telefono type="text" label='Telefono' placeholder="telefono">
-    <input v-model=Socio.direccion type="text" label='direccion' placeholder="Direccion">
-
-    <button @click="crearSocio()" class="boton guardar">Guardar</button>
-    <router-link :to='{ name: "Socios" }'>
-        <button class="boton editar">Volver</button>
-    </router-link>
-</template>
 
 <style scope>
     input {
@@ -93,10 +94,10 @@ export default {
         border: 1px solid #079d46;
         cursor: pointer;
     }
-    .editar {
-        background-color: rgb(33, 112, 177);
+    .volver {
+        background-color: #2170b1;
         color: #fff;
-        border: 1px solid #079d46;
+        border: 1px solid #2170b1;
         cursor: pointer;
     }
 </style>
