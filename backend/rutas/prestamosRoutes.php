@@ -41,7 +41,6 @@ $app->get('/apiv1/prestamos/{id}/librodevuelto', function (Request $req, Respons
 });
 // ---- Crear nuevo regitro ---- //
 
-
 $app->post('/apiv1/prestamos/nuevo', function (Request $request, Response $res, array $args) {
     $request = Utileria::PasarAJson(file_get_contents('php://input'));
     $payload = Json_Encode(PrestamoController::crear($request), JSON_PRETTY_PRINT);

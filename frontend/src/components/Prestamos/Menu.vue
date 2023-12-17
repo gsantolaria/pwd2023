@@ -3,7 +3,8 @@
       <h1>Menu de prestamos y devoluciones</h1>
       <div class="form-group">
         <h2>Préstamos activos:</h2>
-          <table v-if="prestamos.length > 0">
+          <clip-loader v-show="cargando" />
+          <table v-if="prestamos.length > 0"> 
           <thead>
             <tr>
               <th>ID del Préstamo</th>
@@ -23,7 +24,7 @@
             </tr>
           </tbody>
         </table>
-        <p v-else>No hay préstamos activos.</p>
+        <p v-show="!cargando" v-else>No hay préstamos activos.</p>
       </div>
       <h3>Que accion desea realizar?</h3>
       <div class="menu-options">
@@ -38,9 +39,13 @@
   </template>
 
 <script lang="ts">
+import ClipLoader from 'vue-spinner/src/ClipLoader.vue'
 import axios from 'axios';
 
 export default {
+  components: {
+    ClipLoader,
+  },
   name: 'Menu',
   data() {
     return {
@@ -48,6 +53,7 @@ export default {
       fechaDevolucion: '',
       prestamos: [],
       detallePrestamo: null,
+      cargando: true,
     };
   },
   mounted() {
@@ -63,6 +69,7 @@ export default {
       } catch (error) {
         console.error(error);
       }
+      this.cargando = false;
     },
   },
 };
@@ -78,7 +85,7 @@ export default {
     display: flex;
     justify-content: space-around;
     margin-top: 20px;
-  }s
+  }
 
   table {
     background: #fff;
@@ -87,7 +94,7 @@ export default {
     box-shadow: 5px 5px 50px rgb(4, 96, 96, 0.2);
     width: 100%;
     color: black;
-    margin: 20px;
+    margin: 20px auto;
     padding: 15px;
   }
 

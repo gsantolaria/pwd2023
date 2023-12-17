@@ -41,21 +41,21 @@
 
 <script lang="ts">
 import axios from 'axios';
-import Boton from '../Boton.vue';
 import Swal from 'sweetalert2'; 
 
 export default {
-  components: { Boton },
   data() {
     return {
       items: [],
       socios: [],
       busqueda: '',
       activo: 'todos',
+      prestamos: [],
     };
   },
   created() {
     this.listarSocios();
+    this.cargarPrestamos();
   },
   methods: {
     async listarSocios() {
@@ -64,7 +64,7 @@ export default {
         this.socios = response.data;
         //console.log(this.socios);
       } catch (error) {
-        console.error(error);
+          console.error(error);
       }
     },
     filtrarSocios() {
@@ -76,6 +76,14 @@ export default {
         const direccion = socio.direccion.toLowerCase();
         return nombre.includes(busqueda) || direccion.includes(busqueda);
       });
+    },
+    async cargarPrestamos() {
+      try {
+        const response = await axios.get('http://localhost:8001/apiv1/prestamos');
+        this.prestamos = response.data;
+      } catch (error) {
+          console.error(error);
+      }
     },
     borrar(id) {
       axios
@@ -107,22 +115,44 @@ export default {
       /* if (window.confirm('¿Seguro que deseas eliminar este socio?')) {
         this.borrar(id);
       } */
-        Swal.fire({
-          title: '¿Seguro que deseas eliminar este socio?',
-          icon: 'warning',
-          showCancelButton: true,
-          confirmButtonColor: '#d33',
-          cancelButtonColor: '#3085d6',
-          confirmButtonText: 'Sí, eliminar',
-          cancelButtonText: 'Cancelar',
-        }).then((result) => {
-          if (result.isConfirmed) {
-            this.borrar(id);
-          }
-        });
+      // aca arme la logica para chequear si un socio tiene prestamos activos antes de eliminarlo,
+      // sin embargo, no los estaba eliminando porque fallaba la FK en la bbdd al intentar borrarlo
+      // teniendo un prestamo activo.
+      /* Este error veo en consola:
+        file: "/var/www/html/src/Bd/ConectarBD.php"
+        line: 61 
+        message
+        "SQLSTATE[23503]: Foreign key violation: 7 ERROR:  update or delete on table \"socios\" violates foreign key constraint \"fk_socio\" on table \"prestamos\"\nDETAIL:  Key (id)=(4) is still referenced from table \"prestamos\"."
+        type: 
+        "PDOException" */
+
+        const tienePrestamoActivo = this.prestamos.some(prestamo => prestamo.socio_id === id);
+        if (tienePrestamoActivo) {
+          Swal.fire({
+            toast: true,
+            position: "top-end",
+            icon: 'error',
+            title: 'Error',
+            text: 'El socio no puede eliminarse porque tiene un préstamo activo.',
+          });
+        } else {
+            Swal.fire({
+              title: '¿Seguro que deseas eliminar este socio?',
+              icon: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#ff0000',
+              cancelButtonColor: '#3085d6',
+              confirmButtonText: 'Sí, eliminar',
+              cancelButtonText: 'Cancelar',
+            }).then((result) => {
+              if (result.isConfirmed) {
+                this.borrar(id);
+              }
+          });
+        }
       },
     },
-  };
+};
 </script>
 
 <style scoped>
