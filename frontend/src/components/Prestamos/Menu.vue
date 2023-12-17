@@ -65,7 +65,7 @@ export default {
         const response = await axios.get('http://localhost:8001/apiv1/prestamos');
         this.prestamos = response.data;
 
-        console.log(this.prestamos);
+        //console.log(this.prestamos);
       } catch (error) {
         console.error(error);
       }
@@ -83,7 +83,7 @@ export default {
 
   .menu-options {
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     margin-top: 20px;
   }
 

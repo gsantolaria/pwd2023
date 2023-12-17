@@ -1,14 +1,15 @@
 
 <template>
   <h1>Listado de Socios</h1>
-  <input v-model="busqueda" @input="filtrarSocios" type="text" placeholder="Buscar socios...">
-  <RouterLink class="crear" to="socios/crear"><img src="../../assets/editar.svg" alt="">Crear Socio</RouterLink>
-
-  <select v-model="activo" name="is_activo" id="activo">
-    <option value="activo">Activos</option>
-    <option value="inactivo">Inactivos</option>
-    <option value="todos">Todos</option>
-  </select>
+  <div id="busqueda">
+    <RouterLink class="crear" to="socios/crear"><img src="../../assets/editar.svg" alt="">Crear Socio</RouterLink>
+    <input v-model="busqueda" @input="filtrarSocios" type="text" placeholder="Buscar socios...">
+    <select v-model="activo" name="is_activo" id="activo">
+      <option value="activo">Activos</option>
+      <option value="inactivo">Inactivos</option>
+      <option value="todos">Todos</option>
+    </select>
+  </div>
 
   <table>
     <thead>
@@ -37,13 +38,18 @@
       </tr>
     </tbody>
   </table>
+  <clip-loader v-show="cargando" />
 </template>
 
 <script lang="ts">
 import axios from 'axios';
-import Swal from 'sweetalert2'; 
+import Swal from 'sweetalert2';
+import ClipLoader from 'vue-spinner/src/ClipLoader.vue'
 
 export default {
+  components: {
+    ClipLoader,
+  },
   data() {
     return {
       items: [],
@@ -51,6 +57,7 @@ export default {
       busqueda: '',
       activo: 'todos',
       prestamos: [],
+      cargando: true,
     };
   },
   created() {
@@ -66,6 +73,7 @@ export default {
       } catch (error) {
           console.error(error);
       }
+      this.cargando = false;
     },
     filtrarSocios() {
       const busqueda = this.busqueda.toLowerCase();
@@ -84,6 +92,7 @@ export default {
       } catch (error) {
           console.error(error);
       }
+      this.cargando = false;
     },
     borrar(id) {
       axios
@@ -156,6 +165,21 @@ export default {
 </script>
 
 <style scoped>
+h1 {
+  text-align: center;
+  margin-top: 50px;
+}
+#busqueda {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+select {
+  margin: 10px;
+  padding: 12px;
+  font-size: 1em;
+  width: 200px;
+}
 table {
   background: #fff;
   border-radius: 10px;
@@ -183,8 +207,13 @@ tr {
 }
 
 .crear {
+  text-decoration: none;
+  text-align: center;
+  white-space: nowrap; 
+  min-width: auto;
   background: #079d46;
-  padding: 10px 20px;
+  padding: 13px 20px;
+  border-radius: 5px;
   color: #fff
 }
 
@@ -192,11 +221,6 @@ tr {
   margin-right: 10px;
 }
 
-select {
-  margin: 10px;
-  padding: 10px;
-  font-size: 1em
-}
 tr .acciones {
   text-aling: center;
   background: #ccc;

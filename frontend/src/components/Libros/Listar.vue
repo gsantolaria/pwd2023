@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>Listado de libros</h2>
+    <h1>Listado de libros</h1>
       <div id="busqueda">
         <RouterLink class="crear" to="libros/crear"><img src="../../assets/editar.svg" alt="">Crear libro</RouterLink>
         <input v-model="busqueda" @input="buscarLibros" type="text" placeholder="Buscar libros...">
@@ -39,19 +39,23 @@
         </tr>
       </tbody>
     </table>
+    <clip-loader v-show="cargando" />
   </div>
 </template>
 
 <script lang="ts">
-import Boton from '../Boton.vue';
+import ClipLoader from 'vue-spinner/src/ClipLoader.vue'
 import axios from 'axios';
 
 export default {
-  components: { Boton },
+  components: {
+    ClipLoader,
+  },
   data() {
     return {
       libros: [],
-      busqueda: ''
+      busqueda: '',
+      cargando: true,
     };
   },
   created() {
@@ -66,6 +70,7 @@ export default {
       } catch (error) {
         console.error(error);
       }
+      this.cargando = false;
     },
     buscarLibros() {
       const busqueda = this.busqueda.toLowerCase();
@@ -118,6 +123,10 @@ export default {
 </script>
 
 <style scoped>
+h1 {
+  text-align: center;
+  margin-top: 50px;
+}
 table {
   background: #fff;
   border-radius: 10px;
@@ -147,7 +156,8 @@ tr {
 .crear {
   text-decoration: none;
   background: #079d46;
-  padding: 10px 20px;
+  padding: 13px 20px;
+  border-radius: 5px;
   color: #fff
 }
 
@@ -167,6 +177,7 @@ tr .acciones {
 #busqueda {
   display: flex;
   align-items: center;
+  justify-content: center;
 }
 .button {
     padding: 8px 16px;

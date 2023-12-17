@@ -1,8 +1,7 @@
 <template>
-    <div>
     
     <h2>Editar Libro</h2>
-    
+    <clip-loader v-show="cargando" />
     <div class="form-group">
       <label for="titulo">Título:</label>
       <input v-model="libro.titulo" type="text" id="titulo" class="form-control">
@@ -59,14 +58,18 @@
         <button class="volver">Volver</button>
     </router-link>
     
-    </div>
+
 </template>
 
 <script lang="ts">
+import ClipLoader from 'vue-spinner/src/ClipLoader.vue'
 import Swal from 'sweetalert2';
 import axios from 'axios';
 
 export default {
+    components: {
+        ClipLoader,
+    },
     data() {
     return {
         libro: {},
@@ -74,6 +77,7 @@ export default {
         editoriales: [],
         categorias: [],
         generos: [],
+        cargando: true,
         };
     },
     created() {
@@ -96,6 +100,7 @@ export default {
         } catch (error) {
             console.error(error);
         }
+        this.cargando = false;
     },
         async obtenerDetallesLibro(libroId) {
             try {
@@ -104,7 +109,6 @@ export default {
                 this.autores = response.data.autores;
                 /* console.log(this.libro);
                 console.log(this.autores); */
-
             } catch (error) {
                 console.error(error);
             }

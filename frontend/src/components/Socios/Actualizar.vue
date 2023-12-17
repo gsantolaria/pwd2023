@@ -1,6 +1,6 @@
 <template>
     <h2>Actualizar Socio</h2>
-
+    
     <input v-model=Socio.nombre_apellido type="text" label='nombre y apellido' placeholder="apellido y nombre">
     <input v-model=Socio.telefono type="text" label='Telefono' placeholder="telefono">
     <input v-model=Socio.direccion type="text" label='direccion' placeholder="Direccion">
@@ -11,21 +11,23 @@
             <option value="0">Inactivo</option>
         </select>
     </div>
-
+    
     <button class="actualizar" @click="ActualizarSocio(Socio)">Actualizar</button>
     <router-link :to='{ name: "Socios" }'>
         <button class="volver">Volver</button>
     </router-link>
-    
+    <clip-loader v-show="cargando" />
 </template>
 
 <script lang="ts">
 import axios from 'axios';
-import Boton from '../Boton.vue';
+import ClipLoader from 'vue-spinner/src/ClipLoader.vue'
 import Swal from 'sweetalert2';
 
 export default {
-    components: { Boton },
+    components: {
+        ClipLoader,
+    },
     data() {
         return {
             Socio:
@@ -36,18 +38,18 @@ export default {
                 telefono: "",
                 fecha_alta: new Date().toISOString().substring(0, 10),
                 activo: 1,
-            }
+            },
+            cargando: true,
         }
     },
     created() {
-        this.buscar()
+        this.buscar();
     },
     methods: {
         async ActualizarSocio(Socio) {
             try {
                 //console.log(Socio);
                 await axios.put('http://127.0.0.1:8001/apiv1/socios/' + this.$route.params.id, Socio);
-
                 Swal.fire({
                     toast: true,
                     position: "top-end",
@@ -60,7 +62,6 @@ export default {
                 this.$router.push('/socios');
             } catch (error) {
                 console.error(error);
-
                 Swal.fire({
                     toast: true,
                     position: "top-end",
@@ -73,6 +74,7 @@ export default {
         async buscar() {
             const res = await axios.get('http://127.0.0.1:8001/apiv1/socios/' + this.$route.params.id);
             this.Socio = res.data;
+            this.cargando = false;
             //console.log(this.Socio)
         }
     }
