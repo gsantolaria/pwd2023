@@ -10,6 +10,9 @@ import LibrosBorrar from '../components/Libros/Borrar.vue';
 import LibrosPrestar from '../components/Prestamos/Prestamo.vue';
 import LibrosDevolver from '../components/Prestamos/Devolucion.vue';
 import MenuPrestamo from '../components/Prestamos/Menu.vue';
+import Categorias from '../components/Categorias/Categorias.vue';
+import Generos from '../components/Generos/Generos.vue';
+import Editoriales from '../components/Editoriales/Editoriales.vue';
 
 
 const router = createRouter({
@@ -74,6 +77,21 @@ const router = createRouter({
       path: '/prestamos/menu',
       name: 'Menu',
       component: MenuPrestamo
+    },
+    {
+      path: '/categorias',
+      name: 'Categorias',
+      component: Categorias
+    },
+    {
+      path: '/editoriales',
+      name: 'Editoriales',
+      component: Editoriales
+    },
+    {
+      path: '/generos',
+      name: 'Generos',
+      component: Generos
     },
 
   ]

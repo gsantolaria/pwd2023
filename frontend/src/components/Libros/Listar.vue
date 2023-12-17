@@ -68,7 +68,7 @@ export default {
         this.libros = response.data;
         //console.log(this.libros);
       } catch (error) {
-        console.error(error);
+          console.error(error);
       }
       this.cargando = false;
     },

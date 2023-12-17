@@ -10,6 +10,7 @@ footer{
     padding: 10px;
     height: 100%;
     background: #079d46;
+    color: #faebd7;
     text-align: center;
 }
 </style>

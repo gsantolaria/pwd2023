@@ -17,6 +17,7 @@
                 <label for="nuevoAutor">Nuevo Autor:</label>
                 <input id="nuevoAutor" v-model="nuevoAutor" required>
                 <button @click.prevent="agregarNuevoAutor">Guardar Autor</button>
+                <button @click.prevent="mostrarFormularioAutorNuevo">Cerrar</button>
             </div>
             <div class="form-group">
                 <label for="editorial">Editorial:</label>
@@ -146,16 +147,6 @@ export default {
             .catch(error => console.error(error));
     },
     methods: {
-        mostrarCartelExito() {
-            Swal.fire({
-                toast: true,
-                position: "top-end",
-                icon: 'success',
-                title: 'Libro creado con éxito',
-                showConfirmButton: false,
-                timer: 1600,
-            });
-        },
         abrirPopup(tipo) {
             switch (tipo) {
                 case 'editorial':
@@ -204,8 +195,14 @@ export default {
             axios
                 .post('http://localhost:8001/apiv1/libros/nuevo', nuevoLibro)
                 .then(response => {
-                    //console.log(response.data);
-                    this.mostrarCartelExito();
+                    Swal.fire({
+                        toast: true,
+                        position: "top-end",
+                        icon: 'success',
+                        title: 'Libro creado con éxito',
+                        showConfirmButton: false,
+                        timer: 1600,
+                    });
                     //alert('Libro creado exitosamente') lo cambie por sweetalert2 que eran visualmente mas lindos;
                     this.$router.push('/libros')
                 })
@@ -215,7 +212,7 @@ export default {
                 });
         },
         mostrarFormularioAutorNuevo() {
-            this.mostrarFormularioNuevoAutor = true;
+            this.mostrarFormularioNuevoAutor = !this.mostrarFormularioNuevoAutor;
         },
         async listarAutores() {
             try {
@@ -226,11 +223,23 @@ export default {
             }
         },
         async agregarNuevoAutor() {
+                // agregue para evitar autores vacios, aun asi me tira cartel de, seguro se podria hacer generico
+                // para usarlo en los demas metodos y no repetir
+                if (!this.nuevoAutor.trim()) {
+                    Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    icon: 'warning',
+                    title: 'El nombre del autor no puede estar vacío',
+                    showConfirmButton: false,
+                    timer: 1600,
+                    });
+                    return;
+                }             
                 const autorExiste = this.autores.find(autor => autor.nombre_apellido === this.nuevoAutor);
                 if (autorExiste) {
                     // si el autor existe, asignamos el ID al libro
                     this.libro.autor = autorExiste.id;
-                    //console.log(this.libro.autor);
                 } else {
                     // si el autor no existe, crea un nuevo autor y obtenemos el ID
                     try {
@@ -242,7 +251,7 @@ export default {
 
                         this.nuevoAutor = '';
                         this.mostrarFormularioNuevoAutor = false;
-                        this.listarAutores(); // hice esta carga adicional pq a veces fallaba al crear el libro pq enviaba null
+                        this.listarAutores(); // hice esta carga adicional para que muestre el autor recien creado en la lista
 
                         Swal.fire({
                             toast: true,
@@ -262,6 +271,7 @@ export default {
                             title: 'Error al crear el autor',
                             text: 'Hubo un problema, intenta de nuevo.',
                         });
+                        this.listarAutores();
                         return;
                     }
                 }
@@ -269,6 +279,17 @@ export default {
                 this.listarAutores();
         },
         async guardarEditorial(nuevaEditorial) {
+            if (!nuevaEditorial.trim()) {
+                Swal.fire({
+                toast: true,
+                position: 'top-end',
+                icon: 'warning',
+                title: 'El nombre de la editorial no puede estar vacío',
+                showConfirmButton: false,
+                timer: 1600,
+                });
+                return;
+            }
             try {
                 const response = await axios.post('http://localhost:8001/apiv1/editoriales/nuevo', { id: 0, nombre: nuevaEditorial });
                 const nuevaEditorialGuardada = response.data;
@@ -290,7 +311,6 @@ export default {
                 });
             } catch (error) {
                 console.error(error);
-                
                 Swal.fire({
                     toast: true,
                     position: "top-end",
@@ -303,6 +323,17 @@ export default {
             }
         },
         async guardarGenero(nuevoGenero) {
+            if (!nuevoGenero.trim()) {
+                Swal.fire({
+                toast: true,
+                position: 'top-end',
+                icon: 'warning',
+                title: 'La descripción del género no puede estar vacía',
+                showConfirmButton: false,
+                timer: 1600,
+                });
+                return;
+            }
             try {
                 const response = await axios.post('http://localhost:8001/apiv1/generos/nuevo', { id: 0, descripcion: nuevoGenero });
                 const nuevoGeneroGuardado = response.data;
@@ -337,6 +368,17 @@ export default {
             }
         },
         async guardarCategoria(nuevaCategoria) {
+            if (!nuevaCategoria.trim()) {
+                Swal.fire({
+                toast: true,
+                position: 'top-end',
+                icon: 'warning',
+                title: 'La descripción de la categoría no puede estar vacía',
+                showConfirmButton: false,
+                timer: 1600,
+                });
+                return;
+            }
             try {
                 const response = await axios.post('http://localhost:8001/apiv1/categorias/nuevo', { id: 0, descripcion: nuevaCategoria });
                 const nuevaCategoriaGuardada = response.data;
