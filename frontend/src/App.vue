@@ -13,7 +13,6 @@ export default {
 </script>
 <template>
   <body>
-
     <nav>
        <!--  <button @click="mostrarMenu = !mostrarMenu" class="boton-menu">MENU</button>
         <ul v-if="mostrarMenu" class="menu-desplegable" @click="mostrarMenu = !mostrarMenu">
@@ -49,6 +48,9 @@ export default {
             </section>
             <section class="option">
               <router-link to="/generos">Generos</router-link>
+            </section>
+            <section class="option">
+              <router-link to="/about">Sobre nosotros</router-link>
             </section>
         </dropdown-menu>
         <div class="logo">
@@ -110,8 +112,8 @@ nav a:hover {
   color: #9ed300;
 }
 section {
-  height: 85%;
-  padding: 25px;
+  height: 90%;
+  padding: 15px 25px;
 }
 .boton-menu {
   background-color: #079d46;

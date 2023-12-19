@@ -3,7 +3,7 @@
       <div class="modal">
         <header class="modal-header">
           <slot name="header">
-            title!
+            titulo
           </slot>
           <button type="button" class="btn-close" @click="close">
             x
@@ -12,13 +12,13 @@
   
         <section class="modal-body">
           <slot name="body">
-            body!
+            cuerpo
           </slot>
          </section>
   
         <footer class="modal-footer">
           <slot name="footer">
-            footer!
+            footer
           </slot>
           <button type="button" class="btn-blue" @click="close">
                 Cerrar

@@ -44,12 +44,12 @@ class AutorDAO implements InterfaceDAO {
 
     public static function actualizar(Serializador $instancia): void {
         $params = $instancia->serializar();
-        $sql = 'UPDATE autores SET nombre =:nombre WHERE id=:id';
+        $sql = 'UPDATE autores SET nombre_apellido =:nombre_apellido WHERE id=:id';
         ConectarBD::escribir(
             sql: $sql,
             params: [
                 ':id' => $params['id'],
-                ':nombre' => $params['nombre']
+                ':nombre_apellido' => $params['nombre_apellido']
             ]
         );
     }

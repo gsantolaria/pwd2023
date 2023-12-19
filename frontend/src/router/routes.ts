@@ -13,6 +13,7 @@ import MenuPrestamo from '../components/Prestamos/Menu.vue';
 import Categorias from '../components/Categorias/Categorias.vue';
 import Generos from '../components/Generos/Generos.vue';
 import Editoriales from '../components/Editoriales/Editoriales.vue';
+import Autores from '../components/Autores/Autores.vue';
 
 
 const router = createRouter({
@@ -93,7 +94,11 @@ const router = createRouter({
       name: 'Generos',
       component: Generos
     },
-
+    {
+      path: '/autores',
+      name: 'Autores',
+      component: Autores
+    },
   ]
 })
 

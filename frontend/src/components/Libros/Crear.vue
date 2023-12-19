@@ -223,8 +223,8 @@ export default {
             }
         },
         async agregarNuevoAutor() {
-                // agregue para evitar autores vacios, aun asi me tira cartel de, seguro se podria hacer generico
-                // para usarlo en los demas metodos y no repetir
+                // agregue para evitar autores vacios, aun asi me tira cartel de error pero lo crea, seguro se
+                // podria hacer generico para usarlo en los demas metodos y no repetir el mismo control
                 if (!this.nuevoAutor.trim()) {
                     Swal.fire({
                     toast: true,

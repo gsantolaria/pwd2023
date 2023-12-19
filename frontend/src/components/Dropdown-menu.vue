@@ -1,5 +1,4 @@
 <template>
-
     <section class="dropDownMenuWrapper" :class="{ 'dropDownMenuWrapper--dark' : isDarkMode, 'dropDownMenuWrapper--noTitle' : !menuTitle }">
 
       <div class="iconWrapper" :class="{ 'iconWrapper--noTitle' : !menuTitle }">
@@ -18,10 +17,9 @@
       </section>
   
     </section>
+</template>
   
-  </template>
-  
-  <script lang="ts">
+<script lang="ts">
   
   export default {
     props: [ "darkMode", "menuTitle" ],
@@ -64,9 +62,9 @@
         }
     }
   }
-  </script>
+</script>
   
-  <style scoped>
+<style scoped>
   .dropDownMenuWrapper {
     position: relative;
     width: 100px;
@@ -123,7 +121,7 @@
         width: 100%;
         max-width: 28px;
         height: 3px;
-        background: #045b28;
+        background: #faebd7;
         position: absolute;
         top: 50%;
         left: 50%;
@@ -131,22 +129,19 @@
         transform: translate(-50%, calc(-50% - 8px) );
         transition: all 0.2s ease;
       }
-  
       .bar1--dark {
         background: #eee;
       }
-  
       .bar1--open {
         transform: translate(-50%, -50%) rotate(45deg);
         margin-top: 0;
         background: red;
       }
-  
       .bar2 {
         width: 100%;
         max-width: 28px;
         height: 3px;
-        background: #045b28;
+        background: #faebd7;
         position: absolute;
         top: 50%;
         left: 50%;
@@ -155,20 +150,17 @@
         transform: translate(-50%, -50%);
         transition: all 0.2s ease;
       }
-  
       .bar2--dark {
         background: #eee;
       }
-  
       .bar2--open {
         opacity: 0;
       }
-  
       .bar3 {
         width: 100%;
         max-width: 28px;
         height: 3px;
-        background: #045b28;
+        background: #faebd7;
         position: absolute;
         top: 50%;
         left: 50%;
@@ -176,11 +168,9 @@
         transform: translate(-50%, calc(-50% + 8px) );
         transition: all 0.2s ease;
       }
-  
       .bar3--dark {
         background: #eee;
       }
-  
       .bar3--open {
         top: 50%;
         transform: translate(-50%, -50% ) rotate(-45deg);
@@ -201,11 +191,11 @@
       position: absolute;
       top: 100%;
       width: 100%;
-      min-width: 250px;
+      min-width: 290px;
       min-height: 10px;
       border-radius: 8px;
       border: 1px solid #eee;
-      box-shadow: 10px 10px 0 0 rgba(#000000,.03);
+      box-shadow: 10px 10px 0 0 rgba(rgb(0, 0, 0),.03);
       background: #079d46;
       padding: 10px 30px;
       animation: menu 0.3s ease forwards;
@@ -218,7 +208,7 @@
         left: 20px;
         border-left: 1px solid #eee;
         border-top: 1px solid #eee;
-        background: #079d46;
+        background: #089d46;
         transform: rotate(45deg);
         border-radius: 4px 0 0 0;
       }
@@ -231,7 +221,7 @@
       .option {
         width: 100%;
         border-bottom: 1px solid #eee;
-        padding: 20px 0;
+        padding: auto;
         cursor: pointer;
         position: relative;
         z-index: 2;
@@ -275,7 +265,6 @@
       }
   
     }
-  
     @keyframes menu {
       from { transform: translate3d( 0, 30px ,0 ) }
       to { transform: translate3d( 0, 20px ,0 ) }
@@ -287,10 +276,8 @@
     width: 60px;
     height: 60px;
   }
-  
   .dropDownMenuWrapper--dark {
     background: #333;
     border: none;
   }
-  
-  </style>
+</style>

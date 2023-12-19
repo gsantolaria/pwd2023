@@ -1,38 +1,39 @@
 <template>
   <div class="menu-container">
     <div class="form-group">
-      <h2>Listado de Editoriales</h2>
+      <h2>Listado de Autores</h2>
       <clip-loader v-show="cargando" />
-      <button @click.prevent="abrirFormulario('agregar')" class="guardar">Agregar Editorial</button>
-      <table v-if="editoriales.length > 0">
+      <button @click.prevent="abrirFormulario('agregar', autor)" class="guardar">Agregar autor</button>
+      <table v-if="autores.length > 0">
         <thead>
           <tr>
             <th>ID</th>
-            <th>Nombre</th>
+            <th>Nombre y Apellido</th>
             <th>Acciones</th>
+
           </tr>
         </thead>
         <tbody>
-          <tr v-for="editorial in editoriales" :key="editorial.id">
-            <td>{{ editorial.id }}</td>
-            <td>{{ editorial.nombre }}</td>
+          <tr v-for="autor in autores" :key="autor.id">
+            <td>{{ autor.id }}</td>
+            <td>{{ autor.nombre_apellido }}</td>
             <td>
-              <button @click.prevent="abrirFormulario('editar', editorial)" class="editar">Editar</button>
-              <button @click.prevent="abrirFormulario('eliminar', editorial)" class="eliminar">Eliminar</button>
+              <button @click.prevent="abrirFormulario('editar', autor)" class="editar">Editar</button>
+              <button @click.prevent="abrirFormulario('eliminar', autor)" class="eliminar">Eliminar</button>
             </td>
           </tr>
         </tbody>
       </table>
-      <p v-show="!cargando" v-else>No hay editoriales disponibles.</p>
+      <p v-show="!cargando" v-else>No hay autores disponibles.</p>
     </div>
 
     <div v-if="mostrarFormulario">
-      <h3>{{ tipoAccion === 'agregar' ? 'Agregar Editorial' : tipoAccion === 'editar' ? 'Editar Editorial' : 'Eliminar Editorial' }}</h3>
+      <h3>{{ tipoAccion === 'agregar' ? 'Agregar Autor' : tipoAccion === 'editar' ? 'Editar Autor' : 'Eliminar Autor' }}</h3>
       <form @submit.prevent="submitForm">
-        <label for="nombreEditorial">Nombre de la Editorial:</label>
-        <input type="text" id="nombreEditorial" v-model="editorialSeleccionada.nombre" required />
-        <button type="submit" class="guardar" v-if="tipoAccion === 'editar' || tipoAccion === 'agregar'">Guardar Cambios</button>
-        <button type="submit" class="eliminar" v-if="tipoAccion === 'eliminar'">Eliminar Editorial</button>
+        <label for="nombreApellido">Nombre y Apellido:</label>
+        <input type="text" id="nombreApellido" v-model="autorSeleccionado.nombre_apellido" required />
+        <button type="submit" class="guardar" v-if="tipoAccion === 'editar'|| tipoAccion === 'agregar'">Guardar Cambios</button>
+        <button type="submit" class="eliminar" v-if="tipoAccion === 'eliminar'">Eliminar Autor</button>
         <button @click.prevent="volver" class="volver">Volver</button>
       </form>
     </div>
@@ -48,119 +49,116 @@ export default {
   components: {
     ClipLoader,
   },
-  name: 'Editoriales',
+  name: 'Autores',
   data() {
     return {
-      editoriales: [],
+      autores: [],
       cargando: true,
       mostrarFormulario: false,
       tipoAccion: 'editar',
-      editorialSeleccionada: null,
+      autorSeleccionado: null,
     };
   },
   mounted() {
-    this.cargarEditoriales();
+    this.cargarAutores();
   },
   methods: {
-    async cargarEditoriales() {
+    async cargarAutores() {
       try {
-        const response = await axios.get('http://localhost:8001/apiv1/editoriales');
-        this.editoriales = response.data;
+        const response = await axios.get('http://localhost:8001/apiv1/autores');
+        this.autores = response.data;
       } catch (error) {
         console.error(error);
       }
       this.cargando = false;
     },
-    abrirFormulario(tipo, editorial = null) {
+    abrirFormulario(tipo, autor = null) {
       this.tipoAccion = tipo;
-      this.editorialSeleccionada = tipo === 'agregar' ? { nombre: '' } : { ...editorial };
+      this.autorSeleccionado = tipo === 'agregar' ? { nombre_apellido: '' } : { ...autor };
       this.mostrarFormulario = true;
     },
     submitForm() {
       if (this.tipoAccion === 'agregar') {
-        this.agregarEditorial();
+        this.agregarAutor();
       } else if (this.tipoAccion === 'editar') {
-        this.guardarEditorial();
+        this.guardarAutor();
       } else if (this.tipoAccion === 'eliminar') {
-        this.eliminarEditorial();
+        this.eliminarAutor();
       }
     },
     volver() {
       this.mostrarFormulario = false;
     },
-    async agregarEditorial() {
+    async agregarAutor() {
       try {
-        const response = await axios.post('http://localhost:8001/apiv1/editoriales/nuevo', {
-          id: 0, 
-          nombre: this.editorialSeleccionada.nombre,
-        });
-        const nuevaEditorial = response.data;
-        this.editoriales.push(nuevaEditorial);
-        this.cargarEditoriales();
+        const response = await axios.post('http://localhost:8001/apiv1/autores/nuevo', {id: 0, 
+          nombre_apellido: this.autorSeleccionado.nombre_apellido,});
+        const nuevoAutor = response.data;
+        this.autores.push(nuevoAutor);
+        this.cargarAutores();
         Swal.fire({
-          toast: true,
-          position: 'top-end',
-          icon: 'success',
-          title: 'Editorial creada con éxito',
-          showConfirmButton: false,
-          timer: 1600,
+            toast: true,
+            position: 'top-end',
+            icon: 'success',
+            title: 'Autor creado con éxito',
+            showConfirmButton: false,
+            timer: 1600,
         });
       } catch (error) {
         console.error(error);
         Swal.fire({
-          toast: true,
-          position: 'top-end',
-          icon: 'error',
-          title: 'Error al crear la editorial',
-          text: 'Hubo un problema, inténtalo de nuevo.',
+            toast: true,
+            position: "top-end",
+            icon: 'error',
+            title: 'Error al crear el autor',
+            text: 'Hubo un problema, intenta de nuevo.',
         });
       }
       this.cerrarFormulario();
     },
-    async guardarEditorial() {
+    async guardarAutor() {
       try {
-        const response = await axios.put(`http://localhost:8001/apiv1/editoriales/${this.editorialSeleccionada.id}`, {
-          id: this.editorialSeleccionada.id,
-          nombre: this.editorialSeleccionada.nombre,
+        const response = await axios.put(`http://localhost:8001/apiv1/autores/${this.autorSeleccionado.id}`, 
+        {id: this.autorSeleccionado.id, nombre_apellido: this.autorSeleccionado.nombre_apellido,
         });
-        const editorialActualizada = response.data;
-        const index = this.editoriales.findIndex(ed => ed.id === this.editorialSeleccionada.id);
+        const autorActualizado = response.data;
+        const index = this.autores.findIndex(aut => aut.id === this.autorSeleccionado.id);
         if (index !== -1) {
-          this.editoriales.splice(index, 1, editorialActualizada);
+          this.autores.splice(index, 1, autorActualizado);
           Swal.fire({
             toast: true,
             position: 'top-end',
             icon: 'success',
-            title: 'Editorial editada con éxito',
+            title: 'Autor editado con éxito',
             showConfirmButton: false,
             timer: 1600,
           });
-          this.cargarEditoriales();
+          this.cargarAutores();
         }
       } catch (error) {
         console.error(error);
         Swal.fire({
-          toast: true,
-          position: 'top-end',
-          icon: 'error',
-          title: 'Error al editar la editorial',
-          text: 'Hubo un problema, inténtalo de nuevo.',
+            toast: true,
+            position: "top-end",
+            icon: 'error',
+            title: 'Error al editar el autor',
+            text: 'Hubo un problema, intenta de nuevo.',
         });
       }
       this.cerrarFormulario();
     },
-    async eliminarEditorial() {
-      if (this.editorialSeleccionada) {
+    async eliminarAutor() {
+      if (this.autorSeleccionado) {
         try {
-          await axios.delete(`http://localhost:8001/apiv1/editoriales/${this.editorialSeleccionada.id}`);
-          const index = this.editoriales.findIndex(ed => ed.id === this.editorialSeleccionada.id);
+          await axios.delete(`http://localhost:8001/apiv1/autores/${this.autorSeleccionado.id}`);
+          const index = this.autores.findIndex(aut => aut.id === this.autorSeleccionado.id);
           if (index !== -1) {
-            this.editoriales.splice(index, 1);
+            this.autores.splice(index, 1);
             Swal.fire({
               toast: true,
               position: 'top-end',
               icon: 'success',
-              title: 'Editorial eliminada con éxito',
+              title: 'Autor eliminado con éxito',
               showConfirmButton: false,
               timer: 1600,
             });
@@ -169,20 +167,23 @@ export default {
           console.error(error);
           Swal.fire({
             toast: true,
-            position: 'top-end',
+            position: "top-end",
             icon: 'error',
-            title: 'Error al eliminar la editorial',
-            text: 'Hubo un problema, inténtalo de nuevo.',
-          });
+            title: 'Error al crear el autor',
+            text: 'Hubo un problema, intenta de nuevo.',
+        });
         }
         this.cerrarFormulario();
       }
     },
     cerrarFormulario() {
       this.mostrarFormulario = false;
-      this.editorialSeleccionada = null;
+      this.autorSeleccionado = null;
     },
   },
+    // aca en eliminar deberia solucionar el problema de eliminar un autor que este en un libro con un prestamo activo
+    // ya que al borrarlo sin control, en el libro se muestra en blanco y como la relacion es con el ID, por mas que lo
+    // agregue nuevamente, no aparece pq tiene un nuevo ID.
 };
 </script>
 
