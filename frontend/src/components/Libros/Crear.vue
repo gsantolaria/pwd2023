@@ -125,7 +125,7 @@ export default {
             tipoElemento: "",
         };
     },
-    mounted() {
+    created() {
         // Cargar autores
         axios.get('http://localhost:8001/apiv1/autores')
             .then(response => this.autores = response.data)
@@ -482,4 +482,5 @@ export default {
     .routerlink{
         text-decoration: none;
     }
+
 </style>

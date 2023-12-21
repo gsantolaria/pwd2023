@@ -240,9 +240,9 @@ button {
     cursor: pointer;
 }
 .editar {
-    background-color: #079d46;
+    background-color: #2170b1;
     color: #fff;
-    border: 1px solid #079d46;
+    border: 1px solid #2170b1;
     cursor: pointer;
 }
 </style>

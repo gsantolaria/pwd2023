@@ -169,7 +169,7 @@ export default {
             toast: true,
             position: "top-end",
             icon: 'error',
-            title: 'Error al crear el autor',
+            title: 'Error al eliminar el autor',
             text: 'Hubo un problema, intenta de nuevo.',
         });
         }
